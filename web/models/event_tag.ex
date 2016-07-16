@@ -5,7 +5,8 @@ defmodule Galaxy.EventTag do
     field :description, :string
     field :color, :string
     field :active, :boolean, default: true
-    timestamps()
+
+    timestamps
   end
 
   @doc """

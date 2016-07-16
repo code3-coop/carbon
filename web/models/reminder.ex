@@ -4,8 +4,10 @@ defmodule Galaxy.Reminder do
   schema "reminders" do
     field :date, Ecto.DateTime
     field :active, :boolean, default: true
+
     belongs_to :event, Galaxy.Event
-    timestamps()
+
+    timestamps
   end
 
   @doc """
