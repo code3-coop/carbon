@@ -2,7 +2,7 @@ defmodule Galaxy.DealStage do
   use Galaxy.Web, :model
 
   schema "deal_stages" do
-    field :description, :string
+    field :key, :string
     field :color, :string
     field :active, :boolean, default: true
 

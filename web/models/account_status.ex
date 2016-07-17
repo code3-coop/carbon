@@ -2,7 +2,7 @@ defmodule Galaxy.AccountStatus do
   use Galaxy.Web, :model
 
   schema "account_statuses" do
-    field :description, :string
+    field :key, :string
     field :color, :string
     field :active, :boolean, default: true
 
