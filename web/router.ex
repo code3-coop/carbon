@@ -19,8 +19,9 @@ defmodule Galaxy.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Galaxy do
-  #   pipe_through :api
-  # end
+  scope "/api", Galaxy do
+    pipe_through :api
+
+    resources "/account_statuses", AccountStatusController, except: [:new, :edit]
+  end
 end
