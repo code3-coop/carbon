@@ -1,5 +1,5 @@
-defmodule Galaxy.Address do
-  use Galaxy.Web, :model
+defmodule Carbon.Address do
+  use Carbon.Web, :model
 
   schema "addresses" do
     field :lock_version, :integer, default: 1
@@ -13,7 +13,7 @@ defmodule Galaxy.Address do
     field :country_name, :string
     field :active, :boolean, default: true
 
-    belongs_to :account, Galaxy.Account
+    belongs_to :account, Carbon.Account
 
     timestamps
   end
@@ -23,7 +23,7 @@ defmodule Galaxy.Address do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:street_address, :extended_address, :post_office_box, :locality, :region, :postal_code, :country_name])
-    |> validate_required([:street_address, :extended_address, :post_office_box, :locality, :region, :postal_code, :country_name])
+    |> cast(params, [:street_address, :extended_address, :post_office_box, :locality, :region, :postal_code, :country_name, :active])
+    |> validate_required([:street_address])
   end
 end

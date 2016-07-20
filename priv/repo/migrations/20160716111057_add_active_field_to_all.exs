@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.AddActiveFieldToAll do
+defmodule Carbon.Repo.Migrations.AddActiveFieldToAll do
   use Ecto.Migration
 
   def change do

@@ -1,7 +1,7 @@
-defmodule Galaxy.EventTest do
-  use Galaxy.ModelCase
+defmodule Carbon.EventTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.Event
+  alias Carbon.Event
 
   @valid_attrs %{date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, description: "some content"}
   @invalid_attrs %{}

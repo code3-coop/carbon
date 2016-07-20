@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.RenameDescriptionToKey do
+defmodule Carbon.Repo.Migrations.RenameDescriptionToKey do
   use Ecto.Migration
 
   def change do

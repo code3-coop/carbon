@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.CreateAccountTag do
+defmodule Carbon.Repo.Migrations.CreateAccountTag do
   use Ecto.Migration
 
   def change do

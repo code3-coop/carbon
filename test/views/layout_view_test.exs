@@ -1,3 +1,3 @@
-defmodule Galaxy.LayoutViewTest do
-  use Galaxy.ConnCase, async: true
+defmodule Carbon.LayoutViewTest do
+  use Carbon.ConnCase, async: true
 end

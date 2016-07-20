@@ -1,7 +1,7 @@
-defmodule Galaxy.AccountTagTest do
-  use Galaxy.ModelCase
+defmodule Carbon.AccountTagTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.AccountTag
+  alias Carbon.AccountTag
 
   @valid_attrs %{description: "some content"}
   @invalid_attrs %{}

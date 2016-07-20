@@ -1,3 +1,3 @@
-defmodule Galaxy.LayoutView do
-  use Galaxy.Web, :view
+defmodule Carbon.LayoutView do
+  use Carbon.Web, :view
 end

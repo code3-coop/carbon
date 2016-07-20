@@ -1,8 +1,8 @@
-defmodule Galaxy.Mixfile do
+defmodule Carbon.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :galaxy,
+    [app: :carbon,
      version: "0.0.1",
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
@@ -17,7 +17,7 @@ defmodule Galaxy.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Galaxy, []},
+    [mod: {Carbon, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
                     :phoenix_ecto, :postgrex]]
   end

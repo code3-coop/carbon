@@ -1,7 +1,7 @@
-defmodule Galaxy.DealStageControllerTest do
-  use Galaxy.ConnCase
+defmodule Carbon.DealStageControllerTest do
+  use Carbon.ConnCase
 
-  alias Galaxy.DealStage
+  alias Carbon.DealStage
   @valid_attrs %{}
   @invalid_attrs %{}
 

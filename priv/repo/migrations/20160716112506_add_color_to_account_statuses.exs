@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.AddColorToAccountStatuses do
+defmodule Carbon.Repo.Migrations.AddColorToAccountStatuses do
   use Ecto.Migration
 
   def change do

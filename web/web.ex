@@ -1,12 +1,12 @@
-defmodule Galaxy.Web do
+defmodule Carbon.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use Galaxy.Web, :controller
-      use Galaxy.Web, :view
+      use Carbon.Web, :controller
+      use Carbon.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -30,12 +30,12 @@ defmodule Galaxy.Web do
     quote do
       use Phoenix.Controller
 
-      alias Galaxy.Repo
+      alias Carbon.Repo
       import Ecto
       import Ecto.Query
 
-      import Galaxy.Router.Helpers
-      import Galaxy.Gettext
+      import Carbon.Router.Helpers
+      import Carbon.Gettext
     end
   end
 
@@ -49,9 +49,9 @@ defmodule Galaxy.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import Galaxy.Router.Helpers
-      import Galaxy.ErrorHelpers
-      import Galaxy.Gettext
+      import Carbon.Router.Helpers
+      import Carbon.ErrorHelpers
+      import Carbon.Gettext
     end
   end
 
@@ -65,10 +65,10 @@ defmodule Galaxy.Web do
     quote do
       use Phoenix.Channel
 
-      alias Galaxy.Repo
+      alias Carbon.Repo
       import Ecto
       import Ecto.Query
-      import Galaxy.Gettext
+      import Carbon.Gettext
     end
   end
 

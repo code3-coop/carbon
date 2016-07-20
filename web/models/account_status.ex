@@ -1,5 +1,5 @@
-defmodule Galaxy.AccountStatus do
-  use Galaxy.Web, :model
+defmodule Carbon.AccountStatus do
+  use Carbon.Web, :model
 
   schema "account_statuses" do
     field :key, :string
@@ -14,7 +14,7 @@ defmodule Galaxy.AccountStatus do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:description])
+    |> cast(params, [:description, :color, :active])
     |> validate_required([:description])
   end
 end

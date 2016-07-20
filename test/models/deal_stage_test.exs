@@ -1,7 +1,7 @@
-defmodule Galaxy.DealStageTest do
-  use Galaxy.ModelCase
+defmodule Carbon.DealStageTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.DealStage
+  alias Carbon.DealStage
 
   @valid_attrs %{active: true, color: "some content", description: "some content"}
   @invalid_attrs %{}

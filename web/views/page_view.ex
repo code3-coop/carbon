@@ -1,3 +1,3 @@
-defmodule Galaxy.PageView do
-  use Galaxy.Web, :view
+defmodule Carbon.PageView do
+  use Carbon.Web, :view
 end

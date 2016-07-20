@@ -1,5 +1,5 @@
-defmodule Galaxy.DealTag do
-  use Galaxy.Web, :model
+defmodule Carbon.DealTag do
+  use Carbon.Web, :model
 
   schema "deal_tags" do
     field :description, :string

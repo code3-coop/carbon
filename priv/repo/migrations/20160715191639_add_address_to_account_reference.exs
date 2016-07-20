@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.AddAddressToAccountReference do
+defmodule Carbon.Repo.Migrations.AddAddressToAccountReference do
   use Ecto.Migration
 
   def change do

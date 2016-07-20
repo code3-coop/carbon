@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.CreateTagJoinTables do
+defmodule Carbon.Repo.Migrations.CreateTagJoinTables do
   use Ecto.Migration
 
   def change do

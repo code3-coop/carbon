@@ -1,5 +1,5 @@
-defmodule Galaxy.EventTag do
-  use Galaxy.Web, :model
+defmodule Carbon.EventTag do
+  use Carbon.Web, :model
 
   schema "event_tags" do
     field :description, :string

@@ -1,7 +1,7 @@
-defmodule Galaxy.DealTagTest do
-  use Galaxy.ModelCase
+defmodule Carbon.DealTagTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.DealTag
+  alias Carbon.DealTag
 
   @valid_attrs %{description: "some content"}
   @invalid_attrs %{}

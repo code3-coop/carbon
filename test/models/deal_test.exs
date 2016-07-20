@@ -1,7 +1,7 @@
-defmodule Galaxy.DealTest do
-  use Galaxy.ModelCase
+defmodule Carbon.DealTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.Deal
+  alias Carbon.Deal
 
   @valid_attrs %{closed_value: "120.5", closing_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, expected_value: "120.5", probability: 42}
   @invalid_attrs %{}

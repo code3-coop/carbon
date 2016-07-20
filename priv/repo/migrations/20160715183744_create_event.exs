@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.CreateEvent do
+defmodule Carbon.Repo.Migrations.CreateEvent do
   use Ecto.Migration
 
   def change do

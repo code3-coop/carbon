@@ -1,3 +1,3 @@
-defmodule Galaxy.PageViewTest do
-  use Galaxy.ConnCase, async: true
+defmodule Carbon.PageViewTest do
+  use Carbon.ConnCase, async: true
 end

@@ -1,7 +1,7 @@
-defmodule Galaxy.ContactTest do
-  use Galaxy.ModelCase
+defmodule Carbon.ContactTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.Contact
+  alias Carbon.Contact
 
   @valid_attrs %{additional_name: "some content", email: "some content", family_name: "some content", gender: 42, given_name: "some content", name: "some content", tel: "some content"}
   @invalid_attrs %{}

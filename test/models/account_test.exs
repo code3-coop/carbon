@@ -1,7 +1,7 @@
-defmodule Galaxy.AccountTest do
-  use Galaxy.ModelCase
+defmodule Carbon.AccountTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.Account
+  alias Carbon.Account
 
   @valid_attrs %{name: "some content"}
   @invalid_attrs %{}

@@ -1,11 +1,11 @@
-defmodule Galaxy.Reminder do
-  use Galaxy.Web, :model
+defmodule Carbon.Reminder do
+  use Carbon.Web, :model
 
   schema "reminders" do
     field :date, Ecto.DateTime
     field :active, :boolean, default: true
 
-    belongs_to :event, Galaxy.Event
+    belongs_to :event, Carbon.Event
 
     timestamps
   end

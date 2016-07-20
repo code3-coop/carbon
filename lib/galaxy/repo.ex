@@ -1,3 +1,3 @@
-defmodule Galaxy.Repo do
-  use Ecto.Repo, otp_app: :galaxy
+defmodule Carbon.Repo do
+  use Ecto.Repo, otp_app: :carbon
 end

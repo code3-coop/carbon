@@ -1,4 +1,4 @@
-defmodule Galaxy.ConnCase do
+defmodule Carbon.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -20,23 +20,23 @@ defmodule Galaxy.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      alias Galaxy.Repo
+      alias Carbon.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
-      import Galaxy.Router.Helpers
+      import Carbon.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Galaxy.Endpoint
+      @endpoint Carbon.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Galaxy.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Carbon.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Galaxy.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Carbon.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

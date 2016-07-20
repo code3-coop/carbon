@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.AddLockColumns do
+defmodule Carbon.Repo.Migrations.AddLockColumns do
   use Ecto.Migration
 
   def change do

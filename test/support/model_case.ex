@@ -1,4 +1,4 @@
-defmodule Galaxy.ModelCase do
+defmodule Carbon.ModelCase do
   @moduledoc """
   This module defines the test case to be used by
   model tests.
@@ -16,20 +16,20 @@ defmodule Galaxy.ModelCase do
 
   using do
     quote do
-      alias Galaxy.Repo
+      alias Carbon.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Galaxy.ModelCase
+      import Carbon.ModelCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Galaxy.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Carbon.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Galaxy.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Carbon.Repo, {:shared, self()})
     end
 
     :ok
@@ -59,7 +59,7 @@ defmodule Galaxy.ModelCase do
   """
   def errors_on(struct, data) do
     struct.__struct__.changeset(struct, data)
-    |> Ecto.Changeset.traverse_errors(&Galaxy.ErrorHelpers.translate_error/1)
+    |> Ecto.Changeset.traverse_errors(&Carbon.ErrorHelpers.translate_error/1)
     |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
   end
 end

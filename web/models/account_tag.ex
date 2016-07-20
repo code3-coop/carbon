@@ -1,5 +1,5 @@
-defmodule Galaxy.AccountTag do
-  use Galaxy.Web, :model
+defmodule Carbon.AccountTag do
+  use Carbon.Web, :model
 
   schema "account_tags" do
     field :description, :string

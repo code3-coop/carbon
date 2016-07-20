@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.CreateAccountStatus do
+defmodule Carbon.Repo.Migrations.CreateAccountStatus do
   use Ecto.Migration
 
   def change do

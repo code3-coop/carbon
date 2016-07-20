@@ -1,5 +1,5 @@
-defmodule Galaxy.Contact do
-  use Galaxy.Web, :model
+defmodule Carbon.Contact do
+  use Carbon.Web, :model
 
   schema "contacts" do
     field :lock_version, :integer, default: 1
@@ -13,8 +13,8 @@ defmodule Galaxy.Contact do
     field :gender, :integer
     field :active, :boolean, default: true
 
-    belongs_to :account, Galaxy.Account
-    many_to_many :tags, Galaxy.ContactTag, join_through: "j_contacts_tags"
+    belongs_to :account, Carbon.Account
+    many_to_many :tags, Carbon.ContactTag, join_through: "j_contacts_tags"
 
     timestamps
   end

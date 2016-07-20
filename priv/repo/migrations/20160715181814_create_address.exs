@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.CreateAddress do
+defmodule Carbon.Repo.Migrations.CreateAddress do
   use Ecto.Migration
 
   def change do

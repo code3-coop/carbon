@@ -1,7 +1,7 @@
-defmodule Galaxy.AddressTest do
-  use Galaxy.ModelCase
+defmodule Carbon.AddressTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.Address
+  alias Carbon.Address
 
   @valid_attrs %{country_name: "some content", extended_address: "some content", locality: "some content", post_office_box: "some content", postal_code: "some content", region: "some content", street_address: "some content"}
   @invalid_attrs %{}

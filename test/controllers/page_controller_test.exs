@@ -1,5 +1,5 @@
-defmodule Galaxy.PageControllerTest do
-  use Galaxy.ConnCase
+defmodule Carbon.PageControllerTest do
+  use Carbon.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

@@ -1,7 +1,7 @@
-defmodule Galaxy.EventTagTest do
-  use Galaxy.ModelCase
+defmodule Carbon.EventTagTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.EventTag
+  alias Carbon.EventTag
 
   @valid_attrs %{description: "some content"}
   @invalid_attrs %{}

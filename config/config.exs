@@ -6,15 +6,15 @@
 use Mix.Config
 
 # General application configuration
-config :galaxy,
-  ecto_repos: [Galaxy.Repo]
+config :carbon,
+  ecto_repos: [Carbon.Repo]
 
 # Configures the endpoint
-config :galaxy, Galaxy.Endpoint,
+config :carbon, Carbon.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "u/SYPEI6LdXu/69/HCC+y9CRZ7byzOkQcbOJwkLEPRsTRnN5Dxc3xldEz3DzkJ+K",
-  render_errors: [view: Galaxy.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Galaxy.PubSub,
+  render_errors: [view: Carbon.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Carbon.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

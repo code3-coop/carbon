@@ -1,7 +1,7 @@
-defmodule Galaxy.AccountStatusController do
-  use Galaxy.Web, :controller
+defmodule Carbon.AccountStatusController do
+  use Carbon.Web, :controller
 
-  alias Galaxy.AccountStatus
+  alias Carbon.AccountStatus
 
   def index(conn, _params) do
     account_statuses = Repo.all(AccountStatus)
@@ -20,7 +20,7 @@ defmodule Galaxy.AccountStatusController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Galaxy.ChangesetView, "error.json", changeset: changeset)
+        |> render(Carbon.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -39,7 +39,7 @@ defmodule Galaxy.AccountStatusController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Galaxy.ChangesetView, "error.json", changeset: changeset)
+        |> render(Carbon.ChangesetView, "error.json", changeset: changeset)
     end
   end
 

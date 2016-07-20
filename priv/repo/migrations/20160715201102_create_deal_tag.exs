@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.CreateDealTag do
+defmodule Carbon.Repo.Migrations.CreateDealTag do
   use Ecto.Migration
 
   def change do

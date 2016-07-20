@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.RenameJoinTables do
+defmodule Carbon.Repo.Migrations.RenameJoinTables do
   use Ecto.Migration
 
   def change do

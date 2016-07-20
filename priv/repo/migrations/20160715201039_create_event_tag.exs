@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.CreateEventTag do
+defmodule Carbon.Repo.Migrations.CreateEventTag do
   use Ecto.Migration
 
   def change do

@@ -1,5 +1,5 @@
-defmodule Galaxy.ContactTag do
-  use Galaxy.Web, :model
+defmodule Carbon.ContactTag do
+  use Carbon.Web, :model
 
   schema "contact_tags" do
     field :description, :string

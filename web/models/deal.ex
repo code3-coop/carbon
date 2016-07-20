@@ -1,5 +1,5 @@
-defmodule Galaxy.Deal do
-  use Galaxy.Web, :model
+defmodule Carbon.Deal do
+  use Carbon.Web, :model
 
   schema "deals" do
     field :lock_version, :integer, default: 1
@@ -10,8 +10,8 @@ defmodule Galaxy.Deal do
     field :closed_value, :float
     field :active, :boolean, default: true
 
-    belongs_to :account, Galaxy.Account
-    many_to_many :tags, Galaxy.DealTag, join_through: "j_deals_tags"
+    belongs_to :account, Carbon.Account
+    many_to_many :tags, Carbon.DealTag, join_through: "j_deals_tags"
 
     timestamps
   end

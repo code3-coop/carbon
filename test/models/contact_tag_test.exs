@@ -1,7 +1,7 @@
-defmodule Galaxy.ContactTagTest do
-  use Galaxy.ModelCase
+defmodule Carbon.ContactTagTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.ContactTag
+  alias Carbon.ContactTag
 
   @valid_attrs %{description: "some content"}
   @invalid_attrs %{}

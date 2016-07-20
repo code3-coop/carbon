@@ -1,12 +1,12 @@
-defmodule Galaxy.DealStageView do
-  use Galaxy.Web, :view
+defmodule Carbon.DealStageView do
+  use Carbon.Web, :view
 
   def render("index.json", %{deal_stages: deal_stages}) do
-    %{data: render_many(deal_stages, Galaxy.DealStageView, "deal_stage.json")}
+    %{data: render_many(deal_stages, Carbon.DealStageView, "deal_stage.json")}
   end
 
   def render("show.json", %{deal_stage: deal_stage}) do
-    %{data: render_one(deal_stage, Galaxy.DealStageView, "deal_stage.json")}
+    %{data: render_one(deal_stage, Carbon.DealStageView, "deal_stage.json")}
   end
 
   def render("deal_stage.json", %{deal_stage: deal_stage}) do

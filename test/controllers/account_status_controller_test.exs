@@ -1,7 +1,7 @@
-defmodule Galaxy.AccountStatusControllerTest do
-  use Galaxy.ConnCase
+defmodule Carbon.AccountStatusControllerTest do
+  use Carbon.ConnCase
 
-  alias Galaxy.AccountStatus
+  alias Carbon.AccountStatus
   @valid_attrs %{}
   @invalid_attrs %{}
 

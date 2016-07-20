@@ -1,4 +1,4 @@
-defmodule Galaxy.ChannelCase do
+defmodule Carbon.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -20,22 +20,22 @@ defmodule Galaxy.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      alias Galaxy.Repo
+      alias Carbon.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
 
       # The default endpoint for testing
-      @endpoint Galaxy.Endpoint
+      @endpoint Carbon.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Galaxy.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Carbon.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Galaxy.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Carbon.Repo, {:shared, self()})
     end
 
     :ok

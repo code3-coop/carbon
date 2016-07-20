@@ -1,7 +1,7 @@
-defmodule Galaxy.ReminderTest do
-  use Galaxy.ModelCase
+defmodule Carbon.ReminderTest do
+  use Carbon.ModelCase
 
-  alias Galaxy.Reminder
+  alias Carbon.Reminder
 
   @valid_attrs %{date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}}
   @invalid_attrs %{}

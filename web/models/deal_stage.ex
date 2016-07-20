@@ -1,5 +1,5 @@
-defmodule Galaxy.DealStage do
-  use Galaxy.Web, :model
+defmodule Carbon.DealStage do
+  use Carbon.Web, :model
 
   schema "deal_stages" do
     field :key, :string
@@ -15,6 +15,6 @@ defmodule Galaxy.DealStage do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:description, :color, :active])
-    |> validate_required([:description, :color, :active])
+    |> validate_required([:description])
   end
 end

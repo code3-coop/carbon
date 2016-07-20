@@ -1,4 +1,4 @@
-defmodule Galaxy.Repo.Migrations.CreateReminder do
+defmodule Carbon.Repo.Migrations.CreateReminder do
   use Ecto.Migration
 
   def change do

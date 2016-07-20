@@ -1,4 +1,4 @@
-# Galaxy
+# Carbon
 
 To start your Phoenix app:
 

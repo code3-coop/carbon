@@ -1,4 +1,4 @@
-defmodule Galaxy.ErrorHelpers do
+defmodule Carbon.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -32,9 +32,9 @@ defmodule Galaxy.ErrorHelpers do
     #     dgettext "errors", "is invalid"
     #
     if count = opts[:count] do
-      Gettext.dngettext(Galaxy.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(Carbon.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(Galaxy.Gettext, "errors", msg, opts)
+      Gettext.dgettext(Carbon.Gettext, "errors", msg, opts)
     end
   end
 end

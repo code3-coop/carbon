@@ -1,5 +1,5 @@
-defmodule Galaxy.ErrorView do
-  use Galaxy.Web, :view
+defmodule Carbon.ErrorView do
+  use Carbon.Web, :view
 
   def render("404.html", _assigns) do
     "Page not found"

@@ -1,7 +1,7 @@
-defmodule Galaxy.DealStageController do
-  use Galaxy.Web, :controller
+defmodule Carbon.DealStageController do
+  use Carbon.Web, :controller
 
-  alias Galaxy.DealStage
+  alias Carbon.DealStage
 
   def index(conn, _params) do
     deal_stages = Repo.all(DealStage)
@@ -20,7 +20,7 @@ defmodule Galaxy.DealStageController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Galaxy.ChangesetView, "error.json", changeset: changeset)
+        |> render(Carbon.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -39,7 +39,7 @@ defmodule Galaxy.DealStageController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(Galaxy.ChangesetView, "error.json", changeset: changeset)
+        |> render(Carbon.ChangesetView, "error.json", changeset: changeset)
     end
   end
 

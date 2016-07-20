@@ -1,14 +1,14 @@
-defmodule Galaxy.Event do
-  use Galaxy.Web, :model
+defmodule Carbon.Event do
+  use Carbon.Web, :model
 
   schema "events" do
     field :description, :string
     field :date, Ecto.DateTime
     field :active, :boolean, default: true
 
-    belongs_to :account, Galaxy.Account
-    has_many :reminders, Galaxy.Reminder
-    many_to_many :tags, Galaxy.EventTag, join_through: "j_events_tags"
+    belongs_to :account, Carbon.Account
+    has_many :reminders, Carbon.Reminder
+    many_to_many :tags, Carbon.EventTag, join_through: "j_events_tags"
 
     timestamps
   end

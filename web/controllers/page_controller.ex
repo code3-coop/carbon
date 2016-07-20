@@ -1,5 +1,5 @@
-defmodule Galaxy.PageController do
-  use Galaxy.Web, :controller
+defmodule Carbon.PageController do
+  use Carbon.Web, :controller
 
   def index(conn, _params) do
     render conn, "index.html"
