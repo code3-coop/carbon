@@ -3,7 +3,7 @@ defmodule Carbon.AccountStatusTest do
 
   alias Carbon.AccountStatus
 
-  @valid_attrs %{description: "some content"}
+  @valid_attrs %{key: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

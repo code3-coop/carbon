@@ -14,7 +14,7 @@ defmodule Carbon.DealStage do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:description, :color, :active])
-    |> validate_required([:description])
+    |> cast(params, [:key, :color, :active])
+    |> validate_required([:key])
   end
 end

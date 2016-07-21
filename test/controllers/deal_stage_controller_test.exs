@@ -2,7 +2,7 @@ defmodule Carbon.DealStageControllerTest do
   use Carbon.ConnCase
 
   alias Carbon.DealStage
-  @valid_attrs %{}
+  @valid_attrs %{key: "some content"}
   @invalid_attrs %{}
 
   setup %{conn: conn} do
@@ -17,7 +17,7 @@ defmodule Carbon.DealStageControllerTest do
   test "shows chosen resource", %{conn: conn} do
     deal_stage = Repo.insert! %DealStage{}
     conn = get conn, deal_stage_path(conn, :show, deal_stage)
-    assert json_response(conn, 200)["data"] == %{"id" => deal_stage.id}
+    assert json_response(conn, 200)["data"] == %{"id" => deal_stage.id, "active" => true, "color" => nil, "key" => nil}
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do

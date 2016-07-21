@@ -2,7 +2,7 @@ defmodule Carbon.AccountStatusControllerTest do
   use Carbon.ConnCase
 
   alias Carbon.AccountStatus
-  @valid_attrs %{}
+  @valid_attrs %{key: "some content"}
   @invalid_attrs %{}
 
   setup %{conn: conn} do
@@ -17,7 +17,7 @@ defmodule Carbon.AccountStatusControllerTest do
   test "shows chosen resource", %{conn: conn} do
     account_status = Repo.insert! %AccountStatus{}
     conn = get conn, account_status_path(conn, :show, account_status)
-    assert json_response(conn, 200)["data"] == %{"id" => account_status.id}
+    assert json_response(conn, 200)["data"] == %{"id" => account_status.id, "active" => true, "color" => nil, "key" => nil}
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do

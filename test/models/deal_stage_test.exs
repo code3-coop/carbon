@@ -3,7 +3,7 @@ defmodule Carbon.DealStageTest do
 
   alias Carbon.DealStage
 
-  @valid_attrs %{active: true, color: "some content", description: "some content"}
+  @valid_attrs %{active: true, color: "some content", key: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
