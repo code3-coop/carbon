@@ -21,8 +21,5 @@ defmodule Carbon.Router do
 
   scope "/api", Carbon do
     pipe_through :api
-
-    resources "/account_statuses", AccountStatusController, except: [:new, :edit]
-    resources "/deal_stages", DealStageController, except: [:new, :edit]
   end
 end
