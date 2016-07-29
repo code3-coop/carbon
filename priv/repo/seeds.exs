@@ -10,7 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Carbon.{Repo, AccountStatus, Account, Contact, Address}
+alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event}
 
 lead_status = Repo.insert!(%AccountStatus{key: "lead"})
 customer_status = Repo.insert!(%AccountStatus{key: "customer"})
@@ -22,6 +22,16 @@ account_b = Repo.insert!(%Account{name: "Account B", status: customer_status})
 contact_a = Repo.insert!(%Contact{name: "Contact A", given_name: "Contact", family_name: "A", email: "contact.a@company.a.com", tel: "+1 123-123-1234", account: account_a})
 contact_b = Repo.insert!(%Contact{name: "Contact B", given_name: "Contact", family_name: "B", email: "contact.b@company.b.com", tel: "+1 123-123-1234", account: account_b})
 
-billing_address_a = Repo.insert! %Address{street_address: "1 A Street", locality: "City A", region: "RA", country_name: "CA", account: account_a}
-billing_address_b = Repo.insert! %Address{street_address: "1 B Street", locality: "City B", region: "RB", country_name: "CB", account: account_b}
+billing_address_a = Repo.insert! %Address{street_address: "1 Billing Street", locality: "City A", region: "RA", country_name: "CA", account: account_a}
+billing_address_b = Repo.insert! %Address{street_address: "1 Billing Street", locality: "City B", region: "RB", country_name: "CB", account: account_b}
+
+shipping_address_a = Repo.insert! %Address{street_address: "1 Shipping Street", locality: "City A", region: "RA", country_name: "CA", account: account_a}
+shipping_address_b = Repo.insert! %Address{street_address: "1 Shipping Street", locality: "City B", region: "RB", country_name: "CB", account: account_b}
+
+Repo.insert! %Event{description: "1st meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_a}
+Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_a}
+
+Repo.insert! %Event{description: "1st meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b}
+Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b}
+
 
