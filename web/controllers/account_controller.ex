@@ -9,7 +9,7 @@ defmodule Carbon.AccountController do
       order_by: a.name,
       limit: ^min(Map.get(params, "limit", 25), 25),
       offset: ^Map.get(params, "offset", 0),
-      preload: [:contacts, :billing_address]
+      preload: [contacts: c, billing_address: b]
     render(conn, "index.html", accounts: Repo.all(query))
   end
 
@@ -32,7 +32,29 @@ defmodule Carbon.AccountController do
   end
 
   def show(conn, %{"id" => id}) do
-    account = Repo.get!(Account, id)
+    query = from a in Account,
+      where: a.id == ^id,
+      join: s in assoc(a, :status),
+      left_join: ba in assoc(a, :billing_address),
+      left_join: sa in assoc(a, :shipping_address),
+      left_join: e in assoc(a, :events),
+      left_join: r in assoc(e, :reminders),
+      left_join: et in assoc(e, :tags),
+      left_join: d in assoc(a, :deals),
+      left_join: dt in assoc(d, :tags),
+      left_join: c in assoc(a, :contacts),
+      left_join: ct in assoc(c, :tags),
+      left_join: t in assoc(a, :tags),
+      preload: [
+        status: s,
+        billing_address: ba,
+        shipping_address: sa,
+        events: {e, reminders: r, tags: et},
+        deals: {d, tags: dt},
+        contacts: {c, tags: ct},
+        tags: t
+      ]
+    account = Repo.one(query)
     render(conn, "show.html", account: account)
   end
 

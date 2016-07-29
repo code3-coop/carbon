@@ -1,5 +1,12 @@
 <h2>Show account</h2>
 
+<%= @account.name %>
+<br></br>
+<%= @account.status.key %>
+<br></br>
+<%= for e <- @account.events do %>
+  <p><%= e.description %></p>
+<% end %>
 <ul>
 
 </ul>
