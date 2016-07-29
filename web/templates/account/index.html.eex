@@ -1,0 +1,30 @@
+<div class="ui grid container">
+  <div class="sixteen wide column">
+    <h2>Listing accounts</h2>
+  </div>
+  <div class="sixteen wide column">
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+    <%= for account <- @accounts do %>
+        <tr>
+          <td><%= account.name %></td>
+          <td class="text-right">
+            <%= link "Show", to: account_path(@conn, :show, account), class: "btn btn-default btn-xs" %>
+            <%= link "Edit", to: account_path(@conn, :edit, account), class: "btn btn-default btn-xs" %>
+            <%= link "Delete", to: account_path(@conn, :delete, account), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+          </td>
+        </tr>
+    <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<%= link "New account", to: account_path(@conn, :new) %>

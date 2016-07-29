@@ -1,0 +1,8 @@
+<h2>Show account</h2>
+
+<ul>
+
+</ul>
+
+<%= link "Edit", to: account_path(@conn, :edit, @account) %>
+<%= link "Back", to: account_path(@conn, :index) %>
