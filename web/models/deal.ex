@@ -4,6 +4,7 @@ defmodule Carbon.Deal do
   schema "deals" do
     field :lock_version, :integer, default: 1
 
+    field :description, :string
     field :expected_value, :float
     field :probability, :integer
     field :closing_date, Ecto.DateTime
