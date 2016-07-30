@@ -41,6 +41,7 @@ defmodule Carbon.Repo.Migrations.CreateUserTable do
     create table :login_tokens do
       add :user_id, references(:users)
       add :token, :string, null: false
+      add :type, :string, null: false
 
       timestamps
     end
