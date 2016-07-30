@@ -8,8 +8,7 @@ defmodule Carbon.AccountController do
       where: a.active == true,
       order_by: a.name,
       limit: ^min(Map.get(params, "limit", 25), 25),
-      offset: ^Map.get(params, "offset", 0),
-      preload: [contacts: c, billing_address: b]
+      offset: ^Map.get(params, "offset", 0)
     render(conn, "index.html", accounts: Repo.all(query))
   end
 
