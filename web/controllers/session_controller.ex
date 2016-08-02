@@ -26,8 +26,7 @@ defmodule Carbon.SessionController do
       nil ->
         render(conn, "register_new_user.html", email: email)
       user ->
-        token = Phoenix.Token.sign(Carbon.Endpoint, @carbon_token_name, user.id)
-        Carbon.Mailer.send_login_link(email, token)
+        Carbon.Mailer.send_login_link(email, Phoenix.Token.sign(Carbon.Endpoint, @carbon_token_name, user.id))
         render(conn, "email_sent.html")
     end
   end
