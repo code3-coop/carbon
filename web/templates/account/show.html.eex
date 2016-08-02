@@ -38,8 +38,8 @@
       <div class="column">
         Tags:
         <%= for tag <- @account.tags do %>
-          <a class="ui tag label">
-            <%= tag.key %>
+          <a class="ui tag label <%= tag.color %>">
+            <%= tag.description %>
             <i class="icon close"></i>
           </a>
         <%= end %>
