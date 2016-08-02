@@ -11,6 +11,8 @@ defmodule Carbon.SessionPlug do
   pass-through. Otherwise, halt and redirect to the login page.
   """
 
+  @one_week_in_sec 7*24*60*60
+
   def init(opts), do: opts
 
   def call(conn, _opts) do
@@ -30,7 +32,7 @@ defmodule Carbon.SessionPlug do
   defp maybe_assign_user_from_token(conn) do
     token_name = SessionController.carbon_token_name
     with {:ok, token} <- Map.fetch(conn.cookies, token_name),
-         {:ok, user_id} <- Phoenix.Token.verify(Carbon.Endpoint, token_name, token, max_age: 7*24*60*60) do
+         {:ok, user_id} <- Phoenix.Token.verify(Carbon.Endpoint, token_name, token, max_age: @one_week_in_sec) do
       conn
       |> assign(:current_user, Repo.get!(User, user_id))
       |> put_session(:current_user_id, user_id)
