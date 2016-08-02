@@ -2,6 +2,7 @@ defmodule Carbon.AccountController do
   use Carbon.Web, :controller
 
   alias Carbon.Account
+  alias Carbon.AccountStatus
 
   def index(conn, params) do
     query = from a in Account,
@@ -9,13 +10,17 @@ defmodule Carbon.AccountController do
       order_by: a.name,
       limit: ^min(Map.get(params, "limit", 25), 25),
       offset: ^Map.get(params, "offset", 0),
+      left_join: c in assoc(a, :contacts),
+      left_join: b in assoc(a, :billing_address),
       preload: [contacts: c, billing_address: b]
     render(conn, "index.html", accounts: Repo.all(query))
   end
 
   def new(conn, _params) do
     changeset = Account.changeset(%Account{})
-    render(conn, "new.html", changeset: changeset)
+    conn
+    |> assign(:changeset, changeset)
+    |> render("new.html")
   end
 
   def create(conn, %{"account" => account_params}) do

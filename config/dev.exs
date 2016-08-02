@@ -11,7 +11,7 @@ config :carbon, Carbon.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: []
+  watchers: [node: ["node_modules/webpack/bin/webpack.js", "--watch", "--color", cd: Path.expand("../", __DIR__)]]
 
 
 # Watch static and templates for browser reloading.

@@ -15,4 +15,5 @@ erl_crash.dump
 # variables.
 /config/prod.secret.exs
 
+/priv/static
 .mix_tasks

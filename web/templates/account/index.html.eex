@@ -1,30 +1,43 @@
+
 <div class="ui grid container">
   <div class="sixteen wide column">
     <h2>Listing accounts</h2>
   </div>
   <div class="sixteen wide column">
-    <table class="ui celled table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th></th>
-        </tr>
-      </thead>
+    <div class="ui search full-width">
+      <div class="ui icon input full-width">
+        <input class="prompt full-width" type="text" placeholder="Account..."/>
+        <i class="search icon"></i>
+      </div>
+    </div>
+    <table class="ui segment table">
       <tbody>
-    <%= for account <- @accounts do %>
-        <tr>
-          <td><%= account.name %></td>
-          <td class="text-right">
-            <%= link "Show", to: account_path(@conn, :show, account), class: "btn btn-default btn-xs" %>
-            <%= link "Edit", to: account_path(@conn, :edit, account), class: "btn btn-default btn-xs" %>
-            <%= link "Delete", to: account_path(@conn, :delete, account), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-          </td>
-        </tr>
-    <% end %>
+        <%= for account <- @accounts do %>
+          <tr>
+            <td>
+              <%= link account.name, to: account_path(@conn, :show, account) %>
+            </td>
+            <td>
+              <%= for contact <- account.contacts do %>
+                <%= contact.name%> <%= contact.given_name%>
+              <%= end %>
+            </td>
+            <td>
+              <%#Show list of deal names%>
+            </td>
+            <td>
+              <%= if account.billing_address do account.billing_address.street_address end%>
+              <%= if account.billing_address do account.billing_address.extended_address end%>
+            </td>
+            <td>Matched on: </td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
 </div>
 
-
-<%= link "New account", to: account_path(@conn, :new) %>
+<p class="center">Didn't found the account you were looking for
+  <%= link "create the account", to: account_path(@conn, :new) %>
+</p>
+<script src="<%= static_path(@conn, "/js/account_list.js") %>"></script>

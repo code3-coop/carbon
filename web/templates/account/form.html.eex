@@ -4,8 +4,13 @@
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
-
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+  <div class="ui container">
+    <div class="ui form">
+      <div class="field required">
+        <label>Name</label>
+        <%= text_input f, :name %>
+      </div>
+      <%= submit "Submit", class: "ui button" %>
+    </div>
   </div>
 <% end %>
