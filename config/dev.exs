@@ -40,3 +40,6 @@ config :carbon, Carbon.Repo,
   database: "carbon_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :carbon, Carbon.Mailer,
+  adapter: Bamboo.LocalAdapter

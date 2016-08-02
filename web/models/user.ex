@@ -8,6 +8,7 @@ defmodule Carbon.User do
     field :handle, :string
     field :name, :string
     field :title, :string
+    field :email, :string, virtual: true
     field :email_hash, :string
 
     many_to_many :roles, Carbon.Role, join_through: "j_users_roles"
@@ -15,12 +16,8 @@ defmodule Carbon.User do
     timestamps
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
-  def changeset(struct, params \\ %{}) do
+  def login_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
-    |> validate_required([])
+    |> cast(params, [:email])
   end
 end
