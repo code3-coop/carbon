@@ -1,15 +1,85 @@
-<h2>Show account</h2>
+<div class="ui container">
 
-<%= @account.name %>
-<br></br>
-<%= @account.status.key %>
-<br></br>
-<%= for e <- @account.events do %>
-  <p><%= e.description %></p>
-<% end %>
-<ul>
+  <h1><%= @account.name %></h1>
+  Status: <%= @account.status.key %>
+  
+  <div class="ui grid">
+    <div class="row"> 
+      <div class="column">
+        Contacts:
+        <%=for contact <- @account.contacts do %>
+            <%= contact.name %>  <%= contact.given_name%>
+        <%= end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        Billing address: 
+        <div id="billing_address_display" class="ui segment">
+          <p>
+            <%= @account.billing_address.street_address %>
+            <%= @account.billing_address.extended_address %>
+            <%= @account.billing_address.locality %>
+            <%= @account.billing_address.postal_code %>
+          </p>
+        </div>
+        <div id="billing_address_edit" class="ui segment">
+          <p>
+            <%= @account.billing_address.street_address %>
+            <%= @account.billing_address.extended_address %>
+            <%= @account.billing_address.locality %>
+            <%= @account.billing_address.postal_code %>
+            
+          </p>
+        </div>      
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        Tags:
+        <%= for tag <- @account.tags do %>
+          <a class="ui tag label">
+            <%= tag.key %>
+            <i class="icon close"></i>
+          </a>
+        <%= end %>
+      
+        <div id="account_add_tag" class="ui label">
+          Add tag
+          <i class="add icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h1>Events</h1>
+  
+  <div class="ui relaxed divided list">
+    <%= for event <- @account.events do %>
+      <div class="item">
+        <div>
+          <%= event.date %>
+          <%= for tag <- event.tags do %>
+            <%= tag.key %>
+          <%= end %>
+        </div>
+        <%=event.description %>
+      </div>
+    <% end %>
+  </div>
 
-</ul>
+  <h1>Deals</h1>
 
-<%= link "Edit", to: account_path(@conn, :edit, @account) %>
-<%= link "Back", to: account_path(@conn, :index) %>
+  <ul>
+    <%= if Enum.empty?(@account.deals) do %>
+      Ain't got no Deals, cowboy !!
+    <%= end %>
+    <%= for deal <- @account.deals do %>
+    <% end %>
+  </ul>
+
+  <%= link "Edit", to: account_path(@conn, :edit, @account) %>
+  <%= link "Back", to: account_path(@conn, :index) %>
+
+</div>
+<script src="<%= static_path(@conn, "/js/account_show.js") %>"></script>
+

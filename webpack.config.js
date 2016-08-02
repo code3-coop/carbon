@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     account_create: "./web/static/js/account_create.js",
     account_list: "./web/static/js/account_list.js",
+    account_show: "./web/static/js/account_show.js",
   },
   output: {
     path: "./priv/static/js",

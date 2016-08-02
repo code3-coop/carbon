@@ -1,0 +1,4 @@
+<h1>Please log in</h1>
+<%= form_for @changeset, session_path(@conn, :create_and_send_session_link), fn f -> %>
+  <label>Email: <%= text_input f, :email %></label>
+<% end %>

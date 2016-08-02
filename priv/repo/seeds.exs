@@ -10,7 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event}
+alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event, User, LoginToken}
 
 lead_status = Repo.insert!(%AccountStatus{key: "lead"})
 customer_status = Repo.insert!(%AccountStatus{key: "customer"})
@@ -34,4 +34,9 @@ Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:ca
 Repo.insert! %Event{description: "1st meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b}
 Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b}
 
-
+joe = Repo.insert! %User{
+  handle: "joe",
+  name: "Joe",
+  title: "Awesome",
+  email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase)
+}

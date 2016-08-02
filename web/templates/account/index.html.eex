@@ -1,4 +1,6 @@
 
+<%= @conn.assigns[:current_user].name %>
+
 <div class="ui grid container">
   <div class="sixteen wide column">
     <h2>Listing accounts</h2>
