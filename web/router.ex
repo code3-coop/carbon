@@ -10,7 +10,7 @@ defmodule Carbon.Router do
   end
 
   pipeline :auth do
-    plug Carbon.SessionPlug, repo: Carbon.Repo
+    plug Carbon.SessionPlug
   end
 
   pipeline :api do
