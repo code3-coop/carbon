@@ -1,52 +1,64 @@
 <div class="ui container">
 
-  <h1><%= @account.name %></h1>
-  Status: <%= @account.status.key %>
+  <h1 class="ui header">
+    <%= @account.name %>
+    <div class="ui label <%=@account.status.color%>">
+      <%= @account.status.key %>
+    </div>
+    <button class="right floated ui button">
+      <i class="ui icon edit"></i>Edit
+    </button>
+  </h1>
   
   <div class="ui grid">
-    <div class="row"> 
-      <div class="column">
-        Contacts:
-        <%=for contact <- @account.contacts do %>
-            <%= contact.name %>  <%= contact.given_name%>
-        <%= end %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="column">
-        Billing address: 
-        <div id="billing_address_display" class="ui segment">
-          <p>
-            <%= @account.billing_address.street_address %>
-            <%= @account.billing_address.extended_address %>
-            <%= @account.billing_address.locality %>
-            <%= @account.billing_address.postal_code %>
-          </p>
-        </div>
-        <div id="billing_address_edit" class="ui segment">
-          <p>
-            <%= @account.billing_address.street_address %>
-            <%= @account.billing_address.extended_address %>
-            <%= @account.billing_address.locality %>
-            <%= @account.billing_address.postal_code %>
-            
-          </p>
-        </div>      
-      </div>
-    </div>
     <div class="row">
       <div class="column">
         Tags:
         <%= for tag <- @account.tags do %>
-          <a class="ui tag label <%= tag.color %>">
+          <div class="ui tag label <%= tag.color%>">
             <%= tag.description %>
-            <i class="icon close"></i>
-          </a>
+          </div>
         <%= end %>
       
-        <div id="account_add_tag" class="ui label">
-          Add tag
-          <i class="add icon"></i>
+      </div>
+    </div>
+
+    <div class="row"> 
+      <div class="column">
+        <%=for contact <- @account.contacts do %>
+            <h4 class="ui header">
+              <%= contact.name %>  <%= contact.given_name%>
+            </h4>
+            <%= contact.email%> <% contact.tel %>
+        <%= end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="eight wide column">
+        Billing address 
+        <div class="ui segment">
+          <address>
+            <%= @account.billing_address.street_address %>
+            <%= @account.billing_address.extended_address %>
+            <%= @account.billing_address.locality %>
+            <%= @account.billing_address.postal_code %>
+            <%= @account.billing_address.region %>
+            <%= @account.billing_address.country_name %>
+          </address>
+        </div>
+      </div>
+      <div class="eight wide column">
+        Shipping address 
+        <div class="ui segment">
+          <address>
+            <%= @account.shipping_address.street_address %>
+            <%= @account.shipping_address.extended_address %>
+            <%= @account.shipping_address.locality %>
+            <%= @account.shipping_address.postal_code %>
+            <%= @account.shipping_address.region %>
+            <%= @account.shipping_address.country_name %>
+          </address>
         </div>
       </div>
     </div>
@@ -65,16 +77,27 @@
         <%=event.description %>
       </div>
     <% end %>
+    <center>
+      <%= if Enum.empty?(@account.events) do %>
+        Nothing interesting happend, ever !!
+      <% else %>
+        <%= link "Complete list of events", to: account_path(@conn, :event_list, @account) %>
+      <% end %> 
+    </center>
   </div>
 
   <h1>Deals</h1>
 
   <ul>
-    <%= if Enum.empty?(@account.deals) do %>
-      Ain't got no Deals, cowboy !!
-    <%= end %>
     <%= for deal <- @account.deals do %>
     <% end %>
+    <center>
+      <%= if Enum.empty?(@account.deals) do %>
+        Ain't got no Deals, cowboy !!
+      <%= end %>
+
+    </center>
+    
   </ul>
 
   <%= link "Edit", to: account_path(@conn, :edit, @account) %>

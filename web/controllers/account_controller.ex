@@ -94,4 +94,7 @@ defmodule Carbon.AccountController do
     |> put_flash(:info, "Account deleted successfully.")
     |> redirect(to: account_path(conn, :index))
   end
+
+  def event_list(conn, %{"id" => id}) do
+  end
 end
