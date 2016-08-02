@@ -10,15 +10,15 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event, User, LoginToken, AccountTag}
+alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event, User, AccountTag}
 
 lead_status = Repo.insert!(%AccountStatus{key: "lead"})
 customer_status = Repo.insert!(%AccountStatus{key: "customer"})
 former_customer_status = Repo.insert!(%AccountStatus{key: "former_customer"})
 
-slow_payor = Repo.insert!(%AccountTag{description: "slow_payor", color: "red"})
+slow_payer = Repo.insert!(%AccountTag{description: "slow_payer", color: "red"})
 
-account_a = Repo.insert!(%Account{name: "Account A", status: customer_status, tags: [slow_payor]})
+account_a = Repo.insert!(%Account{name: "Account A", status: customer_status, tags: [slow_payer]})
 account_b = Repo.insert!(%Account{name: "Account B", status: customer_status})
 
 contact_a = Repo.insert!(%Contact{name: "Contact A", given_name: "Contact", family_name: "A", email: "contact.a@company.a.com", tel: "+1 123-123-1234", account: account_a})
