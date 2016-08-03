@@ -70,13 +70,26 @@
   <div class="ui relaxed divided list">
     <%= for event <- @account.events do %>
       <div class="item">
-        <div>
+        <div class="tiny">
           <%= event.date %>
           <%= for tag <- event.tags do %>
-            <%= tag.key %>
+            <div class="label <%=tag.color%>">
+              <%= tag.key %>
+            </div>
           <%= end %>
         </div>
         <%=event.description %>
+        <%= unless Enum.empty?(event.reminders) do %>
+          <div>
+            Reminder on: 
+            <ul>
+              <%= for reminder <- event.reminders do %>
+                <li>reminder.date</li>
+              <%= end %>
+            </ul>
+          </div>
+        <%= end %>
+        
       </div>
     <% end %>
     <center>
