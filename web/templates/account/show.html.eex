@@ -5,9 +5,11 @@
     <div class="ui label <%=@account.status.color%>">
       <%= @account.status.key %>
     </div>
-    <button class="right floated ui button">
-      <i class="ui icon edit"></i>Edit
-    </button>
+    <a href="<%= account_path @conn, :edit, @account.id%>">
+      <button class="right floated ui button">
+        <i class="ui icon edit"></i>Edit
+      </button>
+    </a>
   </h1>
   
   <div class="ui grid">
