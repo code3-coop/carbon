@@ -45,7 +45,9 @@ We don't want to add find-grained, business-specific, details.
 
 To start your Carbon:
 
-* Install Elixir
+* Install Elixir with `brew install elixir`
+* Install Node with `curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.4/install.sh | bash`
+* Install node dependency `npm install`
 * Install dependencies with `mix deps.get`
 * Create and migrate your database with `mix ecto.setup`
 * Start Phoenix endpoint with `mix phoenix.server`
