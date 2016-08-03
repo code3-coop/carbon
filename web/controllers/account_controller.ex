@@ -23,13 +23,13 @@ defmodule Carbon.AccountController do
   end
 
   def create(conn, %{"account" => account_params}) do
-    changeset = Account.changeset(%Account{}, account_params)
+    changeset = Account.changeset(%Account{owner: conn.assigns[:current_user]}, account_params)
 
     case Repo.insert(changeset) do
-      {:ok, _account} ->
+      {:ok, account} ->
         conn
         |> put_flash(:info, "Account created successfully.")
-        |> redirect(to: account_path(conn, :index))
+        |> redirect(to: account_path(conn, :show, account.id))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
