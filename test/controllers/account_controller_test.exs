@@ -2,8 +2,6 @@ defmodule Carbon.AccountControllerTest do
   use Carbon.ConnCase
 
   alias Carbon.Account
-  @valid_attrs %{}
-  @invalid_attrs %{}
 
   setup do
     joe = Repo.insert! %Carbon.User{handle: "joe", email_hash: "joe"}
@@ -26,7 +24,7 @@ defmodule Carbon.AccountControllerTest do
     assert account.owner_id == joe.id
     assert account.status_id != nil
     assert account.status.key == customer.key
-    assert Enum.at(account.contacts, 0).full_name == "test contact 1"
+    assert (hd account.contacts).full_name == "test contact 1"
     assert redirected_to(conn) == account_path(conn, :show, account.id)
   end
 

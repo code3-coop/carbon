@@ -24,7 +24,7 @@ defmodule Carbon.Account do
   """
   def create_changeset(account, params \\ %{}) do
     account
-    |> cast(params, [:name, :status_id])
+    |> cast(params, [:name, :status_id, :owner_id])
     |> cast_assoc(:contacts, required: true)
     |> validate_required(:name)
     |> validate_length(:name, min: 1)
