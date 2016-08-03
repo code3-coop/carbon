@@ -37,6 +37,7 @@ defmodule Carbon.AccountController do
   end
 
   def show(conn, %{"id" => id}) do
+    current_user = conn.assigns[:current_user]
     query = from a in Account,
       where: a.id == ^id,
       join: s in assoc(a, :status),
@@ -44,7 +45,7 @@ defmodule Carbon.AccountController do
       left_join: ba in assoc(a, :billing_address),
       left_join: sa in assoc(a, :shipping_address),
       left_join: e in assoc(a, :events),
-      left_join: r in assoc(e, :reminders),
+      left_join: r in Carbon.Reminder, on: r.event_id == e.id and r.user_id == ^current_user.id,
       left_join: et in assoc(e, :tags),
       left_join: d in assoc(a, :deals),
       left_join: dt in assoc(d, :tags),

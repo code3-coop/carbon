@@ -6,6 +6,7 @@ defmodule Carbon.Reminder do
     field :active, :boolean, default: true
 
     belongs_to :event, Carbon.Event
+    belongs_to :user, Carbon.User
 
     timestamps
   end
