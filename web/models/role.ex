@@ -14,9 +14,9 @@ defmodule Carbon.Role do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, [])
-    |> validate_required([])
+  def changeset(role, params \\ %{}) do
+    role
+    |> cast(params, [:key, :description, :active])
+    |> validate_required([:key, :description])
   end
 end

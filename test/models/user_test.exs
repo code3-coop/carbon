@@ -3,7 +3,7 @@ defmodule Carbon.UserTest do
 
   alias Carbon.User
 
-  @valid_attrs %{}
+  @valid_attrs %{"name" => "Joe", "handle" => "joe"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

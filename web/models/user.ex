@@ -16,6 +16,12 @@ defmodule Carbon.User do
     timestamps
   end
 
+  def changeset(user, params \\ %{}) do
+    user
+    |> cast(params, [:name, :handle, :title, :email])
+    |> validate_required([:name, :handle])
+  end
+
   def login_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:email])

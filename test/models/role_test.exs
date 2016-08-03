@@ -3,7 +3,7 @@ defmodule Carbon.RoleTest do
 
   alias Carbon.Role
 
-  @valid_attrs %{}
+  @valid_attrs %{"key" => "ADMIN", "description" => "system administrator"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

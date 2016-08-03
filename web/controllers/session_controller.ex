@@ -38,7 +38,7 @@ defmodule Carbon.SessionController do
   On User constraint error (duplicate `handle` or `email`) displays proper error
   messages.
   """
-  def create_new_user(conn, %{"user" => user_params}) do
+  def create_new_user(conn, %{"user" => _user_params}) do
     conn |> render("email_sent.html")
   end
 

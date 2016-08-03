@@ -2,7 +2,6 @@ defmodule Carbon.AccountController do
   use Carbon.Web, :controller
 
   alias Carbon.Account
-  alias Carbon.AccountStatus
 
   def index(conn, params) do
     query = from a in Account,
@@ -99,6 +98,6 @@ defmodule Carbon.AccountController do
     |> redirect(to: account_path(conn, :index))
   end
 
-  def event_list(conn, %{"id" => id}) do
+  def event_list(_conn, %{"id" => _id}) do
   end
 end
