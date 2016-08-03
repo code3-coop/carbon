@@ -7,8 +7,18 @@
   <div class="ui container">
     <div class="ui form">
       <div class="field required">
-        <label>Name</label>
+        <label>Account name</label>
         <%= text_input f, :name %>
+      </div>
+      <%= inputs_for f, :contacts, fn c -> %>
+        <div class="field required">
+          <label>Contact name</label>
+          <%= text_input c, :full_name %>
+        </div>
+      <% end %>
+      <div class="field required">
+        <label>Account status</label>
+        <%= select f, :status_id, @account_statuses %>
       </div>
       <%= submit "Submit", class: "ui button" %>
     </div>
