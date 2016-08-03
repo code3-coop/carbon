@@ -6,6 +6,7 @@ defmodule Carbon.Account do
     field :name, :string
     field :active, :boolean, default: true
 
+    belongs_to :owner, Carbon.User
     has_one :billing_address, Carbon.Address
     has_one :shipping_address, Carbon.Address
     has_many :contacts, Carbon.Contact

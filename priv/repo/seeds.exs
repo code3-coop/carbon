@@ -12,14 +12,17 @@
 
 alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event, User, AccountTag}
 
+
+joe = Repo.insert! %User{ handle: "joe", name: "Joe", title: "Awesome", email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase) }
+
 lead_status = Repo.insert!(%AccountStatus{key: "lead"})
 customer_status = Repo.insert!(%AccountStatus{key: "customer"})
 former_customer_status = Repo.insert!(%AccountStatus{key: "former_customer"})
 
 slow_payer = Repo.insert!(%AccountTag{description: "slow_payer", color: "red"})
 
-account_a = Repo.insert!(%Account{name: "Account A", status: customer_status, tags: [slow_payer]})
-account_b = Repo.insert!(%Account{name: "Account B", status: customer_status})
+account_a = Repo.insert!(%Account{name: "Account A", owner: joe, status: customer_status, tags: [slow_payer]})
+account_b = Repo.insert!(%Account{name: "Account B", owner: joe, status: customer_status})
 
 contact_a = Repo.insert!(%Contact{name: "Contact A", given_name: "Contact", family_name: "A", email: "contact.a@company.a.com", tel: "+1 123-123-1234", account: account_a})
 contact_b = Repo.insert!(%Contact{name: "Contact B", given_name: "Contact", family_name: "B", email: "contact.b@company.b.com", tel: "+1 123-123-1234", account: account_b})
@@ -35,10 +38,3 @@ Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:ca
 
 Repo.insert! %Event{description: "1st meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b}
 Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b}
-
-joe = Repo.insert! %User{
-  handle: "joe",
-  name: "Joe",
-  title: "Awesome",
-  email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase)
-}

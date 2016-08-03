@@ -40,6 +40,7 @@ defmodule Carbon.AccountController do
     query = from a in Account,
       where: a.id == ^id,
       join: s in assoc(a, :status),
+      join: o in assoc(a, :owner),
       left_join: ba in assoc(a, :billing_address),
       left_join: sa in assoc(a, :shipping_address),
       left_join: e in assoc(a, :events),
@@ -52,6 +53,7 @@ defmodule Carbon.AccountController do
       left_join: t in assoc(a, :tags),
       preload: [
         status: s,
+        owner: o,
         billing_address: ba,
         shipping_address: sa,
         events: {e, reminders: r, tags: et},

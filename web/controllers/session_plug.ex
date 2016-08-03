@@ -26,8 +26,7 @@ defmodule Carbon.SessionPlug do
     token_name = SessionController.carbon_token_name
     with {:ok, token} <- Map.fetch(conn.cookies, token_name),
          {:ok, user_id} <- Phoenix.Token.verify(Carbon.Endpoint, token_name, token, max_age: @one_week_in_sec) do
-      conn
-      |> assign(:current_user, Repo.get!(User, user_id))
+      assign(conn, :current_user, Repo.get!(User, user_id))
     else
       _ -> conn
     end
