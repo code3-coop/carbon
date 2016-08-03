@@ -19,7 +19,6 @@ defmodule Carbon.AccountController do
     changeset = Account.changeset(%Account{contacts: [%Carbon.Contact{}]})
     conn
     |> assign(:changeset, changeset)
-    |> assign(:account_statuses, get_account_status_select()) 
     |> render("new.html")
   end
 
@@ -35,7 +34,6 @@ defmodule Carbon.AccountController do
       {:error, changeset} ->
         conn
         |> assign(:changeset, changeset)
-        |> assign(:account_statuses, get_account_status_select()) 
         |> render("new.html")
     end
   end
@@ -104,9 +102,5 @@ defmodule Carbon.AccountController do
   end
 
   def event_list(_conn, %{"id" => _id}) do
-  end
-
-  defp get_account_status_select do
-    (from s in Carbon.AccountStatus, select: {s.key, s.id}, order_by: s.id) |> Repo.all
   end
 end

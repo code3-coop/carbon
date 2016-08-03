@@ -18,7 +18,7 @@
       <% end %>
       <div class="field required">
         <label>Account status</label>
-        <%= select f, :status_id, @account_statuses %>
+        <%= select f, :status_id, account_status_select %>
       </div>
       <%= submit "Submit", class: "ui button" %>
     </div>
