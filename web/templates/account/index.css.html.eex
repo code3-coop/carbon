@@ -1,0 +1,8 @@
+<link rel="stylesheet" href=<%= static_path(@conn, "/css/account_index.css") %>/>
+<link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic-ui/components/reset.css") %>/>
+<link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic-ui/components/container.css") %>/>
+<link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic-ui/components/search.css") %>/>
+<link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic-ui/components/icon.css") %>/>
+<link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic-ui/components/input.css") %>/>
+<link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic-ui/components/table.css") %>/>
+

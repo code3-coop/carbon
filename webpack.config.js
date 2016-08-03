@@ -4,7 +4,7 @@ var jquery = require('jquery');
 module.exports = {
   entry: {
     account_create: "./web/static/js/account_create.js",
-    account_list: "./web/static/js/account_list.js",
+    account_index: "./web/static/js/account_index.js",
     account_show: "./web/static/js/account_show.js",
   },
   output: {
@@ -19,7 +19,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
-        loader: 'babel-loader?cacheDirectory&cacheIdentifier='+ Math.random(),
+        loader: 'babel-loader',
         query: {
           presets: ['es2015']
         }

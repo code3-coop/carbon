@@ -25,7 +25,10 @@
               <%= end %>
             </td>
             <td>
-              <%#Show list of deal names%>
+              <%# Deals are not loaded%>
+              <%#= for deal <- account.deals do %>
+                <%#= deal.description %>
+              <%#= end %>
             </td>
             <td>
               <%= if account.billing_address do account.billing_address.street_address end%>
@@ -39,7 +42,8 @@
   </div>
 </div>
 
-<p class="center">Didn't find the account you were looking for?
-  <%= link "Create it!", to: account_path(@conn, :new) %>
-</p>
-<script src="<%= static_path(@conn, "/js/account_list.js") %>"></script>
+<div class="ui one column centered grid">
+  <p> Didn't find the account you were looking for?
+    <%= link "Create it!", to: account_path(@conn, :new) %>
+  </p>
+</div>

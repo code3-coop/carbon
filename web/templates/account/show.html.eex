@@ -119,5 +119,4 @@
   <%= link "Back", to: account_path(@conn, :index) %>
 
 </div>
-<script src="<%= static_path(@conn, "/js/account_show.js") %>"></script>
 

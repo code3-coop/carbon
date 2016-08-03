@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <%= render_existing @view_module, String.replace(@view_template, ".html", ".js.html"), assigns %>
+    <%= render_existing @view_module, String.replace(@view_template, ".html", ".css.html"), assigns %>
     <title>Carbon</title>
   </head>
 
