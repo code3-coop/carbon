@@ -3,7 +3,7 @@
 
 <div class="ui grid container">
   <div class="sixteen wide column">
-    <h2>Listing accounts</h2>
+    <h2>Accounts</h2>
   </div>
   <div class="sixteen wide column">
     <div class="ui search full-width">
@@ -39,7 +39,7 @@
   </div>
 </div>
 
-<p class="center">Didn't found the account you were looking for
-  <%= link "create the account", to: account_path(@conn, :new) %>
+<p class="center">Didn't find the account you were looking for?
+  <%= link "Create it!", to: account_path(@conn, :new) %>
 </p>
 <script src="<%= static_path(@conn, "/js/account_list.js") %>"></script>
