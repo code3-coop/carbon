@@ -8,11 +8,17 @@
     <div class="ui form">
       <div class="field required">
         <label>Account name</label>
+        <%= if message = f.errors[:name] do %>
+        <span><%= translate_error(message) %></span>
+        <% end %>
         <%= text_input f, :name %>
       </div>
       <%= inputs_for f, :contacts, fn c -> %>
         <div class="field required">
           <label>Contact name</label>
+          <%= if message = c.errors[:full_name] do %>
+          <span><%= translate_error(message) %></span>
+          <% end %>
           <%= text_input c, :full_name %>
         </div>
       <% end %>
