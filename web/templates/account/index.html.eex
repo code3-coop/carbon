@@ -1,5 +1,5 @@
 
-<%= @conn.assigns[:current_user].name %>
+<%= @conn.assigns[:current_user].full_name %>
 
 <div class="ui grid container">
   <div class="sixteen wide column">
@@ -21,7 +21,7 @@
             </td>
             <td>
               <%= for contact <- account.contacts do %>
-                <%= contact.name%> <%= contact.given_name%>
+                <%= contact.full_name %>
               <%= end %>
             </td>
             <td>

@@ -6,7 +6,7 @@ defmodule Carbon.User do
     field :active, :boolean, default: true
 
     field :handle, :string
-    field :name, :string
+    field :full_name, :string
     field :title, :string
     field :email, :string, virtual: true
     field :email_hash, :string
@@ -18,8 +18,8 @@ defmodule Carbon.User do
 
   def changeset(user, params \\ %{}) do
     user
-    |> cast(params, [:name, :handle, :title, :email])
-    |> validate_required([:name, :handle])
+    |> cast(params, [:full_name, :handle, :title, :email])
+    |> validate_required([:full_name, :handle])
   end
 
   def login_changeset(struct, params \\ %{}) do

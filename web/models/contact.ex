@@ -4,10 +4,7 @@ defmodule Carbon.Contact do
   schema "contacts" do
     field :lock_version, :integer, default: 1
 
-    field :name, :string
-    field :given_name, :string
-    field :additional_name, :string
-    field :family_name, :string
+    field :full_name, :string
     field :email, :string
     field :tel, :string
     field :gender, :integer
@@ -24,7 +21,7 @@ defmodule Carbon.Contact do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :given_name, :additional_name, :family_name, :email, :tel, :gender])
-    |> validate_required([:name, :given_name, :additional_name, :family_name, :email, :tel, :gender])
+    |> cast(params, [:full_name, :email, :tel, :gender])
+    |> validate_required([:full_name, :email, :tel, :gender])
   end
 end

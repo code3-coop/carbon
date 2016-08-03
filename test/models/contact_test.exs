@@ -3,7 +3,7 @@ defmodule Carbon.ContactTest do
 
   alias Carbon.Contact
 
-  @valid_attrs %{additional_name: "some content", email: "some content", family_name: "some content", gender: 42, given_name: "some content", name: "some content", tel: "some content"}
+  @valid_attrs %{email: "some content", gender: 42, full_name: "some content", tel: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
