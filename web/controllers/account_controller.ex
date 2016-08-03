@@ -45,7 +45,8 @@ defmodule Carbon.AccountController do
       left_join: ba in assoc(a, :billing_address),
       left_join: sa in assoc(a, :shipping_address),
       left_join: e in assoc(a, :events),
-      left_join: r in Carbon.Reminder, on: r.event_id == e.id and r.user_id == ^current_user.id,
+      left_join: eu in assoc(e, :user),
+      left_join: er in Carbon.Reminder, on: er.event_id == e.id and er.user_id == ^current_user.id,
       left_join: et in assoc(e, :tags),
       left_join: d in assoc(a, :deals),
       left_join: dt in assoc(d, :tags),
@@ -57,7 +58,7 @@ defmodule Carbon.AccountController do
         owner: o,
         billing_address: ba,
         shipping_address: sa,
-        events: {e, reminders: r, tags: et},
+        events: {e, user: eu, reminders: er, tags: et},
         deals: {d, tags: dt},
         contacts: {c, tags: ct},
         tags: t

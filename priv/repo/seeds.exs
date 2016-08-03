@@ -33,8 +33,8 @@ billing_address_b = Repo.insert! %Address{street_address: "1 Billing Street", lo
 shipping_address_a = Repo.insert! %Address{street_address: "1 Shipping Street", locality: "City A", region: "RA", country_name: "CA", account: account_a}
 shipping_address_b = Repo.insert! %Address{street_address: "1 Shipping Street", locality: "City B", region: "RB", country_name: "CB", account: account_b}
 
-Repo.insert! %Event{description: "1st meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_a}
-Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_a}
+Repo.insert! %Event{description: "1st meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_a, user: joe}
+Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_a, user: joe}
 
-Repo.insert! %Event{description: "1st meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b}
-Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b}
+Repo.insert! %Event{description: "1st meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b, user: joe}
+Repo.insert! %Event{description: "2nd meeting", date: Ecto.DateTime.from_erl(:calendar.local_time), account: account_b, user: joe}

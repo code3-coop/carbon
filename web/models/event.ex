@@ -6,6 +6,7 @@ defmodule Carbon.Event do
     field :date, Ecto.DateTime
     field :active, :boolean, default: true
 
+    belongs_to :user, Carbon.User
     belongs_to :account, Carbon.Account
     has_many :reminders, Carbon.Reminder
     many_to_many :tags, Carbon.EventTag, join_through: "j_events_tags"
