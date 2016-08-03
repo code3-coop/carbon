@@ -19,9 +19,9 @@ defmodule Carbon.Contact do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
-  def changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, [:full_name, :email, :tel, :gender])
-    |> validate_required([:full_name, :email, :tel, :gender])
+  def changeset(contact, params \\ %{}) do
+    contact
+    |> cast(params, [:full_name, :email, :tel, :gender, :active])
+    |> validate_required([:full_name])
   end
 end

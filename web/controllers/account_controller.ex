@@ -23,7 +23,8 @@ defmodule Carbon.AccountController do
   end
 
   def create(conn, %{"account" => account_params}) do
-    changeset = Account.changeset(%Account{owner: conn.assigns[:current_user]}, account_params)
+    current_user = conn.assigns[:current_user]
+    changeset = Account.create_changeset(%Account{owner: current_user}, account_params)
 
     case Repo.insert(changeset) do
       {:ok, account} ->
