@@ -12,6 +12,7 @@ defmodule Carbon.Account do
     has_many :contacts, Carbon.Contact
     has_many :events, Carbon.Event
     has_many :deals, Carbon.Deal
+    has_many :projects, Carbon.Project
     belongs_to :status, Carbon.AccountStatus
     many_to_many :tags, Carbon.AccountTag, join_through: "j_accounts_tags"
 
