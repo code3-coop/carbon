@@ -6,6 +6,7 @@
       <div class="header">Ruh roh!</div>
       <p>Something went wrong. Please check the following errors.</p>
     </div>
+
     <div class="field <%= if f.errors[:name], do: "error" %>">
       <label>Account name 
         <span class="error">
@@ -17,23 +18,19 @@
         <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>
-    <%= inputs_for f, :contacts, fn c -> %>
-      <div class="field <%= if c.errors[:full_name], do: "error" %>">
-        <label>Contact name 
-          <span class="error">
-            <%= if c.errors[:full_name], do: translate_error c.errors[:full_name] %>
-          </span>
-        </label>
-        <div class="ui left corner labeled input">
-          <%= text_input c, :full_name %>
-          <div class="ui left corner label"><i class="asterisk icon"></i></div>
-        </div>
+
+    <div class="fields">
+      <div class="field">
+        <label>Account status</label>
+        <%= select f, :status_id, account_status_select, class: "ui dropdown" %>
       </div>
-    <% end %>
-    <div class="field">
-      <label>Account status</label>
-      <%= select f, :status_id, account_status_select, class: "ui dropdown" %>
+      
+      <div class="field">
+        <label>Account owner</label>
+        <%= select f, :status_id, account_user_select, class: "ui dropdown" %>
+      </div>
     </div>
+
     <div class="field">
       <label>Account tags</label>
       <div class="ui fluid multiple search selection dropdown">
@@ -51,6 +48,101 @@
         </div>
       </div>
     </div>
+
+    <%= inputs_for f, :contacts, fn c -> %>
+      <div class="field <%= if c.errors[:full_name], do: "error" %>">
+        <label>Contact name 
+          <span class="error">
+            <%= if c.errors[:full_name], do: translate_error c.errors[:full_name] %>
+          </span>
+        </label>
+        <div class="ui left corner labeled input">
+          <%= text_input c, :full_name %>
+          <div class="ui left corner label"><i class="asterisk icon"></i></div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= inputs_for f, :billing_address, fn ba -> %>
+    <div class="ui dividing header">Billing address</div>
+      <div class="field">
+        <label>Street address</label>
+        <%= text_input ba, :street_address %>
+      </div>
+      <div class="field">
+        <label>Extended address</label>
+        <%= text_input ba, :extended_address %> 
+      </div>
+  
+      <div class="fields">
+        <div class="field">
+          <label>Locality</label>
+          <%= text_input ba, :locality %>
+        </div>
+        <div class="field">
+          <label>PO box</label>
+          <%= text_input ba, :post_office_box %>
+        </div>
+        <div class="field">
+          <label>Region</label>
+          <%= text_input ba, :region %>
+        </div>
+        <div class="field">
+          <label>Postal code</label>
+          <%= text_input ba, :postal_code %>
+        </div>
+        <div class="field">
+          <label>Country</label>
+          <%= text_input ba, :country_name %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="ui form" style="padding-bottom: 15px">
+      <div class="ui toggle checkbox">
+        <input type="checkbox" id="shipping-address-swtich" name="public">
+        <label>Define a distinct address for shipping</label>
+      </div>
+    </div>
+    
+    <%= inputs_for f, :shipping_address, fn ba -> %>
+      <div id="shipping-address-container">
+        <div class="ui dividing header">Shipping address</div>
+        <div class="field">
+          <label>Street address</label>
+          <%= text_input ba, :street_address %>
+        </div>
+          <div class="field">
+            <label>Extended address</label>
+            <%= text_input ba, :extended_address %> 
+          </div>
+        
+        <div class="fields">
+          <div class="field">
+            <label>Locality</label>
+            <%= text_input ba, :locality %>
+          </div>
+          <div class="field">
+            <label>PO box</label>
+            <%= text_input ba, :post_office_box %>
+          </div>
+          <div class="field">
+            <label>Region</label>
+            <%= text_input ba, :region %>
+          </div>
+          <div class="field">
+            <label>Postal code</label>
+            <%= text_input ba, :postal_code %>
+          </div>
+          <div class="field">
+            <label>Country</label>
+            <%= text_input ba, :country_name %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    
+    
     <%= submit "Update account", class: "ui submit button" %>
     <%= link "cancel", to: account_path(@conn, :index) %>
   </div>

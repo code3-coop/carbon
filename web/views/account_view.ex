@@ -14,4 +14,11 @@ defmodule Carbon.AccountView do
       order_by: at.id
     Carbon.Repo.all query
   end
+
+  def account_user_select do
+    query = from u in Carbon.User,
+      select: {u.full_name, u.id},
+      order_by: u.id
+    Carbon.Repo.all query
+  end
 end
