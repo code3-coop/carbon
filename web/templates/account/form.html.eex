@@ -1,6 +1,6 @@
 <%= form_for @changeset, @action, fn f -> %>
   <div class="ui container">
-    <div class="ui form <%= if not @changeset.valid?, do: "error" %>">
+    <div class="ui form <%= if @changeset.action, do: "error" %>">
       <div class="ui error message">
         <div class="header">Ruh roh!</div>
         <p>Something went wrong. Please check the following errors.</p>

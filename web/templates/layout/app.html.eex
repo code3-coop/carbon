@@ -9,12 +9,10 @@
     <%= render_existing @view_module, String.replace(@view_template, ".html", ".css.html"), assigns %>
     <title>Carbon</title>
   </head>
-
   <body>
     <div class="ui container">
       <%= render @view_module, @view_template, assigns %>
     </div>
-
-  <%= render_existing @view_module, String.replace(@view_template, ".html", ".js.html"), assigns %>
+    <%= render_existing @view_module, String.replace(@view_template, ".html", ".js.html"), assigns %>
   </body>
 </html>
