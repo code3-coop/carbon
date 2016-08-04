@@ -5,11 +5,11 @@
     <div class="ui label <%=@account.status.color%>">
       <%= @account.status.key %>
     </div>
-    <a href="<%= account_path @conn, :edit, @account.id%>">
+    <%= link to: account_path @conn, :edit, @account.id do %>
       <button class="right floated ui button">
         <i class="ui icon edit"></i>Edit
       </button>
-    </a>
+    <% end %>
   </h1>
   
   <div class="ui grid">
@@ -40,7 +40,7 @@
       <div class="eight wide column">
         Billing address 
         <div class="ui segment">
-          <% if @account.billing_address do %>
+          <%= if @account.billing_address do %>
           <address>
             <%= @account.billing_address.street_address %>
             <%= @account.billing_address.extended_address %>
@@ -55,7 +55,7 @@
       <div class="eight wide column">
         Shipping address 
         <div class="ui segment">
-          <% if @account.billing_address do %>
+          <%= if @account.billing_address do %>
           <address>
             <%= @account.shipping_address.street_address %>
             <%= @account.shipping_address.extended_address %>

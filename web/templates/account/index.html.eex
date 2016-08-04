@@ -22,17 +22,17 @@
             <td>
               <%= for contact <- account.contacts do %>
                 <%= contact.full_name %>
-              <%= end %>
+              <% end %>
             </td>
             <td>
               <%# Deals are not loaded%>
               <%#= for deal <- account.deals do %>
                 <%#= deal.description %>
-              <%#= end %>
+              <%# end %>
             </td>
             <td>
-              <%= if account.billing_address do account.billing_address.street_address end%>
-              <%= if account.billing_address do account.billing_address.extended_address end%>
+              <%= if account.billing_address do account.billing_address.street_address end %>
+              <%= if account.billing_address do account.billing_address.extended_address end %>
             </td>
             <td>Matched on: </td>
           </tr>
