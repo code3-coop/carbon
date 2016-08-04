@@ -1,5 +1,5 @@
 const toggleShippingAddressContainer = _ => {
-  $("#shipping-address-container").toggle()
+  $("#shipping-address-container").toggle(100)
 }
 $('.ui.checkbox').checkbox()
 $('.ui.dropdown').dropdown()

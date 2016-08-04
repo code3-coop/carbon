@@ -74,7 +74,7 @@
             <label>Extended address</label>
             <%= text_input ba, :extended_address %> 
           </div>
-      
+        
           <div class="fields">
             <div class="field">
               <label>Locality</label>
@@ -101,42 +101,40 @@
           </div>
         <% end %>
       </div>
-      <div class="column">
+      <div class="column" id="shipping-address-container">
         <%= inputs_for f, :shipping_address, fn ba -> %>
-          <div id="shipping-address-container">
-            <div class="ui dividing header">Shipping address</div>
-            <div class="field">
-              <label>Street address</label>
-              <%= text_input ba, :street_address %>
-            </div>
-              <div class="field">
-                <label>Extended address</label>
-                <%= text_input ba, :extended_address %> 
-              </div>
+          <div class="ui dividing header">Shipping address</div>
+          <div class="field">
+            <label>Street address</label>
+            <%= text_input ba, :street_address %>
+          </div>
+          <div class="field">
+            <label>Extended address</label>
+            <%= text_input ba, :extended_address %> 
+          </div>
             
-            <div class="fields">
-              <div class="field">
-                <label>Locality</label>
-                <%= text_input ba, :locality %>
-              </div>
-              <div class="field">
-                <label>PO box</label>
-                <%= text_input ba, :post_office_box %>
-              </div>
-              <div class="field">
-                <label>Region</label>
-                <%= text_input ba, :region %>
-              </div>
+          <div class="fields">
+            <div class="field">
+              <label>Locality</label>
+              <%= text_input ba, :locality %>
             </div>
-            <div class="fields">
-              <div class="field">
-                <label>Postal code</label>
-                <%= text_input ba, :postal_code %>
-              </div>
-              <div class="field">
-                <label>Country</label>
-                <%= text_input ba, :country_name %>
-              </div>
+            <div class="field">
+              <label>PO box</label>
+              <%= text_input ba, :post_office_box %>
+            </div>
+            <div class="field">
+              <label>Region</label>
+              <%= text_input ba, :region %>
+            </div>
+          </div>
+          <div class="fields">
+            <div class="field">
+              <label>Postal code</label>
+              <%= text_input ba, :postal_code %>
+            </div>
+            <div class="field">
+              <label>Country</label>
+              <%= text_input ba, :country_name %>
             </div>
           </div>
         <% end %>
