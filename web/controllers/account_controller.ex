@@ -70,8 +70,26 @@ defmodule Carbon.AccountController do
   end
 
   def edit(conn, %{"id" => id}) do
-    account = Repo.get!(Account, id)
+    account_query = from a in Account,
+      where: a.id == ^id,
+      join: s in assoc(a, :status),
+      join: o in assoc(a, :owner),
+      left_join: ba in assoc(a, :billing_address),
+      left_join: sa in assoc(a, :shipping_address),
+      left_join: c in assoc(a, :contacts),
+      left_join: ct in assoc(c, :tags),
+      left_join: t in assoc(a, :tags),
+      preload: [
+        status: s,
+        owner: o,
+        billing_address: ba,
+        shipping_address: sa,
+        contacts: {c, tags: ct},
+        tags: t
+      ]
+    account = Repo.one(account_query)
     changeset = Account.changeset(account)
+
     render(conn, "edit.html", account: account, changeset: changeset)
   end
 

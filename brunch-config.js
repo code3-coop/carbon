@@ -4,7 +4,8 @@ module.exports = {
       entryPoints: {
        'web/static/js/account_create.js': 'js/account_create.js',
        'web/static/js/account_show.js': 'js/account_show.js',
-       'web/static/js/account_index.js': 'js/account_index.js'
+       'web/static/js/account_index.js': 'js/account_index.js',
+       'web/static/js/account_edit.js': 'js/account_edit.js'
       }
     },
   },

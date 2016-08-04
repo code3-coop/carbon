@@ -1,6 +1,60 @@
 <h2>Edit account</h2>
 
-<%= render "form.html", changeset: @changeset,
-                        action: account_path(@conn, :update, @account) %>
+<%= form_for @changeset, account_path(@conn, :update, @account), fn f -> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+    <div class="field <%= if f.errors[:name], do: "error" %>">
+      <label>Account name 
+        <span class="error">
+          <%= if f.errors[:name], do: translate_error f.errors[:name] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= text_input f, :name %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+    <%= inputs_for f, :contacts, fn c -> %>
+      <div class="field <%= if c.errors[:full_name], do: "error" %>">
+        <label>Contact name 
+          <span class="error">
+            <%= if c.errors[:full_name], do: translate_error c.errors[:full_name] %>
+          </span>
+        </label>
+        <div class="ui left corner labeled input">
+          <%= text_input c, :full_name %>
+          <div class="ui left corner label"><i class="asterisk icon"></i></div>
+        </div>
+      </div>
+    <% end %>
+    <div class="field">
+      <label>Account status</label>
+      <%= select f, :status_id, account_status_select, class: "ui dropdown" %>
+    </div>
+    <div class="field">
+      <label>Account tags</label>
+      <div class="ui fluid multiple search selection dropdown">
+        <%= hidden_input f, :tags_id, value: to_string(Enum.map(@account.tags, & to_string(&1.id)))%>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select tags</div>
+        <div class="menu">
+          <%= for tag <- account_tags_select do %>
+            <div class="item " data-value="<%= tag.id %>">
+              <div class="ui label tag <%=tag.color%>">
+                <%= tag.description %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <%= submit "Update account", class: "ui submit button" %>
+    <%= link "cancel", to: account_path(@conn, :index) %>
+  </div>
+<% end %>
+
 
 <%= link "Back", to: account_path(@conn, :index) %>

@@ -8,4 +8,10 @@ defmodule Carbon.AccountView do
       order_by: s.id
     Carbon.Repo.all query
   end
+
+  def account_tags_select do
+    query = from at in Carbon.AccountTag,
+      order_by: at.id
+    Carbon.Repo.all query
+  end
 end

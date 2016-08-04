@@ -1,0 +1,2 @@
+<script src=<%= static_path(@conn, "/js/account_edit.js") %>></script>
+

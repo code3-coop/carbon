@@ -20,7 +20,7 @@
           <div class="ui tag label <%= tag.color%>">
             <%= tag.description %>
           </div>
-        <%= end %>
+        <% end %>
       
       </div>
     </div>
