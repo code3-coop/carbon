@@ -21,7 +21,7 @@
           </div>
         </div>
       <% end %>
-      <div class="field required">
+      <div class="field">
         <label>Account status</label>
         <%= select f, :status_id, account_status_select, class: "ui dropdown" %>
       </div>
