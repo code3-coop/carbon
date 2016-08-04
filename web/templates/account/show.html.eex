@@ -29,7 +29,7 @@
       <div class="column">
         <%=for contact <- @account.contacts do %>
             <h4 class="ui header">
-              <%= contact.name %>  <%= contact.given_name%>
+              <%= contact.full_name %>
             </h4>
             <%= contact.email%> <% contact.tel %>
         <%= end %>

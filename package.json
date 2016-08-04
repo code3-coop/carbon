@@ -9,12 +9,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "babel": {
-    "presets": [
-      "es2015",
-      "stage-2"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/code3-coop/carbon.git"
@@ -27,20 +21,10 @@
   "homepage": "https://github.com/code3-coop/carbon#readme",
   "dependencies": {
     "jquery": "3.1.0",
-    "semantic-ui-css": "2.2.2",
-    "url-loader": "^0.5.7"
+    "semantic-ui-css": "2.2.2"
   },
   "devDependencies": {
-    "file-loader": "0.9.0",
-    "babel-core": "6.11.4",
-    "babel-loader": "6.2.4",
-    "babel-preset-es2015": "6.9.0",
-    "babel-preset-stage-2": "6.11.0",
-    "css-loader": "0.23.1",
-    "expose-loader": "0.7.1",
-    "less": "2.7.1",
-    "less-loader": "2.2.3",
-    "style-loader": "0.13.1",
-    "webpack": "1.13.1"
+    "babel-brunch": "^6.0.5",
+    "brunch": "^2.8.2"
   }
 }

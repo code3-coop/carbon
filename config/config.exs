@@ -12,6 +12,7 @@ config :carbon,
 # Configures the endpoint
 config :carbon, Carbon.Endpoint,
   url: [host: "localhost"],
+  root: Path.dirname(__DIR__),
   secret_key_base: "u/SYPEI6LdXu/69/HCC+y9CRZ7byzOkQcbOJwkLEPRsTRnN5Dxc3xldEz3DzkJ+K",
   render_errors: [view: Carbon.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Carbon.PubSub,
