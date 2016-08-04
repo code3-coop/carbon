@@ -62,86 +62,92 @@
         </div>
       </div>
     <% end %>
-
-    <%= inputs_for f, :billing_address, fn ba -> %>
-    <div class="ui dividing header">Billing address</div>
-      <div class="field">
-        <label>Street address</label>
-        <%= text_input ba, :street_address %>
+    <div class="ui two column very relaxed grid">
+      <div class="column">
+        <%= inputs_for f, :billing_address, fn ba -> %>
+          <div class="ui dividing header">Billing address</div>
+          <div class="field">
+            <label>Street address</label>
+            <%= text_input ba, :street_address %>
+          </div>
+          <div class="field">
+            <label>Extended address</label>
+            <%= text_input ba, :extended_address %> 
+          </div>
+      
+          <div class="fields">
+            <div class="field">
+              <label>Locality</label>
+              <%= text_input ba, :locality %>
+            </div>
+            <div class="field">
+              <label>PO box</label>
+              <%= text_input ba, :post_office_box %>
+            </div>
+            <div class="field">
+              <label>Region</label>
+              <%= text_input ba, :region %>
+            </div>
+          </div>
+          <div class="fields">
+            <div class="field">
+              <label>Postal code</label>
+              <%= text_input ba, :postal_code %>
+            </div>
+            <div class="field">
+              <label>Country</label>
+              <%= text_input ba, :country_name %>
+            </div>
+          </div>
+        <% end %>
       </div>
-      <div class="field">
-        <label>Extended address</label>
-        <%= text_input ba, :extended_address %> 
+      <div class="column">
+        <%= inputs_for f, :shipping_address, fn ba -> %>
+          <div id="shipping-address-container">
+            <div class="ui dividing header">Shipping address</div>
+            <div class="field">
+              <label>Street address</label>
+              <%= text_input ba, :street_address %>
+            </div>
+              <div class="field">
+                <label>Extended address</label>
+                <%= text_input ba, :extended_address %> 
+              </div>
+            
+            <div class="fields">
+              <div class="field">
+                <label>Locality</label>
+                <%= text_input ba, :locality %>
+              </div>
+              <div class="field">
+                <label>PO box</label>
+                <%= text_input ba, :post_office_box %>
+              </div>
+              <div class="field">
+                <label>Region</label>
+                <%= text_input ba, :region %>
+              </div>
+            </div>
+            <div class="fields">
+              <div class="field">
+                <label>Postal code</label>
+                <%= text_input ba, :postal_code %>
+              </div>
+              <div class="field">
+                <label>Country</label>
+                <%= text_input ba, :country_name %>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
-  
-      <div class="fields">
-        <div class="field">
-          <label>Locality</label>
-          <%= text_input ba, :locality %>
-        </div>
-        <div class="field">
-          <label>PO box</label>
-          <%= text_input ba, :post_office_box %>
-        </div>
-        <div class="field">
-          <label>Region</label>
-          <%= text_input ba, :region %>
-        </div>
-        <div class="field">
-          <label>Postal code</label>
-          <%= text_input ba, :postal_code %>
-        </div>
-        <div class="field">
-          <label>Country</label>
-          <%= text_input ba, :country_name %>
-        </div>
-      </div>
-    <% end %>
-
+    </div>
     <div class="ui form" style="padding-bottom: 15px">
       <div class="ui toggle checkbox">
         <input type="checkbox" id="shipping-address-swtich" name="public">
         <label>Define a distinct address for shipping</label>
       </div>
     </div>
-    
-    <%= inputs_for f, :shipping_address, fn ba -> %>
-      <div id="shipping-address-container">
-        <div class="ui dividing header">Shipping address</div>
-        <div class="field">
-          <label>Street address</label>
-          <%= text_input ba, :street_address %>
-        </div>
-          <div class="field">
-            <label>Extended address</label>
-            <%= text_input ba, :extended_address %> 
-          </div>
-        
-        <div class="fields">
-          <div class="field">
-            <label>Locality</label>
-            <%= text_input ba, :locality %>
-          </div>
-          <div class="field">
-            <label>PO box</label>
-            <%= text_input ba, :post_office_box %>
-          </div>
-          <div class="field">
-            <label>Region</label>
-            <%= text_input ba, :region %>
-          </div>
-          <div class="field">
-            <label>Postal code</label>
-            <%= text_input ba, :postal_code %>
-          </div>
-          <div class="field">
-            <label>Country</label>
-            <%= text_input ba, :country_name %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    
     
     <%= submit "Update account", class: "ui submit primary button" %>
     <%= link "cancel", to: account_path(@conn, :index), class: "ui button" %>
