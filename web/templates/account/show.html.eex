@@ -55,7 +55,7 @@
       <div class="eight wide column">
         Shipping address 
         <div class="ui segment">
-          <%= if @account.billing_address do %>
+          <%= if @account.shipping_address do %>
           <address>
             <%= @account.shipping_address.street_address %>
             <%= @account.shipping_address.extended_address %>
@@ -71,18 +71,30 @@
   </div>
   <h1>Events</h1>
   
-  <div class="ui relaxed divided list">
+  <div class="ui feed">
     <%= for event <- @account.events do %>
-      <div class="item">
-        <div class="tiny">
-          <%= event.date %>
-          <%= for tag <- event.tags do %>
-            <div class="label <%=tag.color%>">
-              <%= tag.key %>
+      <div class="event">
+        <div class="label"></div>
+        <div class="content">
+          <div class="summary">
+            <div class="date">
+              On <%= event.date %>
             </div>
-          <%= end %>
+            <div class="user">
+              <%= event.user.full_name %>
+            </div>
+          </div>
+          <div class="extra">
+            <%=event.description%>
+          </div>
+          <div class="meta">
+            <%= for tag <- event.tags do %>
+              <div class="ui label tag <%=tag.color%>">
+                <%= tag.description %>
+              </div>
+            <%= end %>
+          </div>
         </div>
-        <%=event.description %>
         <%= unless Enum.empty?(event.reminders) do %>
           <div>
             Reminder on: 
