@@ -1,11 +1,2 @@
 
 <link rel="stylesheet" href=<%= static_path(@conn, "/css/account_show.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/reset.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/container.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/icon.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/header.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/grid.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/label.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/segment.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/button.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/list.css") %>/>

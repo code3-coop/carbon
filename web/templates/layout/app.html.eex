@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <%= render_existing @view_module, String.replace(@view_template, ".html", ".js.html"), assigns %>
+    <link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic.min.css") %>/>
+    <script src="<%= static_path(@conn, "/vendor/jquery.min.js") %>"></script>
+    <script src="<%= static_path(@conn, "/vendor/semantic.min.js") %>"></script>
     <%= render_existing @view_module, String.replace(@view_template, ".html", ".css.html"), assigns %>
     <title>Carbon</title>
   </head>
-
   <body>
-    <%= render @view_module, @view_template, assigns %>
-      <!-- <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p> -->
-      <!-- <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p> -->
-
+    <div class="ui container">
+      <%= render @view_module, @view_template, assigns %>
+    </div>
+    <%= render_existing @view_module, String.replace(@view_template, ".html", ".js.html"), assigns %>
   </body>
 </html>

@@ -1,6 +1,0 @@
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/reset.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/container.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/form.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/button.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/dropdown.css") %>/>
-<link rel="stylesheet" href=<%= static_path(@conn, "/semantic-ui/components/transition.css") %>/>

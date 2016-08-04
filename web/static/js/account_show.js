@@ -1,7 +1,3 @@
-
-import $ from 'jquery'
-
-
 $('#billing_address_edit').hide()
 $('#billing_address_display').show()
 $('#shipping_address_edit').hide()

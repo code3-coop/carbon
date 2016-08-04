@@ -22,6 +22,16 @@ defmodule Carbon.Account do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
+  def create_changeset(account, params \\ %{}) do
+    account
+    |> cast(params, [:name, :status_id, :owner_id])
+    |> cast_assoc(:contacts, required: true)
+    |> validate_required(:name)
+    |> validate_length(:name, min: 1)
+    |> foreign_key_constraint(:owner_id)
+    |> foreign_key_constraint(:status_id)
+  end
+
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:name])

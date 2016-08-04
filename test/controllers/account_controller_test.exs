@@ -2,26 +2,35 @@ defmodule Carbon.AccountControllerTest do
   use Carbon.ConnCase
 
   alias Carbon.Account
-  @valid_attrs %{}
-  @invalid_attrs %{}
 
   setup do
     joe = Repo.insert! %Carbon.User{handle: "joe", email_hash: "joe"}
-    {:ok, [user: joe]}
+    customer_status = Repo.insert! %Carbon.AccountStatus{key: "CUST"}
+    {:ok, [user: joe, customer_status: customer_status]}
   end
 
-  test "creates resources and redirects when successful", %{conn: conn, user: joe} do
+  test "creates resources and redirects when successful", %{conn: conn, user: joe, customer_status: customer} do
     conn = put_token_req_cookie conn, joe.id
-    conn = post conn, account_path(conn, :create), account: %{name: "test account 1"}
+    conn = post conn, account_path(conn, :create), account: %{
+      name: "test account 1",
+      status_id: customer.id,
+      contacts: [
+        %{full_name: "test contact 1"}
+      ]
+    }
 
-    account = Repo.get_by!(Account, %{name: "test account 1"})
+    account = Repo.one from a in Account, where: a.name == "test account 1", preload: [:contacts, :status]
+    assert account != nil
     assert account.owner_id == joe.id
+    assert account.status_id != nil
+    assert account.status.key == customer.key
+    assert (hd account.contacts).full_name == "test contact 1"
     assert redirected_to(conn) == account_path(conn, :show, account.id)
   end
 
   defp put_token_req_cookie(conn, user_id) do
     token_name = Carbon.SessionController.carbon_token_name
-    put_resp_cookie(conn, token_name, Phoenix.Token.sign(Carbon.Endpoint, token_name, user_id))
+    put_req_cookie(conn, token_name, Phoenix.Token.sign(Carbon.Endpoint, token_name, user_id))
   end
 
   # test "lists all entries on index", %{conn: conn} do

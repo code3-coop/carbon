@@ -31,7 +31,7 @@
             <h4 class="ui header">
               <%= contact.full_name %>
             </h4>
-            <%= contact.email%> <% contact.tel %>
+            <%= contact.email %> <% contact.tel %>
         <%= end %>
       </div>
     </div>
@@ -40,6 +40,7 @@
       <div class="eight wide column">
         Billing address 
         <div class="ui segment">
+          <% if @account.billing_address do %>
           <address>
             <%= @account.billing_address.street_address %>
             <%= @account.billing_address.extended_address %>
@@ -48,11 +49,13 @@
             <%= @account.billing_address.region %>
             <%= @account.billing_address.country_name %>
           </address>
+          <% end %>
         </div>
       </div>
       <div class="eight wide column">
         Shipping address 
         <div class="ui segment">
+          <% if @account.billing_address do %>
           <address>
             <%= @account.shipping_address.street_address %>
             <%= @account.shipping_address.extended_address %>
@@ -61,6 +64,7 @@
             <%= @account.shipping_address.region %>
             <%= @account.shipping_address.country_name %>
           </address>
+          <% end %>
         </div>
       </div>
     </div>

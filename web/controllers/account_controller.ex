@@ -16,14 +16,15 @@ defmodule Carbon.AccountController do
   end
 
   def new(conn, _params) do
-    changeset = Account.changeset(%Account{})
+    changeset = Account.changeset(%Account{contacts: [%Carbon.Contact{}]})
     conn
     |> assign(:changeset, changeset)
     |> render("new.html")
   end
 
   def create(conn, %{"account" => account_params}) do
-    changeset = Account.changeset(%Account{owner: conn.assigns[:current_user]}, account_params)
+    current_user = conn.assigns[:current_user]
+    changeset = Account.create_changeset(%Account{owner: current_user}, account_params)
 
     case Repo.insert(changeset) do
       {:ok, account} ->
@@ -31,7 +32,9 @@ defmodule Carbon.AccountController do
         |> put_flash(:info, "Account created successfully.")
         |> redirect(to: account_path(conn, :show, account.id))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        conn
+        |> assign(:changeset, changeset)
+        |> render("new.html")
     end
   end
 
