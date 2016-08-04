@@ -143,10 +143,7 @@
     <% end %>
     
     
-    <%= submit "Update account", class: "ui submit button" %>
-    <%= link "cancel", to: account_path(@conn, :index) %>
+    <%= submit "Update account", class: "ui submit primary button" %>
+    <%= link "cancel", to: account_path(@conn, :index), class: "ui button" %>
   </div>
 <% end %>
-
-
-<%= link "Back", to: account_path(@conn, :index) %>
