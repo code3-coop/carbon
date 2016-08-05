@@ -10,7 +10,7 @@ defmodule Carbon.AccountViewTest do
       %Carbon.Event{description: "#{n}", date: Timex.now |> Timex.shift(days: n) |> Timex.to_erl |> Ecto.DateTime.from_erl}
     end
     
-    result = Carbon.AccountView.events_around(all_events)
+    result = Carbon.AccountView.events_summary(all_events)
 
     assert ~w(-1 -2 -3 -4 -5) == Enum.map(result[:past], &(&1.description))
     assert ~w(4 3 2 1 0) == Enum.map(result[:future], &(&1.description))

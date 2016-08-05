@@ -51,7 +51,13 @@
   <h1>Events</h1>
   
   <div class="ui feed">
-    <%= for event <- @account.events do %>
+    <% summary = events_summary(@account.events) %>
+    <%= for event <- summary[:future] do %>
+      <%= render "_event_show.html", event: event %>
+    <% end %>
+    
+    <div class="ui horizontal divider">TODAY</div>
+    <%= for event <- summary[:past] do %>
       <%= render "_event_show.html", event: event %>
     <% end %>
     <center>
