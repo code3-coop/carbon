@@ -33,7 +33,7 @@ shipping_address_a = Repo.insert! %Address{street_address: "1 Shipping Street", 
 shipping_address_b = Repo.insert! %Address{street_address: "1 Shipping Street", locality: "City B", region: "RB", country_name: "CB"}
 
 account_a = Repo.insert!(%Account{name: "Account A", owner: joe, status: customer_status, billing_address: billing_address_a, shipping_address: shipping_address_a, tags: [noisy_office_tag, good_coffee_tag]})
-account_b = Repo.insert!(%Account{name: "Account B", owner: joe, status: customer_status, billing_address: billing_address_b, shipping_address: shipping_address_b, tags: [good_coffee_tag]})
+account_b = Repo.insert!(%Account{name: "Account B", owner: mike, status: customer_status, billing_address: billing_address_b, shipping_address: shipping_address_b, tags: [good_coffee_tag]})
 
 contact_a = Repo.insert!(%Contact{full_name: "Contact A", email: "contact.a@company.a.com", tel: "+1 123-123-1234", account: account_a})
 contact_b = Repo.insert!(%Contact{full_name: "Contact B", email: "contact.b@company.b.com", tel: "+1 123-123-1234", account: account_b})
