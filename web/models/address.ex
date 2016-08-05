@@ -13,8 +13,6 @@ defmodule Carbon.Address do
     field :country_name, :string
     field :active, :boolean, default: true
 
-    belongs_to :account, Carbon.Account
-
     timestamps
   end
 
