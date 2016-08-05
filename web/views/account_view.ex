@@ -35,7 +35,7 @@ defmodule Carbon.AccountView do
 
   def account_user_select do
     query = from u in Carbon.User,
-      select: {u.full_name, u.id},
+      select: %{full_name: u.full_name, id: u.id, image_url: u.image_url},
       order_by: u.id
     Carbon.Repo.all query
   end

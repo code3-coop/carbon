@@ -27,7 +27,21 @@
       
       <div class="field">
         <label>Account owner</label>
-        <%= select f, :owner_id, account_user_select, class: "ui dropdown" %>
+        <div class="ui dropdown inline ">
+          <%= hidden_input f, :owner_id, value: @account.owner_id %>
+          <i class="dropdown icon"></i>
+          <div class="default text">Select Owner</div>
+          <div class="menu">
+            <%= for user <- account_user_select do %>
+              <div class="item" data-value="<%= user.id %>">
+                  <img class="ui avatar image" src="<%= user.image_url%>">
+                  <%= user.full_name %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        
+        <%#= select f, :owner_id, account_user_select, class: "ui dropdown" %>
       </div>
     </div>
 
