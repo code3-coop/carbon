@@ -13,6 +13,14 @@
 use Timex
 alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event, User, AccountTag, EventTag, Reminder}
 
+paragraph = [
+  "Lorem ipsum dolor sit amet, an viris virtute voluptatibus nec, sed cu dicunt diceret facilis. Praesent democritum pro ea, est delenit percipitur an.",
+  "Ea cum quot civibus mandamus, pro et veniam ridens, salutatus dignissim ullamcorper cu sit. Sed cetero delicata similique ex. Deserunt mediocritatem ei has, te pericula constituto pri.",
+  "Cu eum mutat tractatos maiestatis. Ea tale veri perpetua ius, sea cu modo noster praesent. Libris propriae ut vix, ea pri impetus suavitate euripidis. Vis equidem prodesset in, antiopam consequat nam ea.",
+  "Duo ne appetere facilisis inciderint, est partem aliquip dolorem et, ut autem prompta vivendo sea. Et has velit epicurei indoctum, nam brute regione urbanitas in. Ius eu nostrud perpetua.",
+  "Nobis mentitum sadipscing ad per, ne est munere sensibus. Eum inermis honestatis ex. Senserit partiendo definiebas eam id. Ut elit novum veniam per, ad tollit veniam omittam duo."
+]
+
 joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", image_url: "/images/avatars/male/44.png", email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase) }
 mike = Repo.insert! %User{ handle: "mike", full_name: "Mike", title: "Awesome", image_url: "/images/avatars/male/39.png", email_hash: (:crypto.hash(:sha, "mike@erlang.com") |> Base.encode16 |> String.downcase) }
 robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awesome", image_url: "/images/avatars/male/98.png", email_hash: (:crypto.hash(:sha, "robert@erlang.com") |> Base.encode16 |> String.downcase) }
@@ -42,7 +50,7 @@ contact_b = Repo.insert!(%Contact{full_name: "Contact B", email: "contact.b@comp
 event_a_1 = Repo.insert! %Event{description: "1st meeting", date: Timex.now |> Timex.shift(days: 3) |> Timex.to_erl |> Ecto.DateTime.from_erl, account: account_a, user: joe, tags: [usless_meeting]}
 
 for n <- -10..10 do
-  Repo.insert! %Event{description: "Meeting", date: Timex.now |> Timex.shift(days: n) |> Timex.to_erl |> Ecto.DateTime.from_erl, account: account_b, user: Enum.random([joe, mike, robert])}
+  Repo.insert! %Event{description: Enum.random(paragraph), date: Timex.now |> Timex.shift(days: n) |> Timex.to_erl |> Ecto.DateTime.from_erl, account: account_b, user: Enum.random([joe, mike, robert])}
 end
 
 reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local_time), user: joe, event: event_a_1}
