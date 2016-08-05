@@ -34,7 +34,7 @@
     <div class="field">
       <label>Account tags</label>
       <div class="ui fluid multiple search selection dropdown">
-        <%= hidden_input f, :tags_id, value: @account.tags |> Enum.map(& &1.id) |> Enum.join(",") %>
+        <%= hidden_input f, :tags_id, value: @account.tags |> Enum.map_join(",", & &1.id)%>
         <i class="dropdown icon"></i>
         <div class="default text">Select tags</div>
         <div class="menu">
