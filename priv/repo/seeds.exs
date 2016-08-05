@@ -42,7 +42,7 @@ contact_b = Repo.insert!(%Contact{full_name: "Contact B", email: "contact.b@comp
 event_a_1 = Repo.insert! %Event{description: "1st meeting", date: Timex.now |> Timex.shift(days: 3) |> Timex.to_erl |> Ecto.DateTime.from_erl, account: account_a, user: joe, tags: [usless_meeting]}
 
 for n <- -10..10 do
-  Repo.insert! %Event{description: "Meeting", date: Timex.now |> Timex.shift(days: n) |> Timex.to_erl |> Ecto.DateTime.from_erl, account: account_b, user: joe}
+  Repo.insert! %Event{description: "Meeting", date: Timex.now |> Timex.shift(days: n) |> Timex.to_erl |> Ecto.DateTime.from_erl, account: account_b, user: Enum.random([joe, mike, robert])}
 end
 
 reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local_time), user: joe, event: event_a_1}
