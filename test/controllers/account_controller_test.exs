@@ -1,12 +1,13 @@
 defmodule Carbon.AccountControllerTest do
   use Carbon.ConnCase
 
-  alias Carbon.Account
+  alias Carbon.{ Account, AccountTag, Address }
 
   setup do
     joe = Repo.insert! %Carbon.User{handle: "joe", email_hash: "joe"}
     customer_status = Repo.insert! %Carbon.AccountStatus{key: "CUST"}
-    {:ok, [user: joe, customer_status: customer_status]}
+    lead_status = Repo.insert! %Carbon.AccountStatus{key: "LEAD"}
+    {:ok, [user: joe, customer_status: customer_status, lead_status: lead_status]}
   end
 
   test "creates resources and redirects when successful", %{conn: conn, user: joe, customer_status: customer} do
@@ -28,65 +29,96 @@ defmodule Carbon.AccountControllerTest do
     assert redirected_to(conn) == account_path(conn, :show, account.id)
   end
 
+  test "updates resource", %{conn: conn, user: joe, customer_status: customer} do
+    billing_address = Repo.insert! %Address{street_address: "", locality: "", region: "", country_name: ""}
+    shipping_address = Repo.insert! %Address{street_address: "", locality: "", region: "", country_name: ""}
+    account = Repo.insert! %Account{name: "", owner: joe, status: customer, shipping_address: shipping_address}
+
+    conn = put_token_req_cookie conn, joe.id
+    conn = put conn, account_path(conn, :update, account.id), account: %{
+      name: "new name",
+      status_id: customer.id,
+      owner_id: joe.id,
+      billing_address: %{ id: billing_address.id, street_address: "new street", locality: "", region: "", country_name: "" },
+      shipping_address: %{ id: shipping_address.id, street_address: "new street", locality: "", region: "", country_name: "" },
+      tags_id: ""
+    }
+
+    updated_account = Repo.get!(Account, account.id) |> Repo.preload([:billing_address, :shipping_address])
+
+    assert updated_account.name == "new name"
+    assert updated_account.billing_address.street_address == "new street"
+    assert updated_account.shipping_address.street_address == "new street"
+  end
+
+  test "update ressource with tags", %{conn: conn, user: joe, customer_status: customer} do
+    tag_a = Repo.insert! %AccountTag{description: "a"}
+    tag_b = Repo.insert! %AccountTag{description: "b"}
+    billing_address = Repo.insert! %Address{street_address: "", locality: "", region: "", country_name: ""}
+    shipping_address = Repo.insert! %Address{street_address: "", locality: "", region: "", country_name: ""}
+    account = Repo.insert! %Account{name: "", owner: joe, status: customer}
+
+    conn = put_token_req_cookie conn, joe.id
+    conn = put conn, account_path(conn, :update, account.id), account: %{
+      name: "new name",
+      status_id: customer.id,
+      owner_id: joe.id,
+      billing_address: %{ id: billing_address.id, street_address: "new street", locality: "", region: "", country_name: "" },
+      shipping_address: %{ id: shipping_address.id, street_address: "new street", locality: "", region: "", country_name: "" },
+      tags_id: "#{tag_a.id},#{tag_b.id}"
+    }
+
+    updated_account = Repo.get!(Account, account.id) |> Repo.preload([:tags])
+
+    assert [ tag_a, tag_b ] == updated_account.tags
+  end
+
+  test "updates status", %{conn: conn, user: joe, customer_status: customer, lead_status: lead} do
+    billing_address = Repo.insert! %Address{street_address: "", locality: "", region: "", country_name: ""}
+    shipping_address = Repo.insert! %Address{street_address: "", locality: "", region: "", country_name: ""}
+    account = Repo.insert! %Account{name: "", owner: joe, status: customer }
+
+    conn = put_token_req_cookie conn, joe.id
+    conn = put conn, account_path(conn, :update, account.id), account: %{
+      name: "new name",
+      status_id: lead.id,
+      owner_id: joe.id,
+      billing_address: %{ id: billing_address.id, street_address: "new street", locality: "", region: "", country_name: "" },
+      shipping_address: %{ id: shipping_address.id, street_address: "new street", locality: "", region: "", country_name: "" },
+      tags_id: ""
+    }
+
+    updated_account = Repo.get!(Account, account.id)
+
+    assert updated_account.status_id == lead.id
+  end
+
+  test "update ressource with tags deletes old tags", %{conn: conn, user: joe, customer_status: customer} do
+    tag_a = Repo.insert! %AccountTag{description: "a"}
+    tag_b = Repo.insert! %AccountTag{description: "b"}
+    billing_address = Repo.insert! %Address{street_address: "", locality: "", region: "", country_name: ""}
+    shipping_address = Repo.insert! %Address{street_address: "", locality: "", region: "", country_name: ""}
+    account = Repo.insert! %Account{name: "", owner: joe, status: customer, tags: [ tag_a ]}
+
+    conn = put_token_req_cookie conn, joe.id
+    conn = put conn, account_path(conn, :update, account.id), account: %{
+      name: "new name",
+      status_id: customer.id,
+      owner_id: joe.id,
+      billing_address: %{ id: billing_address.id, street_address: "new street", locality: "", region: "", country_name: "" },
+      shipping_address: %{ id: shipping_address.id, street_address: "new street", locality: "", region: "", country_name: "" },
+      tags_id: "#{tag_b.id}"
+    }
+
+    updated_account = Repo.get!(Account, account.id) |> Repo.preload([:tags])
+
+    assert [ tag_b ] == updated_account.tags
+    assert Repo.aggregate(AccountTag, :count, :id) == 2
+  end
+
   defp put_token_req_cookie(conn, user_id) do
     token_name = Carbon.SessionController.carbon_token_name
     put_req_cookie(conn, token_name, Phoenix.Token.sign(Carbon.Endpoint, token_name, user_id))
   end
-
-  # test "lists all entries on index", %{conn: conn} do
-    # conn = put_token_cookie(conn)
-    # conn = get conn, account_path(conn, :index)
-    # assert html_response(conn, 200) =~ "Accounts"
-  # end
-
-  # test "renders form for new resources", %{conn: conn} do
-    # conn = get conn, account_path(conn, :new)
-    # assert html_response(conn, 200) =~ "New account"
-  # end
-
-  # test "creates resource and redirects when data is valid", %{conn: conn} do
-    # conn = post conn, account_path(conn, :create), account: @valid_attrs
-    # assert redirected_to(conn) == account_path(conn, :index)
-    # assert Repo.get_by(Account, @valid_attrs)
-  # end
-
-  # test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    # conn = post conn, account_path(conn, :create), account: @invalid_attrs
-    # assert html_response(conn, 200) =~ "New account"
-  # end
-
-  # test "shows chosen resource", %{conn: conn} do
-    # conn = put_token_cookie(conn)
-    # account = Repo.insert! %Account{owner_id: 1, status_id: 1}
-    # conn = get conn, account_path(conn, :show, account)
-    # assert html_response(conn, 200) =~ "Show account"
-  # end
-
-  # test "renders page not found when id is nonexistent", %{conn: conn} do
-    # conn = put_token_cookie(conn)
-    # assert_error_sent 404, fn ->
-      # get conn, account_path(conn, :show, -1)
-    # end
-  # end
-
-  # test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    # account = Repo.insert! %Account{}
-    # conn = put conn, account_path(conn, :update, account), account: @valid_attrs
-    # assert redirected_to(conn) == account_path(conn, :show, account)
-    # assert Repo.get_by(Account, @valid_attrs)
-  # end
-
-  # test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    # account = Repo.insert! %Account{}
-    # conn = put conn, account_path(conn, :update, account), account: @invalid_attrs
-    # assert html_response(conn, 200) =~ "Edit account"
-  # end
-
-  # test "deletes chosen resource", %{conn: conn} do
-    # account = Repo.insert! %Account{}
-    # conn = delete conn, account_path(conn, :delete, account)
-    # assert redirected_to(conn) == account_path(conn, :index)
-    # refute Repo.get(Account, account.id)
-  # end
 
 end

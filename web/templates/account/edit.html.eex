@@ -27,14 +27,14 @@
       
       <div class="field">
         <label>Account owner</label>
-        <%= select f, :status_id, account_user_select, class: "ui dropdown" %>
+        <%= select f, :owner_id, account_user_select, class: "ui dropdown" %>
       </div>
     </div>
 
     <div class="field">
       <label>Account tags</label>
       <div class="ui fluid multiple search selection dropdown">
-        <%= hidden_input f, :tags_id, value: @account.tags |> Enum.map_join(",", & &1.id)%>
+        <%= hidden_input f, :tags_id, value: Enum.map_join(@account.tags, ",", & &1.id) %>
         <i class="dropdown icon"></i>
         <div class="default text">Select tags</div>
         <div class="menu">
@@ -49,19 +49,6 @@
       </div>
     </div>
 
-    <%= inputs_for f, :contacts, fn c -> %>
-      <div class="field <%= if c.errors[:full_name], do: "error" %>">
-        <label>Contact name 
-          <span class="error">
-            <%= if c.errors[:full_name], do: translate_error c.errors[:full_name] %>
-          </span>
-        </label>
-        <div class="ui left corner labeled input">
-          <%= text_input c, :full_name %>
-          <div class="ui left corner label"><i class="asterisk icon"></i></div>
-        </div>
-      </div>
-    <% end %>
     <div class="ui two column very relaxed grid">
       <div class="column">
         <%= inputs_for f, :billing_address, fn ba -> %>

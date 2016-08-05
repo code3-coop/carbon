@@ -15,13 +15,11 @@
   <div class="ui grid">
     <div class="row">
       <div class="column">
-        Tags:
         <%= for tag <- @account.tags do %>
           <div class="ui tag label <%= tag.color%>">
             <%= tag.description %>
           </div>
         <% end %>
-      
       </div>
     </div>
 
@@ -40,7 +38,6 @@
       <div class="eight wide column">
         Billing address
         <%= render "_address_show.html", address: @account.billing_address%>
-        
       </div>
       <div class="eight wide column">
         Shipping address 
@@ -48,6 +45,7 @@
       </div>
     </div>
   </div>
+
   <h1>Events</h1>
   
   <div class="ui feed">

@@ -79,15 +79,12 @@ defmodule Carbon.AccountController do
       join: o in assoc(a, :owner),
       left_join: ba in assoc(a, :billing_address),
       left_join: sa in assoc(a, :shipping_address),
-      left_join: c in assoc(a, :contacts),
-      left_join: ct in assoc(c, :tags),
       left_join: t in assoc(a, :tags),
       preload: [
         status: s,
         owner: o,
         billing_address: ba,
         shipping_address: sa,
-        contacts: {c, tags: ct},
         tags: t
       ]
     account = Repo.one(account_query)
@@ -97,8 +94,9 @@ defmodule Carbon.AccountController do
   end
 
   def update(conn, %{"id" => id, "account" => account_params}) do
-    account = Repo.get!(Account, id)
-    changeset = Account.changeset(account, account_params)
+    tags = get_account_tags_from(account_params)
+    account = Repo.get!(Account, id) |> Repo.preload([:status, :owner, :billing_address, :shipping_address, :tags])
+    changeset = Account.update_changeset(account, account_params, tags)
 
     case Repo.update(changeset) do
       {:ok, account} ->
@@ -124,4 +122,11 @@ defmodule Carbon.AccountController do
 
   def event_list(_conn, %{"id" => _id}) do
   end
+
+  defp get_account_tags_from(%{"tags_id" => ""}), do: []
+  defp get_account_tags_from(%{"tags_id" => tags_id_param}) do
+    ids = tags_id_param |> String.split(~r{\s*,\s*}) |> Enum.map(&String.to_integer/1)
+    Repo.all(from t in Carbon.AccountTag, where: t.id in ^ids)
+  end
+
 end

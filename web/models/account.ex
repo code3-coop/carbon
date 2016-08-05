@@ -14,7 +14,7 @@ defmodule Carbon.Account do
     has_many :events, Carbon.Event
     has_many :deals, Carbon.Deal
     has_many :projects, Carbon.Project
-    many_to_many :tags, Carbon.AccountTag, join_through: "j_accounts_tags"
+    many_to_many :tags, Carbon.AccountTag, join_through: "j_accounts_tags", on_replace: :delete
 
     timestamps
   end
@@ -28,6 +28,17 @@ defmodule Carbon.Account do
     |> cast_assoc(:contacts, required: true)
     |> validate_required(:name)
     |> validate_length(:name, min: 1)
+    |> foreign_key_constraint(:owner_id)
+    |> foreign_key_constraint(:status_id)
+  end
+
+  def update_changeset(account, params, tags) do
+    account
+    |> cast(params, [:name, :status_id, :owner_id])
+    |> validate_required([:name, :status_id, :owner_id])
+    |> cast_assoc(:billing_address, required: true)
+    |> cast_assoc(:shipping_address, required: true)
+    |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
     |> foreign_key_constraint(:owner_id)
     |> foreign_key_constraint(:status_id)
   end
