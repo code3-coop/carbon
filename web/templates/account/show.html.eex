@@ -38,34 +38,13 @@
 
     <div class="row">
       <div class="eight wide column">
-        Billing address 
-        <div class="ui segment">
-          <%= if @account.billing_address do %>
-          <address>
-            <%= @account.billing_address.street_address %>
-            <%= @account.billing_address.extended_address %>
-            <%= @account.billing_address.locality %>
-            <%= @account.billing_address.postal_code %>
-            <%= @account.billing_address.region %>
-            <%= @account.billing_address.country_name %>
-          </address>
-          <% end %>
-        </div>
+        Billing address
+        <%= render "_address_show.html", address: @account.billing_address%>
+        
       </div>
       <div class="eight wide column">
         Shipping address 
-        <div class="ui segment">
-          <%= if @account.shipping_address do %>
-          <address>
-            <%= @account.shipping_address.street_address %>
-            <%= @account.shipping_address.extended_address %>
-            <%= @account.shipping_address.locality %>
-            <%= @account.shipping_address.postal_code %>
-            <%= @account.shipping_address.region %>
-            <%= @account.shipping_address.country_name %>
-          </address>
-          <% end %>
-        </div>
+        <%= render "_address_show.html", address: @account.shipping_address%>
       </div>
     </div>
   </div>
@@ -73,40 +52,7 @@
   
   <div class="ui feed">
     <%= for event <- @account.events do %>
-      <div class="event">
-        <div class="label"></div>
-        <div class="content">
-          <div class="summary">
-            <div class="date">
-              On <%= event.date %>
-            </div>
-            <div class="user">
-              <%= event.user.full_name %>
-            </div>
-          </div>
-          <div class="extra">
-            <%=event.description%>
-          </div>
-          <div class="meta">
-            <%= for tag <- event.tags do %>
-              <div class="ui label tag <%=tag.color%>">
-                <%= tag.description %>
-              </div>
-            <%= end %>
-          </div>
-        </div>
-        <%= unless Enum.empty?(event.reminders) do %>
-          <div>
-            Reminder on: 
-            <ul>
-              <%= for reminder <- event.reminders do %>
-                <li>reminder.date</li>
-              <%= end %>
-            </ul>
-          </div>
-        <%= end %>
-        
-      </div>
+      <%= render "_event_show.html", event: event %>
     <% end %>
     <center>
       <%= if Enum.empty?(@account.events) do %>
@@ -131,7 +77,6 @@
     
   </ul>
 
-  <%= link "Edit", to: account_path(@conn, :edit, @account) %>
   <%= link "Back", to: account_path(@conn, :index) %>
 
 </div>
