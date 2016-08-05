@@ -15,13 +15,13 @@
   <div class="ui grid">
     <div class="row">
       <div class="column">
-        Tags:
-        <%= for tag <- @account.tags do %>
-          <div class="ui tag label <%= tag.color%>">
-            <%= tag.description %>
-          </div>
-        <% end %>
-      
+        <div class="ui tag labels">
+          <%= for tag <- @account.tags do %>
+            <div class="ui tag label <%= tag.color%>">
+              <%= tag.description %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
 
