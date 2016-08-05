@@ -40,8 +40,6 @@ defmodule Carbon.AccountController do
 
   def show(conn, %{"id" => id}) do
     current_user = conn.assigns[:current_user]
-    one_year_ago = Timex.now |> Timex.shift(years: -1) |> Timex.to_erl |> Ecto.DateTime.from_erl
-    one_year_from_now = Timex.now |> Timex.shift(years: 1) |> Timex.to_erl |> Ecto.DateTime.from_erl
 
     query = from a in Account,
       where: a.id == ^id,
@@ -49,7 +47,7 @@ defmodule Carbon.AccountController do
       join: o in assoc(a, :owner),
       left_join: ba in assoc(a, :billing_address),
       left_join: sa in assoc(a, :shipping_address),
-      left_join: e in Carbon.Event, on: e.account_id == a.id and ^(one_year_ago) <= e.date and e.date <= ^(one_year_from_now),
+      left_join: e in Carbon.Event, on: e.account_id == a.id and ago(1, "year") <= e.date and e.date <= from_now(1, "year"),
       left_join: eu in assoc(e, :user),
       left_join: er in Carbon.Reminder, on: er.event_id == e.id and er.user_id == ^current_user.id,
       left_join: et in assoc(e, :tags),
