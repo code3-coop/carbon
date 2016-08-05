@@ -51,35 +51,42 @@
   <h1>Events</h1>
 
   <div class="ui three column very relaxed grid" style="position: relative" >
-    <div class="seven wide column">
-      <div class="ui feed">
-        <% summary = events_summary(@account.events) %>
-        <%= for event <- summary[:past] do %>
-          <%= render "_event_show.html", event: event %>
-        <% end %>
+    <div class="row">
+      <div class="seven wide column">
+        <div class="ui feed">
+          <% summary = events_summary(@account.events) %>
+          <%= for event <- summary[:past] do %>
+            <%= render "_event_show.html", event: event %>
+          <% end %>
+        </div>
+      </div>
+      <div class="two wide column">
+        <div class="ui vertical divider">
+         Now 
+        </div>
+      </div>
+      <div class="seven wide column">
+        <div class="ui feed">
+          <% summary = events_summary(@account.events) %>
+          <%= for event <- summary[:future] do %>
+            <%= render "_event_show.html", event: event %>
+          <% end %>
+        </div>
       </div>
     </div>
-    <div class="two wide column">
-      <div class="ui vertical divider">
-       Now 
-      </div>
-    </div>
-    <div class="seven wide column">
-      <div class="ui feed">
-        <% summary = events_summary(@account.events) %>
-        <%= for event <- summary[:future] do %>
-          <%= render "_event_show.html", event: event %>
-        <% end %>
+    <div class="row">
+      <div class="sixteen wide column">
+        <div style="text-align: center;">
+          <%= if Enum.empty?(@account.events) do %>
+            Nothing interesting happend, ever !!
+          <% else %>
+            <%= link "Complete list of events", to: account_path(@conn, :event_list, @account) %>
+          <% end %> 
+        </div>
       </div>
     </div>
   </div>
-  <center>
-    <%= if Enum.empty?(@account.events) do %>
-      Nothing interesting happend, ever !!
-    <% else %>
-      <%= link "Complete list of events", to: account_path(@conn, :event_list, @account) %>
-    <% end %> 
-  </center>
+  
 
   <h1>Deals</h1>
 
