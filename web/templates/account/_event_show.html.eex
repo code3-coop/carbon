@@ -1,23 +1,28 @@
 <div class="event">
-  <div class="label"></div>
+  <div class="label">
+      <img class="ui avatar image" src="<%= @event.user.image_url %>">
+    
+  </div>
   <div class="content">
     <div class="summary">
       <div class="user">
         <%= @event.user.full_name %>
       </div>
-      <div class="date">
-        On <%= @event.date %>
+      <div class="date" data-content="<%= @event.date %>">
+        <%= Timex.from_now(@event.date |> Ecto.DateTime.to_erl |> Timex.to_datetime) %>
       </div>
     </div>
     <div class="extra">
       <%= @event.description %>
     </div>
     <div class="meta">
-      <%= for tag <- @event.tags do %>
-        <div class="ui label tag <%=tag.color%> mini">
-          <%= tag.description %>
-        </div>
-      <%= end %>
+      <div class="ui tag labels mini">
+        <%= for tag <- @event.tags do %>
+          <div class="ui label <%=tag.color%> ">
+            <%= tag.description %>
+          </div>
+          <%= end %>
+      </div>
       <%= unless Enum.empty?(@event.reminders) do %>
         <div>
           <p class="underlined">Reminder on: </p>
