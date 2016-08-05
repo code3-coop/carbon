@@ -7,13 +7,13 @@ defmodule Carbon.Account do
     field :active, :boolean, default: true
 
     belongs_to :owner, Carbon.User
-    has_one :billing_address, Carbon.Address
-    has_one :shipping_address, Carbon.Address
+    belongs_to :status, Carbon.AccountStatus
+    belongs_to :billing_address, Carbon.Address
+    belongs_to :shipping_address, Carbon.Address
     has_many :contacts, Carbon.Contact
     has_many :events, Carbon.Event
     has_many :deals, Carbon.Deal
     has_many :projects, Carbon.Project
-    belongs_to :status, Carbon.AccountStatus
     many_to_many :tags, Carbon.AccountTag, join_through: "j_accounts_tags"
 
     timestamps
