@@ -13,7 +13,7 @@
 use Timex
 alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event, User, AccountTag, EventTag, Reminder}
 
-joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase) }
+joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", image_url: "/images/avatars/male/44.png", email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase) }
 
 lead_status = Repo.insert!(%AccountStatus{key: "lead"})
 customer_status = Repo.insert!(%AccountStatus{key: "customer"})

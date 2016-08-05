@@ -10,6 +10,7 @@ defmodule Carbon.User do
     field :title, :string
     field :email, :string, virtual: true
     field :email_hash, :string
+    field :image_url, :string
 
     many_to_many :roles, Carbon.Role, join_through: "j_users_roles"
 
