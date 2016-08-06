@@ -1,2 +1,5 @@
-<script src="<%= static_path(@conn, "/js/account_show.js") %>"></script>
-
+<script type="text/javascript">
+  $("[data-content]").popup({
+    position : 'right center'
+  });
+</script>

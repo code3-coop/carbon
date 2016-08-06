@@ -1,1 +1,3 @@
-<script src=<%= static_path(@conn, "/js/account_create.js") %>></script>
+<script type="text/javascript">
+  $('.ui.dropdown').dropdown();
+</script>

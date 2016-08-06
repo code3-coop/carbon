@@ -1,2 +1,5 @@
-<link rel="stylesheet" href=<%= static_path(@conn, "/css/account_index.css") %>/>
-
+<style>
+  .full-width {
+    width: 100%;
+  }
+</style>

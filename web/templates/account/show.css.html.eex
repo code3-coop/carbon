@@ -1,2 +1,5 @@
-
-<link rel="stylesheet" href=<%= static_path(@conn, "/css/account_show.css") %>/>
+<style>
+  .tiny {
+    font-size: 13px;
+  }
+</style>

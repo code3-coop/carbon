@@ -1,2 +1,14 @@
-<script src=<%= static_path(@conn, "/js/account_edit.js") %>></script>
+<script type="text/javascript">
+  var toggleShippingAddressContainer = function(){ 
+    $("#shipping-address-container").toggle(100);
+  }
+  $('.ui.checkbox').checkbox();
+  $('.ui.dropdown').dropdown();
+  $('#shipping-address-swtich').on('change', toggleShippingAddressContainer);
+  toggleShippingAddressContainer();
 
+  var isShippingAddressSet = $('[name="account[shipping_address][street_address]"]').val();
+  if(isShippingAddressSet){
+    $('#shipping-address-swtich').click();
+  }
+</script>
