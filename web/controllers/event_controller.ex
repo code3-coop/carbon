@@ -17,7 +17,7 @@ defmodule Carbon.EventController do
         fragment("now()::date <= ?::date", er.date),
       order_by: [desc: e.date],
       preload: [ tags: t, reminders: er, user: u ]
-    events = Repo.all(events_query)
+
     render(conn, "index.html", events: Repo.all(events_query))
   end
 end
