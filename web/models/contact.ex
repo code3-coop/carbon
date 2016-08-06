@@ -5,9 +5,9 @@ defmodule Carbon.Contact do
     field :lock_version, :integer, default: 1
 
     field :full_name, :string
+    field :title, :string
     field :email, :string
     field :tel, :string
-    field :gender, :integer
     field :active, :boolean, default: true
 
     belongs_to :account, Carbon.Account
@@ -21,7 +21,7 @@ defmodule Carbon.Contact do
   """
   def changeset(contact, params \\ %{}) do
     contact
-    |> cast(params, [:full_name, :email, :tel, :gender, :active])
+    |> cast(params, [:full_name, :title, :email, :tel, :active])
     |> validate_required([:full_name])
   end
 end
