@@ -31,12 +31,35 @@
 
     <div class="row"> 
       <div class="column">
-        <%=for contact <- @account.contacts do %>
-            <h4 class="ui header">
-              <%= contact.full_name %>
-            </h4>
-            <%= contact.email %> <% contact.tel %>
-        <%= end %>
+        <div class="ui cards">
+          <%= for contact <- @account.contacts do %>
+            <div class="card">
+              <div class="content">
+                <img class="right floated mini ui circular image" src="/images/avatars/female/5.png">
+                <div class="header"><%= contact.full_name %></div>
+                <div class="meta"><%= "Contact" %></div>
+                <div class="description">
+                  <p>
+                    <%= if contact.email do %>
+                      <i class="ui icon mail"></i> <a href="mailto:<%= contact.email %>"><%= contact.email %></a>
+                    <% else %>
+                      <i class="ui icon mail grey"></i> <span style="color: rgba(0,0,0,.4)">unknown email</span> <a href="">Fix this&hellip;</a>
+                    <% end %>
+                    <br/>
+                    <%= if contact.tel do %>
+                      <i class="ui icon call"></i> <%= contact.tel %>
+                    <% else %>
+                      <i class="ui icon call grey"></i> <span style="color: rgba(0,0,0,.4)">no phone number</span> <a href="">Fix this&hellip;</a>
+                    <% end %>
+                  </p>
+                </div>
+              </div>
+              <div class="extra content">
+                <span class="right floated star"><i class="star icon"></i> Favorite</span>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
 
