@@ -60,7 +60,7 @@
         <div class="ui feed">
           <% summary = events_summary(@account.events) %>
           <%= for event <- summary[:past] do %>
-            <%= render "_event_show.html", event: event %>
+            <%= render Carbon.EventView, "_event_show.html", event: event %>
           <% end %>
         </div>
       </div>
@@ -73,7 +73,7 @@
         <div class="ui feed">
           <% summary = events_summary(@account.events) %>
           <%= for event <- summary[:future] do %>
-            <%= render "_event_show.html", event: event %>
+            <%= render Carbon.EventView, "_event_show.html", event: event %>
           <% end %>
         </div>
       </div>
@@ -84,7 +84,7 @@
           <%= if Enum.empty?(@account.events) do %>
             Nothing interesting happend, ever !!
           <% else %>
-            <%= link "Complete list of events", to: account_path(@conn, :event_list, @account) %>
+            <%= link "Complete list of events", to: event_path(@conn, :index, @account.id) %>
           <% end %> 
         </div>
       </div>

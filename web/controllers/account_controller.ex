@@ -118,8 +118,6 @@ defmodule Carbon.AccountController do
     |> redirect(to: account_path(conn, :index))
   end
 
-  def event_list(_conn, %{"id" => _id}) do
-  end
 
   defp get_account_tags_from(%{"tags_id" => ""}), do: []
   defp get_account_tags_from(%{"tags_id" => tags_id_param}) do
