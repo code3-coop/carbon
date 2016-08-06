@@ -42,4 +42,10 @@ defmodule Carbon.Account do
     |> foreign_key_constraint(:owner_id)
     |> foreign_key_constraint(:status_id)
   end
+
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:name])
+    |> validate_required([:name])
+  end
 end

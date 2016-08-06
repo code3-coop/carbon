@@ -20,6 +20,5 @@ defmodule Carbon.Address do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:street_address, :locality, :region, :postal_code, :country_name, :active])
-    |> validate_required([:street_address])
   end
 end
