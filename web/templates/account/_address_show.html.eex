@@ -1,10 +1,9 @@
-<div class="ui segment">
+<div class="ui">
   <%= if @address do %>
   <address>
-    <%= @address.street_address %>
-    <%= @address.locality %>
-    <%= @address.postal_code %>
-    <%= @address.region %>
+    <%= @address.street_address %><br/>
+    <%= @address.locality %> <%= @address.region %>
+    <%= @address.postal_code %><br/>
     <%= @address.country_name %>
   </address>
   <% end %>

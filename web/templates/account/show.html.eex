@@ -73,18 +73,26 @@
     </div>
 
     <div class="row">
-      <div class="eight wide column">
-        Billing address
-        <%= render "_address_show.html", address: @account.billing_address%>
+      <div class="column">
+        <div class="ui top pointing secondary menu">
+          <a class="active item" data-tab="billing-address">Billing address</a>
+          <a class="item" data-tab="shipping-address">Shipping address</a>
+        </div>
       </div>
-      <div class="eight wide column">
-        Shipping address 
-        <%= render "_address_show.html", address: @account.shipping_address%>
+    </div>
+    <div class="row">
+      <div class="column">
+        <div class="ui bottom attached active tab" data-tab="billing-address">
+          <%= render "_address_show.html", address: @account.billing_address%>
+        </div>
+        <div class="ui bottom attached tab" data-tab="shipping-address">
+          <%= render "_address_show.html", address: @account.shipping_address%>
+        </div>
       </div>
     </div>
   </div>
 
-  <h1>Events</h1>
+  <h1 class="ui header">Events</h1><br/>
 
   <div class="ui three column very relaxed grid" style="position: relative" >
     <%= if not Enum.empty?(@account.events) do %>
