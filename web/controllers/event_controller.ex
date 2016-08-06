@@ -16,7 +16,7 @@ defmodule Carbon.EventController do
         reminders: er,
         user: u
       ]
-    events = Repo.one(events_query)
+    events = Repo.all(events_query)
     render(conn, "index.html", events: Repo.all(events_query))
   end
 end

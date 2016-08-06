@@ -55,36 +55,39 @@
   <h1>Events</h1>
 
   <div class="ui three column very relaxed grid" style="position: relative" >
-    <div class="row">
-      <div class="seven wide column">
-        <div class="ui feed">
-          <% summary = events_summary(@account.events) %>
-          <%= for event <- summary[:past] do %>
-            <%= render Carbon.EventView, "_event_show.html", event: event %>
-          <% end %>
+    <%= if not Enum.empty?(@account.events) do %>
+      <div class="row">
+        <div class="seven wide column">
+          <div class="ui feed">
+            <% summary = events_summary(@account.events) %>
+            <%= for event <- summary[:past] do %>
+              <%= render Carbon.EventView, "_event_show.html", event: event %>
+            <% end %>
+          </div>
+        </div>
+        <div class="two wide column">
+          <div class="ui vertical divider">
+           Now 
+          </div>
+        </div>
+        <div class="seven wide column">
+          <div class="ui feed">
+            <% summary = events_summary(@account.events) %>
+            <%= for event <- summary[:future] do %>
+              <%= render Carbon.EventView, "_event_show.html", event: event %>
+            <% end %>
+          </div>
         </div>
       </div>
-      <div class="two wide column">
-        <div class="ui vertical divider">
-         Now 
-        </div>
-      </div>
-      <div class="seven wide column">
-        <div class="ui feed">
-          <% summary = events_summary(@account.events) %>
-          <%= for event <- summary[:future] do %>
-            <%= render Carbon.EventView, "_event_show.html", event: event %>
-          <% end %>
-        </div>
-      </div>
-    </div>
+    <% end %>
     <div class="row">
       <div class="sixteen wide column">
         <div style="text-align: center;">
           <%= if Enum.empty?(@account.events) do %>
-            Nothing interesting happend, ever !!
+            Looks like nothing happened yet with this account.<br/>
+            <%= link "Start creating new events and reminders!", to: event_path(@conn, :new, @account.id) %>
           <% else %>
-            <%= link "Complete list of events", to: event_path(@conn, :index, @account.id) %>
+            <%= link "See the complete list of events for this account...", to: event_path(@conn, :index, @account.id) %>
           <% end %> 
         </div>
       </div>
@@ -99,11 +102,10 @@
     <% end %>
     <center>
       <%= if Enum.empty?(@account.deals) do %>
-        Ain't got no Deals, cowboy !!
+        Do you have any likely or ongoing deals with this account?<br/>
+        <%= link "Start creating new deals!", to: account_path(@conn, :index) %>
       <%= end %>
-
     </center>
-    
   </ul>
 
   <%= link "Back", to: account_path(@conn, :index) %>
