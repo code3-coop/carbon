@@ -11,8 +11,7 @@ config :carbon, Carbon.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-               cd: Path.expand("../", __DIR__)]]
+  watchers: []
 
 # Watch static and templates for browser reloading.
 config :carbon, Carbon.Endpoint,
