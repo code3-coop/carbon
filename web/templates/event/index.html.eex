@@ -1,5 +1,27 @@
 <div class="ui container">
-  <%= for event <- @events do %>
-    <%= render "_event_show.html", event: event%>
+  <div class="ui two column grid">
+    <%= for event <- @events do %>
+      <div class="row">
+        <div class="one wide column">
+          <div class="ui dropdown icon item">
+            <i class="bars icon"></i>
+            <div class="menu">
+              <%= link class: "item", to: event_path @conn, :edit, event.account_id, event.id do %>
+                <i class="icon edit"></i>
+                Edit
+              <% end %>
+              <%= link class: "item", to: event_path(@conn, :delete, event.account_id, event.id) do %>
+                <i class="icon archive"></i>
+                Archive
+              <%= end %>          
+            </div>
+          </div>
+        </div>
+        <div class="fifteen wide column">
+          <div class="ui feed">
+          <%= render "_event_show.html", event: event%>
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>
