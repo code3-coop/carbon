@@ -32,7 +32,6 @@
             </td>
             <td>
               <%= if account.billing_address do account.billing_address.street_address end %>
-              <%= if account.billing_address do account.billing_address.extended_address end %>
             </td>
             <td>Matched on: </td>
           </tr>

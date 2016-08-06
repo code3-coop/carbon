@@ -29,6 +29,22 @@
           <div class="ui left corner label"><i class="asterisk icon"></i></div>
         </div>
       </div>
+      <div class="field <%= if c.errors[:email], do: "error" %>">
+        <label>Email address
+          <span class="error">
+            <%= if c.errors[:email], do: translate_error c.errors[:email] %>
+          </span>
+        </label>
+        <%= email_input c, :email %>
+      </div>
+      <div class="field <%= if c.errors[:tel], do: "error" %>">
+        <label>Phone number
+          <span class="error">
+            <%= if c.errors[:tel], do: translate_error c.errors[:tel] %>
+          </span>
+        </label>
+        <%= text_input c, :tel %>
+      </div>
     <% end %>
     <div class="field">
       <label>Account status</label>
