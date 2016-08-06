@@ -5,6 +5,10 @@
     <div class="ui label <%=@account.status.color%>">
       <%= @account.status.key %>
     </div>
+    <div class="ui label image">
+      <img src="<%=@account.owner.image_url%>">
+      <%= @account.owner.full_name %>
+    </div>
     <%= link to: account_path @conn, :edit, @account.id do %>
       <button class="right floated ui button">
         <i class="ui icon edit"></i>Edit
