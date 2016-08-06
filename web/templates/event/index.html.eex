@@ -7,7 +7,7 @@
             <i class="bars icon"></i>
             <div class="menu">
               <%= link class: "item", to: event_path @conn, :edit, event.account_id, event.id do %>
-                <i class="icon edit"></i>
+                <i class="icon write"></i>
                 Edit
               <% end %>
               <%= link class: "item", to: event_path(@conn, :delete, event.account_id, event.id) do %>

@@ -11,7 +11,7 @@
     </div>
     <%= link to: account_path @conn, :edit, @account.id do %>
       <button class="right floated ui button">
-        <i class="ui icon edit"></i>Edit
+        <i class="ui icon write"></i>Edit
       </button>
     <% end %>
   </h1>

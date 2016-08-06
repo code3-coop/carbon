@@ -43,8 +43,9 @@ shipping_address_b = Repo.insert! %Address{street_address: "1 Shipping Street", 
 account_a = Repo.insert!(%Account{name: "Account A", owner: joe, status: customer_status, billing_address: billing_address_a, shipping_address: shipping_address_a, tags: [noisy_office_tag, good_coffee_tag]})
 account_b = Repo.insert!(%Account{name: "Account B", owner: mike, status: customer_status, billing_address: billing_address_b, shipping_address: shipping_address_b, tags: [good_coffee_tag]})
 
-contact_a = Repo.insert!(%Contact{full_name: "Contact A", email: "contact.a@company.a.com", tel: "+1 123-123-1234", account: account_a})
-contact_b = Repo.insert!(%Contact{full_name: "Contact B", email: "contact.b@company.b.com", tel: "+1 123-123-1234", account: account_b})
+contact_a = Repo.insert!(%Contact{full_name: "Contact A", title: "CEO", email: "contact.a@company.a.com", tel: "+1 123-123-1234", account: account_a})
+contact_b = Repo.insert!(%Contact{full_name: "Contact B", title: "CEO", email: "contact.b@company.b.com", tel: "+1 123-123-1234", account: account_b})
+Repo.insert!(%Contact{full_name: "Other Contact", title: "Senior Marketing Director", email: "contact.b@company.b.com", tel: "+1 123-123-1234", account: account_b})
 
 
 event_a_1 = Repo.insert! %Event{description: "1st meeting", date: Timex.now |> Timex.shift(days: 3) |> Timex.to_erl |> Ecto.DateTime.from_erl, account: account_a, user: joe, tags: [usless_meeting]}
