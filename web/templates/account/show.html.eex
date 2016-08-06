@@ -84,8 +84,8 @@
       <div class="sixteen wide column">
         <div style="text-align: center;">
           <%= if Enum.empty?(@account.events) do %>
-            Looks like nothing happened yet with this account.<br/>
-            <%= link "Start creating new events and reminders!", to: event_path(@conn, :new, @account.id) %>
+            Are there any planned meetings or events you want to keep track of?<br/>
+            <%= link "Start adding events and reminders!", to: event_path(@conn, :new, @account.id) %>
           <% else %>
             <%= link "See the complete list of events for this account...", to: event_path(@conn, :index, @account.id) %>
           <% end %> 
@@ -102,8 +102,8 @@
     <% end %>
     <center>
       <%= if Enum.empty?(@account.deals) do %>
-        Do you have any likely or ongoing deals with this account?<br/>
-        <%= link "Start creating new deals!", to: account_path(@conn, :index) %>
+        Are there any likely deals with this account?<br/>
+        <%= link "Add them here!", to: account_path(@conn, :index) %> <% #Make this point to deal_path(@conn, :new, @account.id) %>
       <%= end %>
     </center>
   </ul>

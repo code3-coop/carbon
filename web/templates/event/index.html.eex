@@ -1,5 +1,5 @@
 <div class="ui container">
   <%= for event <- @events do %>
-    <%= render "_event_show.html", event: event%>
+    <%= render "_event_show.html", event: event %>
   <% end %>
 </div>
