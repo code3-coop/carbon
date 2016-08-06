@@ -35,7 +35,11 @@
           <%= for contact <- @account.contacts do %>
             <div class="card">
               <div class="content">
-                <img class="right floated mini ui circular image" src="/images/avatars/female/5.png">
+                <%= if contact.image_url do %>
+                  <img class="right floated mini ui circular image" src="<%= contact.image_url %>">
+                <% else %>
+                  <img class="right floated mini ui circular image" src="/images/avatars/female/5.png">
+                <% end %>
                 <div class="header"><%= contact.full_name %></div>
                 <%= if contact.title do %>
                   <div class="meta"><%= contact.title %></div>

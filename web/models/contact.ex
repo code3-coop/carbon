@@ -8,6 +8,7 @@ defmodule Carbon.Contact do
     field :title, :string
     field :email, :string
     field :tel, :string
+    field :image_url, :string
     field :active, :boolean, default: true
 
     belongs_to :account, Carbon.Account
@@ -21,7 +22,7 @@ defmodule Carbon.Contact do
   """
   def changeset(contact, params \\ %{}) do
     contact
-    |> cast(params, [:full_name, :title, :email, :tel, :active])
+    |> cast(params, [:full_name, :title, :email, :tel, :image_url, :active])
     |> validate_required([:full_name])
   end
 end
