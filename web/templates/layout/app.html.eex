@@ -9,6 +9,7 @@
     <link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic.min.css") %>/>
     <script src="<%= static_path(@conn, "/vendor/jquery.min.js") %>"></script>
     <script src="<%= static_path(@conn, "/vendor/semantic.min.js") %>"></script>
+    <script src="<%= static_path(@conn, "/vendor/turbolinks.js") %>"></script>
     <%= render_existing @view_module, String.replace(@view_template, ".html", ".css.html"), assigns %>
     <title>Carbon</title>
   </head>
