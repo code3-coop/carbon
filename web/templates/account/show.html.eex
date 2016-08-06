@@ -37,25 +37,30 @@
               <div class="content">
                 <img class="right floated mini ui circular image" src="/images/avatars/female/5.png">
                 <div class="header"><%= contact.full_name %></div>
-                <div class="meta"><%= "Contact" %></div>
+                <%= if contact.title do %>
+                  <div class="meta"><%= contact.title %></div>
+                <% else %>
+                  <div class="meta">unknown title</div>
+                <% end %>
                 <div class="description">
                   <p>
                     <%= if contact.email do %>
                       <i class="ui icon mail"></i> <a href="mailto:<%= contact.email %>"><%= contact.email %></a>
                     <% else %>
-                      <i class="ui icon mail grey"></i> <span style="color: rgba(0,0,0,.4)">unknown email</span> <a href="">Fix this&hellip;</a>
+                      <i class="ui icon mail grey"></i> <span style="color: rgba(0,0,0,.4)">unknown email</span>
                     <% end %>
                     <br/>
                     <%= if contact.tel do %>
                       <i class="ui icon call"></i> <%= contact.tel %>
                     <% else %>
-                      <i class="ui icon call grey"></i> <span style="color: rgba(0,0,0,.4)">no phone number</span> <a href="">Fix this&hellip;</a>
+                      <i class="ui icon call grey"></i> <span style="color: rgba(0,0,0,.4)">unknown phone number</span>
                     <% end %>
                   </p>
                 </div>
               </div>
               <div class="extra content">
-                <span class="right floated star"><i class="star icon"></i> Favorite</span>
+                <span class="left floated"><i class="write icon"></i> Edit</span>
+                <span class="right floated">Added in <%= contact.inserted_at |> Ecto.DateTime.to_iso8601 |> String.slice(0, 4) %></span>
               </div>
             </div>
           <% end %>

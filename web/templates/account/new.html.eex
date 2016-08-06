@@ -17,6 +17,10 @@
         <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>
+    <div class="field">
+      <label>Account status</label>
+      <%= select f, :status_id, account_status_select, class: "ui dropdown" %>
+    </div>
     <%= inputs_for f, :contacts, fn c -> %>
       <div class="field <%= if c.errors[:full_name], do: "error" %>">
         <label>Contact name 
@@ -28,6 +32,14 @@
           <%= text_input c, :full_name %>
           <div class="ui left corner label"><i class="asterisk icon"></i></div>
         </div>
+      </div>
+      <div class="field <%= if c.errors[:title], do: "error" %>">
+        <label>Title
+          <span class="error">
+            <%= if c.errors[:title], do: translate_error c.errors[:title] %>
+          </span>
+        </label>
+        <%= text_input c, :title %>
       </div>
       <div class="field <%= if c.errors[:email], do: "error" %>">
         <label>Email address
@@ -46,10 +58,6 @@
         <%= text_input c, :tel %>
       </div>
     <% end %>
-    <div class="field">
-      <label>Account status</label>
-      <%= select f, :status_id, account_status_select, class: "ui dropdown" %>
-    </div>
     <%= submit "Create account", class: "ui submit button" %>
     <%= link "cancel", to: account_path(@conn, :index) %>
   </div>
