@@ -18,6 +18,15 @@ defmodule Carbon.EventController do
       order_by: [desc: e.date],
       preload: [ tags: t, reminders: er, user: u ]
 
-    render(conn, "index.html", events: Repo.all(events_query))
+    render(conn, "index.html", events: Repo.all(events_query), 
+                               account_id: id)
   end
+
+  def new(conn, _params) do
+    changeset = Event.changeset(%Event{})
+    conn
+    |> assign(:changeset, changeset)
+    |> render("new.html")
+  end
+
 end

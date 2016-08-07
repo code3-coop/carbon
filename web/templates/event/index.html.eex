@@ -1,4 +1,11 @@
 <div class="ui container">
+  <%= link to: account_event_path @conn, :new, @account_id do %>
+    <div class="ui right floated button">
+      <i class="plus icon"></i>
+      Add event
+    </div>
+  <% end %>
+  
   <div class="ui two column grid">
     <% now = Ecto.DateTime.from_erl(:calendar.local_time)%>
     <% event_d = @events |> Enum.find(& Ecto.DateTime.compare(now, &1.date) == :gt)  %>
@@ -11,11 +18,11 @@
           <div class="ui dropdown icon item">
             <i class="bars icon"></i>
             <div class="menu">
-              <%= link class: "item", to: event_path @conn, :edit, event.account_id, event.id do %>
+              <%= link class: "item", to: account_event_path @conn, :edit, event.account_id, event.id do %>
                 <i class="icon write"></i>
                 Edit
               <% end %>
-              <%= link class: "item", to: event_path(@conn, :delete, event.account_id, event.id) do %>
+              <%= link class: "item", to: account_event_path(@conn, :delete, event.account_id, event.id) do %>
                 <i class="icon archive"></i>
                 Archive
               <%= end %>          

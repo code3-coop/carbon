@@ -125,9 +125,9 @@
         <div style="text-align: center;">
           <%= if Enum.empty?(@account.events) do %>
             Are there any past or planned client interactions you want to keep track of?<br/>
-            <%= link "Start adding events and reminders!", to: event_path(@conn, :new, @account.id) %>
+            <%= link "Start adding events and reminders!", to: account_event_path(@conn, :new, @account.id) %>
           <% else %>
-            <%= link "See the complete list of events for this account...", to: event_path(@conn, :index, @account.id) %>
+            <%= link "See the complete list of events for this account...", to: account_event_path(@conn, :index, @account.id) %>
           <% end %> 
         </div>
       </div>
