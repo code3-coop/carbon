@@ -1,4 +1,4 @@
-<h2 class="ui dividing header">New account</h2>
+<h2 class="ui header">New account</h2>
 
 <%= form_for @changeset, account_path(@conn, :create), fn f -> %>
   <div class="ui form <%= if @changeset.action, do: "error" %>">

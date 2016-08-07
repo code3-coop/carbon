@@ -26,11 +26,11 @@ defmodule Carbon.EventController do
                                account_id: id)
   end
 
-  def new(conn, _params) do
+  def new(conn, %{"account_id" => account_id}) do
     changeset = Event.changeset(%Event{})
     conn
     |> assign(:changeset, changeset)
-    |> render("new.html")
+    |> render("new.html", account_id: account_id)
   end
 
 end

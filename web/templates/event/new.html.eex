@@ -1,0 +1,58 @@
+<h2 class="ui header">New event</h2>
+
+<%= form_for @changeset, account_event_path(@conn, :create, @account_id), fn f-> %>
+
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+  
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+    
+    <div class="field <%= if f.errors[:description], do: "error" %>">
+      <label>Description 
+        <span class="error">
+          <%= if f.errors[:description], do: translate_error f.errors[:description] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= textarea f, :description %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:date], do: "error" %>">
+      <label>Date
+        <span class="error">
+          <%= if f.errors[:date], do: translate_error f.errors[:date] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <input type="date" name="event[date]"/>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Event tags</label>
+      <div class="ui fluid multiple search selection dropdown">
+        <%= hidden_input f, :tags_id  %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select tags</div>
+        <div class="menu">
+          <%= for tag <- event_tags_select do %>
+            <div class="item " data-value="<%= tag.id %>">
+              <div class="ui label tag <%=tag.color%>">
+                <%= tag.description %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    
+    <%= submit "Create event", class: "ui button submit"%>
+    <%= link "Cancel", to: account_event_path @conn, :index, @account_id %>
+  </div>
+<% end %>
