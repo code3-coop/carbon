@@ -1,10 +1,13 @@
 <div class="ui container">
-  <%= link to: account_event_path @conn, :new, @account_id do %>
-    <div class="ui right floated button">
-      <i class="plus icon"></i>
-      Add event
-    </div>
-  <% end %>
+  <h1 class="ui header">
+    Event's of account <%= @account_name %> 
+    <%= link to: account_event_path @conn, :new, @account_id do %>
+      <div class="ui right floated button">
+        <i class="plus icon"></i>
+        Add event
+      </div>
+    <% end %>
+  </h1>
   
   <div class="ui two column grid">
     <% now = Ecto.DateTime.from_erl(:calendar.local_time)%>

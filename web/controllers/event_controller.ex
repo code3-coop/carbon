@@ -18,7 +18,11 @@ defmodule Carbon.EventController do
       order_by: [desc: e.date],
       preload: [ tags: t, reminders: er, user: u ]
 
-    render(conn, "index.html", events: Repo.all(events_query), 
+    account_query = from a in Carbon.Account,
+      select: a.name,
+      where: a.id == ^id
+    render(conn, "index.html", events: Repo.all(events_query),
+                               account_name: Repo.one(account_query),
                                account_id: id)
   end
 
