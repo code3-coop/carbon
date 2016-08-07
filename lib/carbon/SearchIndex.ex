@@ -19,7 +19,7 @@ defmodule Carbon.SearchIndex do
     if state[:timer] do
       Process.cancel_timer(state[:timer])
     end
-    new_timer = Process.send_after(__MODULE__, :do_refresh, 0)
+    new_timer = Process.send_after(__MODULE__, :do_refresh, @five_seconds_in_millis)
     { :noreply, Map.put(state, :timer, new_timer) }
   end
 
