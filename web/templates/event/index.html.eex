@@ -1,6 +1,6 @@
 <div class="ui container">
   <h1 class="ui header">
-    Event's of account <%= @account_name %> 
+    <%= @account_name %>'s events
     <%= link to: account_event_path @conn, :new, @account_id do %>
       <div class="ui right floated button">
         <i class="plus icon"></i>
