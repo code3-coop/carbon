@@ -20,6 +20,10 @@ defmodule Carbon.Account do
     timestamps
   end
 
+  def short_desc(account) do
+    inspect(account)
+  end
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """

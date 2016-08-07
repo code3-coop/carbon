@@ -28,6 +28,7 @@ defmodule Carbon.AccountController do
 
     case Repo.insert(changeset) do
       {:ok, account} ->
+        Carbon.Activity.new(account.id, current_user.id, :create, :accounts, account.id, Account.short_desc(account))
         conn
         |> put_flash(:info, "Account created successfully.")
         |> redirect(to: account_path(conn, :show, account.id))
@@ -92,12 +93,14 @@ defmodule Carbon.AccountController do
   end
 
   def update(conn, %{"id" => id, "account" => account_params}) do
+    current_user = conn.assigns[:current_user]
     tags = get_account_tags_from(account_params)
     account = Repo.get!(Account, id) |> Repo.preload([:status, :owner, :billing_address, :shipping_address, :tags])
     changeset = Account.update_changeset(account, account_params, tags)
 
     case Repo.update(changeset) do
       {:ok, account} ->
+        Carbon.Activity.new(account.id, current_user.id, :update, :accounts, account.id, Account.short_desc(account))
         conn
         |> put_flash(:info, "Account updated successfully.")
         |> redirect(to: account_path(conn, :show, account))
