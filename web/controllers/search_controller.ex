@@ -43,7 +43,7 @@ defmodule Carbon.SearchController do
 
   defp select_similar_term(conn, user_query) do
     case Ecto.Adapters.SQL.query(Repo, @similar_term_query, [ user_query ]) do
-      {:ok, %{:num_rows => 0} = matches} ->
+      {:ok, %{:num_rows => 0}} ->
         assign(conn, :similar, nil)
       {:ok, %{:rows => rows}} ->
         assign(conn, :similar, hd rows)
