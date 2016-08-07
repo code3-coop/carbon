@@ -14,6 +14,7 @@ defmodule Carbon.Account do
     has_many :events, Carbon.Event
     has_many :deals, Carbon.Deal
     has_many :projects, Carbon.Project
+    has_many :activities, Carbon.Activity
     many_to_many :tags, Carbon.AccountTag, join_through: "j_accounts_tags", on_replace: :delete
 
     timestamps
