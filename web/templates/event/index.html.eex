@@ -1,6 +1,11 @@
 <div class="ui container">
   <div class="ui two column grid">
+    <% now = Ecto.DateTime.from_erl(:calendar.local_time)%>
+    <% event_d = @events |> Enum.find(& Ecto.DateTime.compare(now, &1.date) == :gt)  %>
     <%= for event <- @events do %>
+      <%= if event == event_d do %>
+        <div class="ui horizontal divider">Now</div>
+      <% end%>
       <div class="row">
         <div class="one wide column">
           <div class="ui dropdown icon item">
