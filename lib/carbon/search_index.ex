@@ -12,6 +12,7 @@ defmodule Carbon.SearchIndex do
   end
 
   def init(:ok) do
+    refresh
     { :ok, %{} }
   end
 
