@@ -38,6 +38,10 @@
               <i class="bars icon"></i>
               <div class="menu">
                 <%= link class: "item", to: account_event_path @conn, :edit, event.account_id, event.id do %>
+                  <i class="icon hourglass start"></i>
+                  Add reminder
+                <% end %>
+                <%= link class: "item", to: account_event_path @conn, :edit, event.account_id, event.id do %>
                   <i class="icon write"></i>
                   Edit
                 <% end %>
