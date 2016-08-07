@@ -1,27 +1,59 @@
 <div class="ui container">
+  <h1 class="ui header">
+    <div class="content">
+      Events 
+      <h2 class="ui sub header">
+        <%= @account_name %>
+      </h2>
+    </div>
+    <%= link to: account_event_path @conn, :new, @account_id do %>
+      <div class="ui right floated button">
+        <i class="plus icon"></i>
+        Add event
+      </div>
+    <% end %>
+  </h1>
+  
   <div class="ui two column grid">
-    <%= for event <- @events do %>
+    <% now = Ecto.DateTime.from_erl(:calendar.local_time)%>
+    <% event_d = @events |> Enum.find(& Ecto.DateTime.compare(now, &1.date) == :gt)  %>
+    <%= if Enum.empty? @events do %>
       <div class="row">
-        <div class="one wide column">
-          <div class="ui dropdown icon item">
-            <i class="bars icon"></i>
-            <div class="menu">
-              <%= link class: "item", to: event_path @conn, :edit, event.account_id, event.id do %>
-                <i class="icon write"></i>
-                Edit
-              <% end %>
-              <%= link class: "item", to: event_path(@conn, :delete, event.account_id, event.id) do %>
-                <i class="icon archive"></i>
-                Archive
-              <%= end %>          
+        <div class="sixteen wide column ">
+          <div class="empty-list-message">
+            The (hi)story begins as follow: <%= link to: account_event_path @conn, :new, @account_id do %>
+            <b><%=@current_user.full_name%></b> add an event
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <%= for event <- @events do %>
+        <%= if event == event_d do %>
+          <div class="ui horizontal divider">Now</div>
+        <% end%>
+        <div class="row">
+          <div class="one wide column">
+            <div class="ui dropdown icon item">
+              <i class="bars icon"></i>
+              <div class="menu">
+                <%= link class: "item", to: account_event_path @conn, :edit, event.account_id, event.id do %>
+                  <i class="icon write"></i>
+                  Edit
+                <% end %>
+                <%= link class: "item", to: account_event_path(@conn, :delete, event.account_id, event.id) do %>
+                  <i class="icon archive"></i>
+                  Archive
+                <%= end %>          
+              </div>
+            </div>
+          </div>
+          <div class="fifteen wide column">
+            <div class="ui feed">
+              <%= render "_event_show.html", event: event%>
             </div>
           </div>
         </div>
-        <div class="fifteen wide column">
-          <div class="ui feed">
-          <%= render "_event_show.html", event: event%>
-        </div>
-      </div>
-    </div>
-  <% end %>
+      <% end %>
+    <% end %>
 </div>
