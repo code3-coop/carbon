@@ -18,16 +18,18 @@
         <div class="item">
           <%= link "Carbon", to: "/" %>
         </div>
-        <div class="right item">
-          <%#TODO this path must be user_path :show, @current_user.id
-                  once we've got a controller for the users %>
-          <%= link to: "users/#{@current_user.id}/edit" do %>
-            <div class="ui image label">
-              <img src="<%=@current_user.image_url%>">
-              <%=@current_user.full_name%>
-            </div>
+        <%= if assigns[:current_user] do %>
+          <div class="right item">
+            <%#TODO this path must be user_path :show, @current_user.id
+                    once we've got a controller for the users %>
+            <%= link to: "users/#{@current_user.id}/edit" do %>
+              <div class="ui image label">
+                <img src="<%=@current_user.image_url%>">
+                <%=@current_user.full_name%>
+              </div>
+            <% end %>
+          </div>
         <% end %>
-        </div>
       </div>
     
     <div class="ui container">
