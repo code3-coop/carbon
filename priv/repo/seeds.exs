@@ -13,6 +13,10 @@
 use Timex
 alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event, User, AccountTag, EventTag, Reminder}
 
+#
+# Sample data
+#
+
 paragraph = [
   "Lorem ipsum dolor sit amet, an viris virtute voluptatibus nec, sed cu dicunt diceret facilis. Praesent democritum pro ea, est delenit percipitur an.",
   "Ea cum quot civibus mandamus, pro et veniam ridens, salutatus dignissim ullamcorper cu sit. Sed cetero delicata similique ex. Deserunt mediocritatem ei has, te pericula constituto pri.",
@@ -56,3 +60,113 @@ end
 
 reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local_time), user: joe, event: event_a_1}
 
+#
+# Full-text search materialized views and indexes
+#
+
+Ecto.Adapters.SQL.query! Carbon.Repo, "
+  create extension if not exists pg_trgm;
+"
+
+Ecto.Adapters.SQL.query! Carbon.Repo, "
+  drop index if exists idx_fts_search;
+"
+
+Ecto.Adapters.SQL.query! Carbon.Repo, "
+  drop materialized view if exists search_index;
+"
+
+Ecto.Adapters.SQL.query! Carbon.Repo, "
+  create materialized view search_index as (
+
+    select
+        a.id as id
+      , 'account' as matched_table
+      , 'name' as matched_column
+      , setweight(to_tsvector(a.name), 'A') as search_vector
+    from accounts as a
+
+    union
+
+    select
+        a.id as id
+      , 'account' as matched_table
+      , 'status' as matched_column
+      , setweight(to_tsvector(s.key), 'C') as search_vector
+    from accounts as a
+      left join account_statuses as s on a.status_id = s.id
+
+    union
+
+    select
+        a.id as id
+      , 'account' as matched_table
+      , 'tags' as matched_columns
+      , setweight(to_tsvector(string_agg(at.description, ' ')), 'B') as search_vector
+    from accounts as a
+      left join j_accounts_tags as jat on jat.account_id = a.id
+      left join account_tags as at on at.id = jat.account_tag_id
+    group by a.id
+
+    union
+
+    select
+        a.id as id
+      , 'contact' as matched_table
+      , 'name' as matched_column
+      , setweight(to_tsvector(string_agg(c.full_name, ' ')), 'A') as search_vector
+    from accounts as a
+      left join contacts as c on c.account_id = a.id
+    group by a.id
+
+  );
+"
+
+Ecto.Adapters.SQL.query! Carbon.Repo, "
+  create index idx_fts_search on search_index using gin(search_vector);
+"
+
+Ecto.Adapters.SQL.query! Carbon.Repo, "
+  drop index if exists words_idx;
+"
+
+Ecto.Adapters.SQL.query! Carbon.Repo, "
+  drop materialized view if exists search_words;
+"
+
+Ecto.Adapters.SQL.query! Carbon.Repo, "
+  create materialized view search_words as 
+  select word from ts_stat ('
+
+    select
+      to_tsvector(a.name) as search_vector
+    from accounts as a
+
+    union
+
+    select
+      to_tsvector(s.key) as search_vector
+    from accounts as a
+      left join account_statuses as s on a.status_id = s.id
+
+    union
+
+    select
+      to_tsvector(string_agg(at.description, '' '')) as search_vector
+    from accounts as a
+      left join j_accounts_tags as jat on jat.account_id = a.id
+      left join account_tags as at on at.id = jat.account_tag_id
+
+    union
+
+    select
+      to_tsvector(string_agg(c.full_name, '' '')) as search_vector
+    from accounts as a
+      left join contacts as c on c.account_id = a.id
+
+  ');
+"
+
+Ecto.Adapters.SQL.query! Carbon.Repo, "
+  create index words_idx on search_words using gin(word gin_trgm_ops);
+"
