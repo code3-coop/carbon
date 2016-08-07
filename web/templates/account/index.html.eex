@@ -20,9 +20,7 @@
               <%= link account.name, to: account_path(@conn, :show, account) %>
             </td>
             <td>
-              <%= for contact <- account.contacts do %>
-                <%= contact.full_name %>
-              <% end %>
+              <%= account.contacts |> Enum.map(& &1.full_name) |> Enum.join(", ") %>
             </td>
             <td>
               <%# Deals are not loaded%>
