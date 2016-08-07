@@ -14,6 +14,7 @@ defmodule Carbon do
       supervisor(Carbon.Endpoint, []),
       # Start your own worker by calling: Carbon.Worker.start_link(arg1, arg2, arg3)
       # worker(Carbon.Worker, [arg1, arg2, arg3]),
+      worker(Carbon.SearchIndex, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

@@ -21,6 +21,9 @@ defmodule Carbon.Router do
     pipe_through [:browser, :auth]
 
     get "/", PageController, :index
+
+    get "/search", SearchController, :search
+
     resources "/accounts", AccountController do
       resources "/events", EventController
     end
