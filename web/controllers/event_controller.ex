@@ -31,8 +31,23 @@ defmodule Carbon.EventController do
     |> render("new.html")
   end
 
-  def create(conn, %{"account_id" => account_id}, event_params) do
-    conn
+  def create(conn, %{"account_id" => account_id, "event" => event_params}) do
+    current_user = conn.assigns[:current_user]
+    event = %Event{user: current_user, account: Repo.get(Account, account_id)}
+    changeset = Event.create_changeset(event, Map.update(event_params, "date", "", &(&1<>"T00:00:00")))
+
+    case Repo.insert(changeset) do
+      {:ok, event} ->
+        Carbon.Activity.new(account_id, current_user.id, :create, :events, event.id, inspect(event))
+        conn
+        |> put_flash(:info, "Event created successfully.")
+        |> redirect(to: account_event_path(conn, :index, account_id))
+      {:error, changeset} ->
+        conn
+        |> assign(:changeset, changeset)
+        |> assign(:account_id, account_id)
+        |> render("new.html")
+    end
   end
 
 end

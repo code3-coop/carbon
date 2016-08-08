@@ -32,7 +32,6 @@ defmodule Carbon.Account do
     |> cast(params, [:name, :status_id, :owner_id])
     |> cast_assoc(:contacts, required: true)
     |> validate_required(:name)
-    |> validate_length(:name, min: 1)
     |> foreign_key_constraint(:owner_id)
     |> foreign_key_constraint(:status_id)
   end
