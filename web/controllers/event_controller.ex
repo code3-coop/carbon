@@ -1,6 +1,8 @@
 defmodule Carbon.EventController do
   use Carbon.Web, :controller
 
+  import Carbon.ControllerUtils
+
   alias Carbon.{ Account, Event, Reminder }
 
   def index(conn, %{"account_id" => account_id}) do
@@ -33,7 +35,7 @@ defmodule Carbon.EventController do
 
   def create(conn, %{"account_id" => account_id, "event" => event_params}) do
     current_user = conn.assigns[:current_user]
-    tags = get_event_tags_from(event_params)
+    tags = get_tags_from(Event, event_params)
     event = %Event{user: current_user, account: Repo.get(Account, account_id)}
     changeset = Event.create_changeset(event, Map.update(event_params, "date", "", &(&1<>"T00:00:00")), tags)
 
@@ -49,12 +51,6 @@ defmodule Carbon.EventController do
         |> assign(:account_id, account_id)
         |> render("new.html")
     end
-  end
-
-  defp get_event_tags_from(%{"tags_id" => ""}), do: []
-  defp get_event_tags_from(%{"tags_id" => tags_id_param}) do
-    ids = tags_id_param |> String.split(~r{\s*,\s*}) |> Enum.map(&String.to_integer/1)
-    Repo.all(from t in Carbon.EventTag, where: t.id in ^ids)
   end
 
 end
