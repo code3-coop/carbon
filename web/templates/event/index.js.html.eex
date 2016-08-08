@@ -8,7 +8,9 @@
   $("[data-content]").popup({
     position : 'right center'
   });
-  $(".dropdown").dropdown();
-  $(".dropdown").hide();
-  $(".row").hover(handleIn, handleOut);
+  $(function(){
+    $(".dropdown").dropdown();
+    $(".dropdown").hide();
+    $(".row").hover(handleIn, handleOut);
+  });
 </script>
