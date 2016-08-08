@@ -121,7 +121,6 @@ defmodule Carbon.AccountController do
     |> redirect(to: account_path(conn, :index))
   end
 
-
   defp get_account_tags_from(%{"tags_id" => ""}), do: []
   defp get_account_tags_from(%{"tags_id" => tags_id_param}) do
     ids = tags_id_param |> String.split(~r{\s*,\s*}) |> Enum.map(&String.to_integer/1)
