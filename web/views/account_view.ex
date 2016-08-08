@@ -2,6 +2,10 @@ defmodule Carbon.AccountView do
   use Carbon.Web, :view
   import Ecto.Query, only: [from: 2]
 
+  def match_table_to_color("account"), do: "blue"
+  def match_table_to_color("event"), do: "yellow"
+  def match_table_to_color("contact"), do: "purple"
+  
   def events_summary(all_events) do
     test_date = Ecto.DateTime.from_erl(:calendar.local_time) |> Ecto.DateTime.to_date
     events_by_date = Enum.group_by(all_events, &Ecto.DateTime.to_date(&1.date))

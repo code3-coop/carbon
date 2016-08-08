@@ -25,7 +25,7 @@ defmodule Carbon.SearchController do
       {:ok, %{:num_rows => 0}} ->
         conn
         |> select_similar_term(user_query)
-        |> assign(:matches_by_account, %{})
+        |> assign(:matches_by_account_id, %{})
         |> assign(:accounts, [])
         |> render(Carbon.AccountView, "index.html")
       {:ok, %{:rows => rows}} ->

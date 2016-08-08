@@ -5,37 +5,65 @@
   <div class="sixteen wide column">
     <div class="ui search full-width">
       <div class="ui icon input full-width">
-        <input class="prompt full-width" type="text" placeholder="Account..."/>
+        <input id="search" class="prompt full-width" type="text" placeholder="Account..."/>
         <i class="search icon"></i>
       </div>
     </div>
-    <table class="ui segment table">
-      <tbody>
-        <%= for account <- @accounts do %>
-          <tr>
-            <td>
-              <%= link account.name, to: account_path(@conn, :show, account) %>
-            </td>
-            <td>
-              <%= account.contacts |> Enum.map(& &1.full_name) |> Enum.join(", ") %>
-            </td>
-            <td>
-              <%# Deals are not loaded%>
-              <%#= for deal <- account.deals do %>
-                <%#= deal.description %>
-              <%# end %>
-            </td>
-            <td>
-              <%= if account.billing_address do account.billing_address.street_address end %>
-            </td>
-            <td>Matched on: </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <%= unless Enum.empty? @accounts do %>
+      <table class="ui segment table">
+        <tbody>
+          <%= for account <- @accounts do %>
+            <tr>
+              <td>
+                <%= link account.name, to: account_path(@conn, :show, account) %>
+              </td>
+              <td>
+                <%= account.contacts |> Enum.map(& &1.full_name) |> Enum.join(", ") %>
+              </td>
+              <td>
+                <%# Deals are not loaded%>
+                <%#= for deal <- account.deals do %>
+                  <%#= deal.description %>
+                <%# end %>
+              </td>
+              <td>
+                <%= if account.billing_address do account.billing_address.street_address end %>
+              </td>
+              <%= if assigns[:matches_by_account_id]  do %>
+              
+                <% matches = @matches_by_account_id[account.id] %>
+                <td>
+                  <%= for match <- matches do %>
+                    <% match_table = Enum.at(match, 1)%>
+                    <% match_column = Enum.at(match, 2)%>
+                    <label class="ui <%= match_table_to_color(match_table) %> image label">
+                      <%= match_table %>
+                      <div class="detail">
+                        <%= match_column %>
+                      </div>
+                    </label>
+                  <% end %>
+
+                </td>
+              <% end %>
+              
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
   </div>
 </div>
-
+<div class="ui one column centered grid">
+  <p>
+    <%= if assigns[:similar] do %>
+      Did you mean 
+      <a href="accounts?q=<%=@similar%>">
+        <%= @similar %>
+      </a> ?
+    <% end %>
+  </p>
+</div>
 <div class="ui one column centered grid">
   <p> Didn't find the account you were looking for?
     <%= link "Create it!", to: account_path(@conn, :new) %>
