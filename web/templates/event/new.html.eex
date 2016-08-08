@@ -28,7 +28,11 @@
         </span>
       </label>
       <div class="ui left corner labeled input">
-        <input type="date" name="event[date]"/>
+        <%= if @changeset.changes[:date] do %>
+          <input type="date" name="event[date]" value="<%= @changeset.changes[:date] |> Ecto.DateTime.to_date |> Ecto.Date.to_iso8601 %>"/>
+        <% else %>
+          <input type="date" name="event[date]" />
+        <% end %>
         <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>

@@ -29,7 +29,9 @@ defmodule Carbon.Activity do
   end
 
   def new(account_id, user_id, action, target_schema, target_id \\ nil, target_value \\ nil) do
-    Carbon.SearchIndex.refresh()
+    if target_schema in [:accounts, :contacts] do
+      Carbon.SearchIndex.refresh()
+    end
     spawn(Carbon.Repo, :insert, [
       %__MODULE__{
         :action => Atom.to_string(action),
