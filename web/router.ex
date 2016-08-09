@@ -22,8 +22,6 @@ defmodule Carbon.Router do
 
     get "/", PageController, :index
 
-    post "/search", SearchController, :search
-
     resources "/accounts", AccountController do
       resources "/events", EventController
     end
