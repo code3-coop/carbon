@@ -31,4 +31,11 @@ defmodule Carbon.Event do
     |> foreign_key_constraint(:owner_id)
     |> foreign_key_constraint(:status_id)
   end
+
+  def archive_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:active])
+    |> validate_required([:active])
+  end
+  
 end
