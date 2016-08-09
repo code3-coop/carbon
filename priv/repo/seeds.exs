@@ -19,6 +19,7 @@ alias Carbon.{
   Event,
   EventTag,
   Project,
+  ProjectTag,
   Reminder,
   Repo,
   User,
@@ -48,8 +49,13 @@ former_customer_status = Repo.insert!(%AccountStatus{key: "former_customer"})
 
 slow_payer = Repo.insert!(%AccountTag{description: "Slow payer", color: "red"})
 usless_meeting = Repo.insert!(%EventTag{description: "Useless meeting", color: "red"})
+
 noisy_office_tag = Repo.insert!(%AccountTag{description: "noisy-office", color: "violet"})
 good_coffee_tag = Repo.insert!(%AccountTag{description: "good-coffee", color: "purple"})
+
+development_tag = Repo.insert! %ProjectTag{description: "development", color: "blue"}
+consulting_tag = Repo.insert! %ProjectTag{description: "consulting", color: "violet"}
+training_tag = Repo.insert! %ProjectTag{description: "training", color: "purple"}
 
 billing_address_a = Repo.insert! %Address{street_address: "1 Billing Street", locality: "City A", region: "RA", country_name: "CA"}
 billing_address_b = Repo.insert! %Address{street_address: "1 Billing Street", locality: "City B", region: "RB", country_name: "CB"}
@@ -73,8 +79,8 @@ end
 
 reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local_time), user: joe, event: event_a_1}
 
-Repo.insert! %Project{code: "AAA", description: "Project AAA description", account: account_b }
-Repo.insert! %Project{code: "BBB", description: "Project BBB description", account: account_b }
+Repo.insert! %Project{code: "AAA", description: "Project AAA description", account: account_b, tags: [development_tag, consulting_tag] }
+Repo.insert! %Project{code: "BBB", description: "Project BBB description", account: account_b, tags: [consulting_tag, training_tag] }
 Repo.insert! %Project{code: "CCC", description: "Project CCC description", account: account_b }
 
 #
