@@ -28,7 +28,7 @@ defmodule Carbon.Event do
     |> cast(params, [:description, :date])
     |> validate_required([:description, :date])
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
-    |> foreign_key_constraint(:owner_id)
+    |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:status_id)
   end
 
@@ -36,6 +36,14 @@ defmodule Carbon.Event do
     struct
     |> cast(params, [:active])
     |> validate_required([:active])
+  end
+  
+  def update_changeset(account, params, tags) do
+    account
+    |> cast(params, [:description, :date, :user_id])
+    |> validate_required([:description, :date, :user_id])
+    |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
+    |> foreign_key_constraint(:user_id)
   end
   
 end

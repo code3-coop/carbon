@@ -1,0 +1,63 @@
+<h2>Edit event</h2>
+
+<%= form_for @changeset, account_event_path(@conn, :update, @event.account_id, @event.id), fn f -> %>
+  <%= hidden_input f, :lock_version %>
+  <%= hidden_input f, :user_id, value: @current_user.id %>
+
+
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+    
+    <div class="field">
+      <label>Event tags</label>
+      <div class="ui fluid multiple search selection dropdown">
+        <%= hidden_input f, :tags_id, value: Enum.map_join(@event.tags, ",", & &1.id) %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select tags</div>
+        <div class="menu">
+          <%= for tag <- event_tags_select do %>
+            <div class="item " data-value="<%= tag.id %>">
+              <div class="ui label tag <%=tag.color%>">
+                <%= tag.description %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:description], do: "error" %>">
+      <label>Description 
+        <span class="error">
+          <%= if f.errors[:description], do: translate_error f.errors[:description] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= textarea f, :description %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:date], do: "error" %>">
+      <label>Date
+        <span class="error">
+          <%= if f.errors[:date], do: translate_error f.errors[:date] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= if @changeset.changes[:date] do %>
+          <input type="date" name="event[date]" value="<%= @changeset.changes[:date] |> Ecto.DateTime.to_date |> Ecto.Date.to_iso8601 %>"/>
+        <% else %>
+          <input type="date" name="event[date]" value="<%= @event.date %>"/>
+        <% end %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+
+    <%= submit "Update event", class: "ui submit primary button" %>
+    <%= link "cancel", to: account_event_path(@conn, :index, @event.account_id), class: "ui button" %>
+  
+<% end %>

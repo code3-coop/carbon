@@ -53,6 +53,38 @@ defmodule Carbon.EventController do
     end
   end
 
+  def edit(conn, %{"account_id" => account_id, "id" => event_id}) do
+    event_query = from e in Event,
+      where: e.id == ^event_id,
+      left_join: t in assoc(e, :tags),
+      preload: [
+        tags: t
+      ]
+    event = Repo.one(event_query)
+    changeset = Event.changeset(event)
+
+    render(conn, "edit.html", event: event, changeset: changeset)
+  end
+
+  def update(conn, %{"account_id" => account_id, "id" => id, "event" => event_params}) do
+    current_user = conn.assigns[:current_user]
+    tags = get_tags_from(Carbon.EventTag, event_params)
+    event = Repo.get!(Event, id) |> Repo.preload([:user, :tags])
+    changeset = Event.update_changeset(event, event_params, tags)
+
+    case Repo.update(changeset) do
+      {:ok, account} ->
+        Carbon.Activity.new(event.account_id, current_user.id, :update, :events, event.id, inspect(event))
+        conn
+        |> put_flash(:info, "Event updated successfully.")
+        |> redirect(to: account_event_path(conn, :index, account_id))
+      {:error, changeset} ->
+        render(conn, "edit.html", event: event, changeset: changeset)
+    end
+  end
+  
+  
+
   def delete(conn, %{"account_id" => account_id, "id" => event_id}) do
     current_user = conn.assigns[:current_user]
     event = Repo.get!(Event, event_id)
