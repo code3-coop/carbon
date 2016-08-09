@@ -45,6 +45,7 @@ defmodule Carbon.Account do
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
     |> foreign_key_constraint(:owner_id)
     |> foreign_key_constraint(:status_id)
+    |> optimistic_lock(:lock_version)
   end
 
   def changeset(struct, params \\ %{}) do

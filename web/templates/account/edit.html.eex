@@ -1,6 +1,8 @@
 <h2>Edit account</h2>
 
 <%= form_for @changeset, account_path(@conn, :update, @account), fn f -> %>
+  <%= hidden_input f, :lock_version %>
+
   <div class="ui form <%= if @changeset.action, do: "error" %>">
     <div class="ui error message">
       <div class="header">Ruh roh!</div>
