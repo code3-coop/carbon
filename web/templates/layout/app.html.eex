@@ -10,6 +10,8 @@
     <script src="<%= static_path(@conn, "/vendor/jquery.min.js") %>"></script>
     <script src="<%= static_path(@conn, "/vendor/semantic.min.js") %>"></script>
     <script src="<%= static_path(@conn, "/vendor/turbolinks.js") %>"></script>
+    <script src="<%= static_path(@conn, "/vendor/phoenix.js") %>"></script>
+    <script src="<%= static_path(@conn, "/vendor/phoenix_html.js") %>"></script>
     <%= render_existing @view_module, String.replace(@view_template, ".html", ".css.html")%>
     <title>Carbon</title>
   </head>

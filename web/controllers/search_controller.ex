@@ -20,18 +20,20 @@ defmodule Carbon.SearchController do
     limit 1;
   "
 
-  def search(conn, %{ "q" => user_query }) do
+  def search(conn, %{ "search" => %{ "query" => user_query }}) do
     case Ecto.Adapters.SQL.query(Repo, @search_query, [ user_query ]) do
       {:ok, %{:num_rows => 0}} ->
         conn
         |> select_similar_term(user_query)
         |> assign(:matches_by_account_id, %{})
         |> assign(:accounts, [])
+        |> assign(:query, user_query)
         |> render(Carbon.AccountView, "index.html")
       {:ok, %{:rows => rows}} ->
         conn
         |> assign(:similar, nil)
         |> assign(:matches_by_account_id, build_matches_by_account_dict(rows))
+        |> assign(:query, user_query)
         |> select_matching_accounts(rows)
         |> render(Carbon.AccountView, "index.html")
       {:error, _e} ->

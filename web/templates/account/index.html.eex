@@ -4,10 +4,13 @@
   </div>
   <div class="sixteen wide column">
     <div class="ui search full-width">
-      <div class="ui icon input full-width">
-        <input id="search" class="prompt full-width" type="text" placeholder="Account..."/>
-        <i class="search icon"></i>
-      </div>
+      <%= form_for @conn, search_path(@conn, :search), [as: :search], fn f -> %>      
+        <div class="ui icon input full-width">
+          <% maybe_query = if assigns[:query] do @query else  "" end %>
+          <%= text_input f, :query, value: maybe_query, class: "prompt full-width", placeholder: "Account..." %>
+          <i class="search icon"></i>
+        </div>
+      <% end %>
     </div>
     <%= unless Enum.empty? @accounts do %>
       <table class="ui segment table">
@@ -64,14 +67,14 @@
   </div>
 </div>
 <div class="ui one column centered grid">
-  <p>
     <%= if assigns[:similar] do %>
-      Did you mean 
-      <a href="accounts?q=<%=@similar%>">
-        <%= @similar %>
-      </a> ?
+      <%= form_for @conn, search_path(@conn, :search), [as: :search, method: :post], fn f -> %>
+        <%= hidden_input f, :query, value: Enum.at(@similar, 0) %>
+        Did you mean 
+        <%= content_tag(:a, @similar, [href: "#", data: [submit: "parent"], rel: "nofollow"]) %>
+        ?
+      <% end %>
     <% end %>
-  </p>
 </div>
 <div class="ui one column centered grid">
   <p> Didn't find the account you were looking for?
