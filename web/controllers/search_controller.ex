@@ -8,8 +8,8 @@ defmodule Carbon.SearchController do
       , s.matched_table
       , s.matched_column
     from search_index as s
-    where s.search_vector @@ to_tsquery('simple', $1)
-    order by ts_rank(s.search_vector, to_tsquery('simple', $1)) desc;
+    where s.search_vector @@ plainto_tsquery('simple', $1)
+    order by ts_rank(s.search_vector, plainto_tsquery('simple', $1)) desc;
   "
 
   @similar_term_query "
@@ -21,9 +21,7 @@ defmodule Carbon.SearchController do
   "
 
   def search(conn, %{ "search" => %{ "query" => user_query }}) do
-    ts_query = user_query |> String.split(~r{\s+}, trim: true) |> Enum.join(" & ")
-
-    case Ecto.Adapters.SQL.query(Repo, @search_query, [ ts_query ]) do
+    case Ecto.Adapters.SQL.query(Repo, @search_query, [ user_query ]) do
       {:ok, %{:num_rows => 0}} ->
         conn
         |> select_similar_term(user_query)
