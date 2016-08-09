@@ -1,6 +1,8 @@
 defmodule Carbon.AccountController do
   use Carbon.Web, :controller
 
+  import Carbon.ControllerUtils
+
   alias Carbon.Account
 
   def index(conn, params) do
@@ -94,7 +96,7 @@ defmodule Carbon.AccountController do
 
   def update(conn, %{"id" => id, "account" => account_params}) do
     current_user = conn.assigns[:current_user]
-    tags = get_account_tags_from(account_params)
+    tags = get_tags_from(Account, account_params)
     account = Repo.get!(Account, id) |> Repo.preload([:status, :owner, :billing_address, :shipping_address, :tags])
     changeset = Account.update_changeset(account, account_params, tags)
 
@@ -119,13 +121,6 @@ defmodule Carbon.AccountController do
     conn
     |> put_flash(:info, "Account deleted successfully.")
     |> redirect(to: account_path(conn, :index))
-  end
-
-
-  defp get_account_tags_from(%{"tags_id" => ""}), do: []
-  defp get_account_tags_from(%{"tags_id" => tags_id_param}) do
-    ids = tags_id_param |> String.split(~r{\s*,\s*}) |> Enum.map(&String.to_integer/1)
-    Repo.all(from t in Carbon.AccountTag, where: t.id in ^ids)
   end
 
 end
