@@ -34,19 +34,15 @@ defmodule Carbon.AccountController do
     |> Enum.reduce(&MapSet.intersection/2)
     |> MapSet.to_list
 
-    if Enum.empty?(ids) do
-      conn
-      |> assign(:similar, select_similar_term(user_query))
-      |> assign(:query, user_query)
-      |> render(Carbon.AccountView, "index.html")
-    else
-      conn
-      |> assign(:matches_by_account_id, build_and_merge_matches_dicts(all_rows))
-      |> assign(:accounts, select_matching_accounts(ids, params))
-      |> assign(:query, user_query)
-      |> render(Carbon.AccountView, "index.html")
+    case ids do
+      [] -> assign(conn, :similar, select_similar_term(user_query))
+      _ ->
+        conn
+        |> assign(:matches_by_account_id, build_and_merge_matches_dicts(all_rows))
+        |> assign(:accounts, select_matching_accounts(ids, params))
     end
-
+    |> assign(:query, user_query)
+    |> render(Carbon.AccountView, "index.html")
   end
   
   def index(conn, params) do
