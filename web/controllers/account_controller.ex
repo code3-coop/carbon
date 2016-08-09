@@ -11,8 +11,7 @@ defmodule Carbon.AccountController do
       , s.matched_table
       , s.matched_column
     from search_index as s
-    where s.search_vector @@ plainto_tsquery('simple', $1)
-    order by ts_rank(s.search_vector, plainto_tsquery('simple', $1)) desc;
+    where s.search_vector @@ plainto_tsquery('simple', $1);
   "
 
   @similar_term_query "
