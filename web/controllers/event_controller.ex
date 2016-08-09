@@ -57,9 +57,7 @@ defmodule Carbon.EventController do
     event_query = from e in Event,
       where: e.id == ^event_id,
       left_join: t in assoc(e, :tags),
-      preload: [
-        tags: t
-      ]
+      preload: [ tags: t ]
     event = Repo.one(event_query)
     changeset = Event.changeset(event)
 
@@ -83,8 +81,6 @@ defmodule Carbon.EventController do
     end
   end
   
-  
-
   def delete(conn, %{"account_id" => account_id, "id" => event_id}) do
     current_user = conn.assigns[:current_user]
     event = Repo.get!(Event, event_id)
