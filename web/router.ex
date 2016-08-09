@@ -22,7 +22,7 @@ defmodule Carbon.Router do
 
     get "/", PageController, :index
 
-    get "/search", SearchController, :search
+    post "/search", SearchController, :search
 
     resources "/accounts", AccountController do
       resources "/events", EventController
