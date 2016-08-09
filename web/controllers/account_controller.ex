@@ -182,7 +182,7 @@ defmodule Carbon.AccountController do
   defp build_and_merge_matches_dicts(all_rows) do
     all_rows
     |> Enum.map(&build_matches_by_account_dict/1)
-    |> Enum.reduce(&(Map.merge(&1, &2, fn (_id, m1, m2) -> Enum.concat(m1, m2) end)))
+    |> Enum.reduce(&(Map.merge(&1, &2, fn (_id, m1, m2) -> m1 ++ m2 end)))
   end
 
   defp build_matches_by_account_dict(rows) do
