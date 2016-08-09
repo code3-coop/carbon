@@ -21,7 +21,7 @@ defmodule Carbon.SearchController do
   "
 
   def search(conn, %{ "search" => %{ "query" => user_query }}) do
-    ts_query = user_query |> String.split(~r{\s+}) |> Enum.join(" & ")
+    ts_query = user_query |> String.split(~r{\s+}, trim: true) |> Enum.join(" & ")
 
     case Ecto.Adapters.SQL.query(Repo, @search_query, [ ts_query ]) do
       {:ok, %{:num_rows => 0}} ->
