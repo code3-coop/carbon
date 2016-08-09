@@ -17,18 +17,14 @@ defmodule Carbon.SessionPlug do
 
   def call(conn, _opts) do
     conn
-    |> maybe_assign_user_from_token
+    |> maybe_assign_user
     |> maybe_redirect_to_login_page
   end
 
-  defp maybe_assign_user_from_token(%Plug.Conn{assigns: %{current_user: user}} = conn) when user != nil, do: conn
-  defp maybe_assign_user_from_token(conn) do
-    token_name = SessionController.carbon_token_name
-    with {:ok, token} <- Map.fetch(conn.cookies, token_name),
-         {:ok, user_id} <- Phoenix.Token.verify(Carbon.Endpoint, token_name, token, max_age: @one_week_in_sec) do
-      assign(conn, :current_user, Repo.get!(User, user_id))
-    else
-      _ -> conn
+  defp maybe_assign_user(conn) do
+    case get_session(conn, :user_id) do
+      nil -> conn
+      user_id -> assign(conn, :current_user, Repo.get!(User, user_id))
     end
   end
 

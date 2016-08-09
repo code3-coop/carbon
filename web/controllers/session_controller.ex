@@ -56,7 +56,8 @@ defmodule Carbon.SessionController do
     case Phoenix.Token.verify(Carbon.Endpoint, @carbon_token_name, token, max_age: 3*60) do
       {:ok, user_id} ->
         conn
-        |> put_resp_cookie(@carbon_token_name, Phoenix.Token.sign(Carbon.Endpoint, @carbon_token_name, user_id))
+        |> configure_session(renew: true)
+        |> put_session(:user_id, user_id)
         |> redirect(to: Carbon.Router.Helpers.account_path(conn, :index))
       _ ->
         conn
@@ -70,7 +71,7 @@ defmodule Carbon.SessionController do
   """
   def logout(conn, _params) do
     conn
-    |> put_resp_cookie(@carbon_token_name, "")
+    |> configure_session(drop: true)
     |> redirect(to: Carbon.Router.Helpers.session_path(conn, :index))
   end
 end
