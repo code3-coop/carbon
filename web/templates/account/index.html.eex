@@ -12,7 +12,7 @@
         </div>
       <% end %>
     </div>
-    <%= unless Enum.empty? @accounts do %>
+    <%= if assigns[:accounts] do %>
       <table class="ui segment table">
         <thead>
           <tr>
