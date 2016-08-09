@@ -84,7 +84,7 @@ Ecto.Adapters.SQL.query! Carbon.Repo, "
         a.id as id
       , 'account' as matched_table
       , 'name' as matched_column
-      , setweight(to_tsvector('simple', a.name), 'A') as search_vector
+      , to_tsvector('simple', a.name) as search_vector
     from accounts as a
 
     union
@@ -93,7 +93,7 @@ Ecto.Adapters.SQL.query! Carbon.Repo, "
         a.id as id
       , 'account' as matched_table
       , 'status' as matched_column
-      , setweight(to_tsvector('simple', s.key), 'C') as search_vector
+      , to_tsvector('simple', s.key) as search_vector
     from accounts as a
       left join account_statuses as s on a.status_id = s.id
 
@@ -103,7 +103,7 @@ Ecto.Adapters.SQL.query! Carbon.Repo, "
         a.id as id
       , 'account' as matched_table
       , 'tags' as matched_columns
-      , setweight(to_tsvector('simple', string_agg(at.description, ' ')), 'B') as search_vector
+      , to_tsvector('simple', string_agg(at.description, ' ')) as search_vector
     from accounts as a
       left join j_accounts_tags as jat on jat.account_id = a.id
       left join account_tags as at on at.id = jat.account_tag_id
@@ -115,7 +115,7 @@ Ecto.Adapters.SQL.query! Carbon.Repo, "
         a.id as id
       , 'contact' as matched_table
       , 'name' as matched_column
-      , setweight(to_tsvector('simple', string_agg(c.full_name, ' ')), 'A') as search_vector
+      , to_tsvector('simple', string_agg(c.full_name, ' ')) as search_vector
     from accounts as a
       left join contacts as c on c.account_id = a.id
     group by a.id
