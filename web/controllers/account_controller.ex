@@ -22,7 +22,7 @@ defmodule Carbon.AccountController do
     limit 1;
   "
 
-  def index(conn, %{ "search" => %{ "query" => user_query }}) when user_query != "" do
+  def index(conn, %{ "search" => %{ "query" => user_query } } = params) when user_query != "" do
     all_rows = user_query
     |> String.split(~r{\s+}, trim: true)
     |> Enum.map(&Task.async(Ecto.Adapters.SQL, :query, [Repo, @search_query, [ &1 ]]))
@@ -42,7 +42,7 @@ defmodule Carbon.AccountController do
     else
       conn
       |> assign(:matches_by_account_id, build_and_merge_matches_dicts(all_rows))
-      |> assign(:accounts, select_matching_accounts(ids))
+      |> assign(:accounts, select_matching_accounts(ids, params))
       |> assign(:query, user_query)
       |> render(Carbon.AccountView, "index.html")
     end
@@ -51,12 +51,12 @@ defmodule Carbon.AccountController do
   
   def index(conn, params) do
     query = from a in Account,
+      left_join: c in assoc(a, :contacts),
+      left_join: b in assoc(a, :billing_address),
       where: a.active == true,
       order_by: a.name,
       limit: ^min(Map.get(params, "limit", 25), 25),
       offset: ^Map.get(params, "offset", 0),
-      left_join: c in assoc(a, :contacts),
-      left_join: b in assoc(a, :billing_address),
       preload: [contacts: c, billing_address: b]
     render(conn, "index.html", accounts: Repo.all(query))
   end
@@ -199,14 +199,15 @@ defmodule Carbon.AccountController do
     end
   end
 
-  defp select_matching_accounts(account_ids) do
+  defp select_matching_accounts(account_ids, params) do
     query = from a in Account,
-      where: a.id in ^account_ids,
       left_join: c in assoc(a, :contacts),
       left_join: b in assoc(a, :billing_address),
+      where: a.id in ^account_ids and a.active == true,
+      order_by: a.name,
+      limit: ^min(Map.get(params, "limit", 25), 25),
+      offset: ^Map.get(params, "offset", 0),
       preload: [contacts: c, billing_address: b]
     Repo.all(query)
   end
-
-
 end
