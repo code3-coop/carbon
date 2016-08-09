@@ -96,7 +96,7 @@ defmodule Carbon.AccountController do
 
   def update(conn, %{"id" => id, "account" => account_params}) do
     current_user = conn.assigns[:current_user]
-    tags = get_tags_from(Account, account_params)
+    tags = get_tags_from(Carbon.AccountTag, account_params)
     account = Repo.get!(Account, id) |> Repo.preload([:status, :owner, :billing_address, :shipping_address, :tags])
     changeset = Account.update_changeset(account, account_params, tags)
 

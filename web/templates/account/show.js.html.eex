@@ -1,6 +1,5 @@
 <script type="text/javascript">
-  $("[data-content]").popup({
-    position : 'right center'
-  });
-  $('.menu .item').tab();
+
+$('.menu .item').tab();
+
 </script>

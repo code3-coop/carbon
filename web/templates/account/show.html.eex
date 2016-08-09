@@ -96,11 +96,11 @@
 
   <div class="ui three column very relaxed grid" style="position: relative" >
     <%= if not Enum.empty?(@account.events) do %>
+      <% { prev_events, next_events } = events_summary(@account.events) %>
       <div class="row">
         <div class="seven wide column">
           <div class="ui feed">
-            <% summary = events_summary(@account.events) %>
-            <%= for event <- summary[:past] do %>
+            <%= for event <- prev_events do %>
               <%= render Carbon.EventView, "_event_show.html", event: event %>
             <% end %>
           </div>
@@ -112,8 +112,7 @@
         </div>
         <div class="seven wide column">
           <div class="ui feed">
-            <% summary = events_summary(@account.events) %>
-            <%= for event <- summary[:future] do %>
+            <%= for event <- next_events do %>
               <%= render Carbon.EventView, "_event_show.html", event: event %>
             <% end %>
           </div>

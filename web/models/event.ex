@@ -3,7 +3,7 @@ defmodule Carbon.Event do
 
   schema "events" do
     field :description, :string
-    field :date, Ecto.DateTime
+    field :date, Ecto.Date
     field :active, :boolean, default: true
 
     belongs_to :user, Carbon.User

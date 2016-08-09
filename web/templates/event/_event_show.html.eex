@@ -8,8 +8,8 @@
       <div class="user">
         <%= @event.user.full_name %>
       </div>
-      <div class="date" data-content="<%= @event.date %>">
-        <%= Timex.from_now(@event.date |> Ecto.DateTime.to_erl |> Timex.to_datetime) %>
+      <div class="date">
+        <%= @event.date |> Ecto.Date.to_iso8601 %>
       </div>
     </div>
     <div class="extra">

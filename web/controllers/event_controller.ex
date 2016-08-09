@@ -16,7 +16,7 @@ defmodule Carbon.EventController do
         er.event_id == e.id and
         er.user_id == ^current_user.id and
         er.active == true and
-        fragment("now()::date <= ?::date", er.date),
+        fragment("current_date <= ?", er.date),
       order_by: [desc: e.date],
       preload: [ tags: t, reminders: er, user: u ]
 
@@ -37,7 +37,7 @@ defmodule Carbon.EventController do
     current_user = conn.assigns[:current_user]
     tags = get_tags_from(Event, event_params)
     event = %Event{user: current_user, account: Repo.get(Account, account_id)}
-    changeset = Event.create_changeset(event, Map.update(event_params, "date", "", &(&1<>"T00:00:00")), tags)
+    changeset = Event.create_changeset(event, event_params, tags)
 
     case Repo.insert(changeset) do
       {:ok, event} ->

@@ -18,7 +18,7 @@ defmodule Carbon.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Carbon, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex, :bamboo, :timex]]
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :phoenix_ecto, :postgrex, :bamboo]]
   end
 
   # Specifies which paths to compile per environment.
@@ -37,9 +37,7 @@ defmodule Carbon.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:bamboo, "~> 0.7"},
-     {:timex, "~> 3.0"}
-   ]
+     {:bamboo, "~> 0.7"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

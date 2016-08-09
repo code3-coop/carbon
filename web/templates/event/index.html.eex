@@ -15,8 +15,8 @@
   </h1>
   
   <div class="ui two column grid">
-    <% now = Ecto.DateTime.from_erl(:calendar.local_time)%>
-    <% event_d = @events |> Enum.find(& Ecto.DateTime.compare(now, &1.date) == :gt)  %>
+    <% today = Ecto.Date.from_erl(elem(:calendar.local_time, 0))%>
+    <% event_d = @events |> Enum.find(& Ecto.Date.compare(today, &1.date) == :gt)  %>
     <%= if Enum.empty? @events do %>
       <div class="row">
         <div class="sixteen wide column ">

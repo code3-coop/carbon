@@ -10,12 +10,13 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-use Timex
 alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event, User, AccountTag, EventTag, Reminder}
 
 #
 # Sample data
 #
+
+{ today, _time } = :calendar.local_time
 
 paragraph = [
   "Lorem ipsum dolor sit amet, an viris virtute voluptatibus nec, sed cu dicunt diceret facilis. Praesent democritum pro ea, est delenit percipitur an.",
@@ -51,11 +52,11 @@ contact_a = Repo.insert!(%Contact{full_name: "Contact A", title: "CEO", email: "
 contact_b = Repo.insert!(%Contact{full_name: "Contact B", title: "CEO", email: "contact.b@company.b.com", tel: "+1 123-123-1234", image_url: "/images/avatars/female/15.png", account: account_b})
 Repo.insert!(%Contact{full_name: "Other Contact", title: "Senior Marketing Director", email: "contact.b@company.b.com", tel: "+1 123-123-1234", image_url: "/images/avatars/female/20.png", account: account_b})
 
-
-event_a_1 = Repo.insert! %Event{description: "1st meeting", date: Timex.now |> Timex.shift(days: 3) |> Timex.to_erl |> Ecto.DateTime.from_erl, account: account_a, user: joe, tags: [usless_meeting]}
+event_a_1 = Repo.insert! %Event{description: "1st meeting", date: Ecto.Date.from_erl(today), account: account_a, user: joe, tags: [usless_meeting]}
 
 for n <- -10..10 do
-  Repo.insert! %Event{description: Enum.random(paragraph), date: Timex.now |> Timex.shift(days: n) |> Timex.to_erl |> Ecto.DateTime.from_erl, account: account_b, user: Enum.random([joe, mike, robert])}
+  event_date = :calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(today) + n)
+  Repo.insert! %Event{description: Enum.random(paragraph), date: Ecto.Date.from_erl(event_date), account: account_b, user: Enum.random([joe, mike, robert])}
 end
 
 reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local_time), user: joe, event: event_a_1}
