@@ -100,6 +100,7 @@ defmodule Carbon.AccountController do
       left_join: c in assoc(a, :contacts),
       left_join: ct in assoc(c, :tags),
       left_join: t in assoc(a, :tags),
+      left_join: p in assoc(a, :projects),
       preload: [
         status: s,
         owner: o,
@@ -108,7 +109,8 @@ defmodule Carbon.AccountController do
         events: {e, user: eu, reminders: er, tags: et},
         deals: {d, tags: dt},
         contacts: {c, tags: ct},
-        tags: t
+        tags: t,
+        projects: p,
       ]
     account = Repo.one(query)
     render(conn, "show.html", account: account)

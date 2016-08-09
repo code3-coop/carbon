@@ -5,7 +5,7 @@ defmodule Carbon.Project do
     field :lock_version, :integer, default: 1
 
     field :code, :string
-    field :description, :float
+    field :description, :string
     field :active, :boolean, default: true
 
     belongs_to :account, Carbon.Account
@@ -18,7 +18,8 @@ defmodule Carbon.Project do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
-    |> validate_required([])
+    |> cast(params, [:code, :description, :active])
+    |> validate_required([:code])
+    |> foreign_key_constraint(:account_id)
   end
 end

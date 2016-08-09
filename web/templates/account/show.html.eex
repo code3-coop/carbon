@@ -136,17 +136,33 @@
 
   <h1>Deals</h1>
 
-  <ul>
-    <%= for deal <- @account.deals do %>
-      <%= deal.description %>
-    <% end %>
+  <%= if Enum.empty?(@account.deals) do %>
     <center>
-      <%= if Enum.empty?(@account.deals) do %>
-        Are there any new or likely deals you want to keep track of?<br/>
-        <%= link "Start adding them here!", to: account_path(@conn, :index) %> <% #Make this point to deal_path(@conn, :new, @account.id) %>
-      <%= end %>
+      Are there any new or likely deals you want to keep track of?<br/>
+      <%= link "Start adding them here!", to: account_path(@conn, :index) %> <% #Make this point to deal_path(@conn, :new, @account.id) %>
     </center>
-  </ul>
+  <% else %>
+    <ul>
+      <%= for deal <- @account.deals do %>
+        <li><%= deal.description %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <h1>Projects</h1>
+
+  <%= if Enum.empty?(@account.projects) do %>
+    <center>
+      Are any ongoing projects you would want to log billable hours on?<br/>
+      <%= link "Start adding projects!", to: account_path(@conn, :index) %> <% #Make this point to project_path(@conn, :new, @account.id) %>
+    </center>
+  <% else %>
+    <ul>
+      <%= for project <- @account.projects do %>
+        <li><%= project.description %></li>
+      <% end %>
+    </ul>
+  <% end %>
 
   <%= link "Back", to: account_path(@conn, :index) %>
 

@@ -10,7 +10,19 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Carbon.{Repo, AccountStatus, Account, Contact, Address, Event, User, AccountTag, EventTag, Reminder}
+alias Carbon.{
+  Account,
+  AccountStatus,
+  AccountTag,
+  Address,
+  Contact,
+  Event,
+  EventTag,
+  Project,
+  Reminder,
+  Repo,
+  User,
+}
 
 #
 # Sample data
@@ -60,6 +72,10 @@ for n <- -10..10 do
 end
 
 reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local_time), user: joe, event: event_a_1}
+
+Repo.insert! %Project{code: "AAA", description: "Project AAA description", account: account_b }
+Repo.insert! %Project{code: "BBB", description: "Project BBB description", account: account_b }
+Repo.insert! %Project{code: "CCC", description: "Project CCC description", account: account_b }
 
 #
 # Full-text search materialized views and indexes
