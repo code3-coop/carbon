@@ -32,14 +32,17 @@ defmodule Carbon.Activity do
     if target_schema in [:accounts, :contacts] do
       Carbon.SearchIndex.refresh()
     end
-    spawn(Carbon.Repo, :insert, [
-      %__MODULE__{
-        :action => Atom.to_string(action),
-        :target_schema => Atom.to_string(target_schema),
-        :target_id => target_id,
-        :target_value => target_value,
-        :user_id => user_id,
-        :account_id => account_id } ] )
+    activity = %__MODULE__{
+      :action => Atom.to_string(action),
+      :target_schema => Atom.to_string(target_schema),
+      :target_id => target_id,
+      :target_value => target_value,
+      :user_id => user_id,
+      :account_id => account_id }
+    spawn __MODULE__, :do_insert, [activity]
   end
 
+  def do_insert(struct) do
+    Carbon.Repo.insert!(changeset(struct))
+  end
 end
