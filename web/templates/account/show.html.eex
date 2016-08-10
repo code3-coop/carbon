@@ -164,7 +164,9 @@
     </ul>
   <% end %>
 
-  <%= link "Back", to: account_path(@conn, :index) %>
-
+  <center>
+    <%= link "Activity log", to: account_activity_path(@conn, :index, @account.id)  %>
+  </center>
+  
 </div>
 

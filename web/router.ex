@@ -24,7 +24,10 @@ defmodule Carbon.Router do
 
     resources "/accounts", AccountController do
       resources "/events", EventController
+      get "/activities", ActivityController, :index
     end
+    
+    
   end
 
   scope "/session", Carbon do

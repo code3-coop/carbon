@@ -1,0 +1,35 @@
+<div class="ui container">
+  <h1 class="ui header">
+    <div class="content">
+      Activity
+      <h2 class="ui sub header">
+        <%= @account.name%>
+      </h2>
+    </div>
+  </h1>
+  <div class="ui feed">
+    <%= for activity <- @activities  do %>
+      <div class="event">
+        <div class="label">
+            <img class="ui avatar image" src="<%= activity.user.image_url %>">
+        </div>
+        <div class="content">
+          <div class="summary">
+            <div class="user">
+              <%= activity.user.full_name %>
+            </div>
+            <%= pastify_action(activity.action) %> 
+            <%= activity.target_schema %>
+            #<%= activity.target_id %>
+            <div class="date">
+              <%= activity.inserted_at%>
+            </div>
+          </div>
+          <%#<div class="extra text">%>
+            <%#= activity.target_value %>
+          <%#</div>%>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
