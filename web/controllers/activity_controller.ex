@@ -11,7 +11,7 @@ defmodule Carbon.ActivityController do
       left_join: u in assoc(a, :user),
       left_join: ac in assoc(a, :account),
       preload: [user: u, account: ac],
-      order_by: a.inserted_at
+      order_by: [desc: a.inserted_at]
     
     account_query = from ac in Carbon.Account,
       where: ac.id == ^account_id,
