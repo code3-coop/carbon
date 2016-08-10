@@ -28,11 +28,11 @@
       </div>
       <%= unless Enum.empty?(@event.reminders) do %>
         <div>
-          <p class="underlined">Reminder on: </p>
+          <p class="underlined">Reminder at: </p>
           <div class="ui list">
             <%= for reminder <- @event.reminders do %>
               <div class="item"> 
-                <%= reminder.date %>
+                <%= reminder.date |> Ecto.DateTime.to_string() |> String.replace(~r/:00/, "") %>
               </div>
             <%= end %>
           </div>

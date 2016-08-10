@@ -23,8 +23,12 @@ defmodule Carbon.Router do
     get "/", PageController, :index
 
     resources "/accounts", AccountController do
-      resources "/events", EventController
       get "/activities", ActivityController, :index
+      resources "/events", EventController do
+        post "/reminders", ReminderController, :create
+        get "/reminders/new", ReminderController, :new
+        delete "/reminders/:id", ReminderController, :delete
+      end
     end
     
     

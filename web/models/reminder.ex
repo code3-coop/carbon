@@ -19,4 +19,10 @@ defmodule Carbon.Reminder do
     |> cast(params, [:date])
     |> validate_required([:date])
   end
+  
+  def create_changeset(struct, params) do
+    struct
+    |> cast(params, [:date])
+    |> validate_required([:date])
+  end
 end

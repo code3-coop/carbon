@@ -1,0 +1,40 @@
+<h2 class="ui header">New reminder</h2>
+
+<%= form_for @changeset, account_event_reminder_path(@conn, :create, @account_id, @event_id), fn f -> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+
+    <div class="fields">
+    <div class="field <%= if f.errors[:date], do: "error" %>">
+      <label>Reminder date
+        <span class="error">
+          <%= if f.errors[:date], do: translate_error f.errors[:date] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <input type="date" name="reminder[date]">
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+    <div class="field <%= if f.errors[:time], do: "error" %>">
+      <label>Reminder time
+        <span class="error">
+          <%= if f.errors[:time], do: translate_error f.errors[:time] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <input type="time" name="reminder[time]">
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+    </div>
+
+
+    <%= submit "Create reminder", class: "ui submit button" %>
+    <%= link "cancel", to: account_event_path(@conn, :index, @account_id) %>
+    
+  </div>
+<% end %>

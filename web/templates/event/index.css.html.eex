@@ -6,4 +6,7 @@
   form.item a {
     color: rgba(0,0,0,.87);
   }
+  .underlined {
+    text-decoration: underline;
+  }
 </style>
