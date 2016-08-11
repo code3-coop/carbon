@@ -71,7 +71,7 @@ defmodule Carbon.AccountController do
 
     case Repo.insert(changeset) do
       {:ok, account} ->
-        Carbon.Activity.new(account.id, current_user.id, :create, :accounts, account.id, inspect(changetset))
+        Carbon.Activity.new(account.id, current_user.id, :create, :accounts, account.id, inspect(changeset))
         conn
         |> put_flash(:info, "Account created successfully.")
         |> redirect(to: account_path(conn, :show, account.id))
