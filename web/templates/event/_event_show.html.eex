@@ -15,7 +15,7 @@
         <%= link "Unarchive it", to: "/this-wont-work"%>
       <% end %>
     </div>
-    <div class="extra text">
+    <div class="extra">
       <%= @event.description %>
     </div>
     <div class="meta">
