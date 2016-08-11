@@ -18,9 +18,7 @@
             <div class="user">
               <%= activity.user.full_name %>
             </div>
-            <%= pastify_action(activity.action) %> 
-            <%= activity.target_schema %>
-            #<%= activity.target_id %>
+            <%= past_tense activity.action %> <%= singular activity.target_schema %> #<%= activity.target_id %>
             <div class="date">
               <%= activity.inserted_at%>
             </div>
