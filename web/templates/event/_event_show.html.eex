@@ -1,6 +1,6 @@
 <div class="event">
   <div class="label">
-      <img class="ui avatar image" src="<%= @event.user.image_url %>">
+    <img class="ui avatar image" src="<%= @event.user.image_url %>">
   </div>
   <div class="content">
     <div class="summary">
@@ -14,43 +14,42 @@
         This event is archived
         <%= link "Unarchive it", to: "/this-wont-work"%>
       <% end %>
-        
     </div>
-    <div class="extra">
+    <div class="extra text">
       <%= @event.description %>
     </div>
     <div class="meta">
-      <div class="ui tag labels mini">
-        <%= for tag <- @event.tags do %>
-          <div class="ui label <%=tag.color%> ">
-            <%= tag.description %>
-          </div>
-          <%= end %>
-      </div>
-      <div>
-        <div class="links">
-          <%= if @show_links do %>
-            <%= link class: "link", to: account_event_reminder_path(@conn, :new, @event.account_id, @event.id) do %>
-              <i class="icon alarm"></i>
-              Add reminder
-            <% end %>
-            <%= link class: "link", to: account_event_path @conn, :edit, @event.account_id, @event.id do %>
-              <i class="icon write"></i>
-              Edit
-            <% end %>
-            <%= link class: "link", to: account_event_path(@conn, :delete, @event.account_id, @event.id), method: :delete do %>
-              <i class="icon archive"></i>
-              Archive
-            <%= end %>          
-          <% end %>
-          <%= unless Enum.empty?(@event.reminders) do %>
-            Reminder set to 
-            <%= for { reminder, rev_index } <- Enum.zip(@event.reminders, length(@event.reminders)-1..0) do %>
-              <b><a href="/"><%= reminder.date |> Ecto.DateTime.to_string() |> String.replace(~r/:00$/, "") %></a></b>
-              <%= if rev_index != 0, do: " and " %>
-            <%= end %>
+      <%= if not Enum.empty?(@event.tags) do %>
+        <div class="ui tag labels mini">
+          <%= for tag <- @event.tags do %>
+            <div class="ui label <%= tag.color%>">
+              <%= tag.description %>
+            </div>
           <%= end %>
         </div>
+      <% end %>
+      <div class="links">
+        <%= if @show_links do %>
+          <%= link class: "link", to: account_event_reminder_path(@conn, :new, @event.account_id, @event.id) do %>
+            <i class="icon alarm"></i>
+            Add reminder
+          <% end %>
+          <%= link class: "link", to: account_event_path @conn, :edit, @event.account_id, @event.id do %>
+            <i class="icon write"></i>
+            Edit
+          <% end %>
+          <%= link class: "link", to: account_event_path(@conn, :delete, @event.account_id, @event.id), method: :delete do %>
+            <i class="icon archive"></i>
+            Archive
+          <%= end %>          
+        <% end %>
+        <%= unless Enum.empty?(@event.reminders) do %>
+          Reminder set to 
+          <%= for { reminder, rev_index } <- Enum.zip(@event.reminders, length(@event.reminders)-1..0) do %>
+            <b><a href="/"><%= reminder.date |> Ecto.DateTime.to_string() |> String.replace(~r/:00$/, "") %></a></b>
+            <%= if rev_index != 0, do: " and " %>
+          <%= end %>
+        <%= end %>
       </div>
     </div>
   </div>
