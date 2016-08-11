@@ -35,8 +35,7 @@ defmodule Carbon.ReminderController do
   end
 
   def delete(conn, _params) do 
-    account_id = conn.params["account_id"]
-    reminder_id = conn.params["id"]
+    %{:params => %{"account_id" => account_id, "id" => reminder_id}} = conn
     reminder = Repo.get(Reminder, reminder_id)
     case Repo.delete(reminder) do
       {:ok, reminder} -> 
