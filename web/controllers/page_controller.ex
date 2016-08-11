@@ -2,6 +2,6 @@ defmodule Carbon.PageController do
   use Carbon.Web, :controller
 
   def index(conn, _params) do
-    render conn, "index.html"
+    redirect conn, to: account_path(conn, :index)
   end
 end
