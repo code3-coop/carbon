@@ -2,4 +2,11 @@
   .tiny {
     font-size: 13px;
   }
+  .ui.feed>.event>.content>.meta .links {
+    padding-top: 10px;
+  }
+  .ui.feed>.event>.content>.meta .link {
+    display: inline;
+    padding-right: 5px;
+  }  
 </style>

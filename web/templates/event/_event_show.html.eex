@@ -14,6 +14,7 @@
         This event is archived
         <%= link "Unarchive it", to: "/this-wont-work"%>
       <% end %>
+        
     </div>
     <div class="extra">
       <%= @event.description %>
@@ -26,19 +27,32 @@
           </div>
           <%= end %>
       </div>
-      <%= unless Enum.empty?(@event.reminders) do %>
-        <div>
-          <p>
+      <div>
+        <div class="links">
+          <%= if @show_links do %>
+            <%= link class: "link", to: account_event_reminder_path(@conn, :new, @event.account_id, @event.id) do %>
+              <i class="icon alarm"></i>
+              Add reminder
+            <% end %>
+            <%= link class: "link", to: account_event_path @conn, :edit, @event.account_id, @event.id do %>
+              <i class="icon write"></i>
+              Edit
+            <% end %>
+            <%= link class: "link", to: account_event_path(@conn, :delete, @event.account_id, @event.id), method: :delete do %>
+              <i class="icon archive"></i>
+              Archive
+            <%= end %>          
+          <% end %>
+          <%= unless Enum.empty?(@event.reminders) do %>
             Reminder set to 
             <%= for { reminder, rev_index } <- Enum.zip(@event.reminders, length(@event.reminders)-1..0) do %>
-              <span><a href="<%= %>"><%= reminder.date |> Ecto.DateTime.to_string() |> String.replace(~r/:00$/, "") %></a></span>
+              <b><a href="/"><%= reminder.date |> Ecto.DateTime.to_string() |> String.replace(~r/:00$/, "") %></a></b>
               <%= if rev_index != 0, do: " and " %>
             <%= end %>
-          </p>
+          <%= end %>
         </div>
-      <%= end %>
+      </div>
     </div>
   </div>
-  
 </div>
 

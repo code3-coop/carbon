@@ -101,7 +101,7 @@
         <div class="seven wide column">
           <div class="ui feed">
             <%= for event <- prev_events do %>
-              <%= render Carbon.EventView, "_event_show.html", event: event %>
+              <%= render Carbon.EventView, "_event_show.html", event: event, conn: @conn %>
             <% end %>
           </div>
         </div>
@@ -113,7 +113,7 @@
         <div class="seven wide column">
           <div class="ui feed">
             <%= for event <- next_events do %>
-              <%= render Carbon.EventView, "_event_show.html", event: event %>
+              <%= render Carbon.EventView, "_event_show.html", event: event, conn: @conn %>
             <% end %>
           </div>
         </div>
