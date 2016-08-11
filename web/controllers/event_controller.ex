@@ -41,7 +41,7 @@ defmodule Carbon.EventController do
 
     case Repo.insert(changeset) do
       {:ok, event} ->
-        Carbon.Activity.new(event.account.id, current_user.id, :create, :events, event.id, inspect(event))
+        Carbon.Activity.new(event.account.id, current_user.id, :create, :events, event.id, inspect(changeset))
         conn
         |> put_flash(:info, "Event created successfully.")
         |> redirect(to: account_event_path(conn, :index, account_id))
@@ -72,7 +72,7 @@ defmodule Carbon.EventController do
 
     case Repo.update(changeset) do
       {:ok, _} ->
-        Carbon.Activity.new(event.account_id, current_user.id, :update, :events, event.id, inspect(event))
+        Carbon.Activity.new(event.account_id, current_user.id, :update, :events, event.id, inspect(changeset))
         conn
         |> put_flash(:info, "Event updated successfully.")
         |> redirect(to: account_event_path(conn, :index, account_id))
@@ -85,9 +85,10 @@ defmodule Carbon.EventController do
     current_user = conn.assigns[:current_user]
     event = Repo.get!(Event, event_id)
     changeset = Event.archive_changeset(event, %{active: false})
+
     case Repo.update(changeset) do
       {:ok, event} ->
-        Carbon.Activity.new(String.to_integer(account_id), current_user.id, :delete, :events, event.id, inspect(event))
+        Carbon.Activity.new(String.to_integer(account_id), current_user.id, :delete, :events, event.id, inspect(changeset))
         conn
         |> put_flash(:info, "Event archived successfully.")
         |> redirect(to: account_event_path(conn, :index, account_id))
