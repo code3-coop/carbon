@@ -34,7 +34,15 @@ defmodule Carbon.ReminderController do
     end
   end
 
-  def delete(_conn, _params) do 
+  def delete(conn, _params) do 
+    account_id = conn.params["account_id"]
+    reminder_id = conn.params["id"]
+    reminder = Repo.get(Reminder, reminder_id)
+    case Repo.delete(reminder) do
+      {:ok, reminder} -> 
+        conn
+        |> put_flash(:info, "Reminder created successfully.")
+        |> redirect(to: account_event_path(conn, :index, account_id))
+    end
   end
-  
 end
