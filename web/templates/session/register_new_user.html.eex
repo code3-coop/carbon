@@ -1,0 +1,7 @@
+<h1 style="margin: 30vh; text-align: center">
+  You don't have an account
+  <br>
+  Can't create new user ATM
+</h1>
+<%= link "Wrong email ?", to: session_path(@conn, :index) %>
+

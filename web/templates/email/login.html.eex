@@ -1,5 +1,7 @@
 <html>
   <body>
-    <a href="http://localhost:4000/session/validate/<%= URI.encode_www_form(@token) %>">click here</a>
+    <a href="http://localhost:4000/session/validate/<%= URI.encode_www_form(@token) %>">
+      click here
+    </a>
   </body>
 </html>

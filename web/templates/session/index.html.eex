@@ -1,4 +1,18 @@
-<h1>Please log in</h1>
-<%= form_for @changeset, session_path(@conn, :create_and_send_session_link), fn f -> %>
-  <label>Email: <%= text_input f, :email %></label>
-<% end %>
+
+<div class="ui centered card">
+  <div class="content">
+  <h1>Log in</h1>
+  <%= form_for @changeset, session_path(@conn, :create_and_send_session_link), fn f -> %>
+    <div class="ui form">
+      <div class="inline fields">
+
+        <label>Email: </label>
+        <%= text_input f, :email %>
+        <%= submit"Login", class: "ui button primary"%>
+        
+      </div>
+      
+    </div>
+  <% end %>
+  </div>
+</div>
