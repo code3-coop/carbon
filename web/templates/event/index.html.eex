@@ -35,7 +35,7 @@
         <div class="row">
           <div class="sixteen wide column">
             <div class="ui feed">
-              <%= render "_event_show.html", event: event, conn: @conn%>
+              <%= render "_event_show.html", event: event, show_links: true, conn: @conn%>
             </div>
           </div>
         </div>
