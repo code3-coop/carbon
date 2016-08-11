@@ -1,16 +1,3 @@
 <script>
-  var handleOut = function(){
-    $(this).find(".dropdown").hide();
-  }
-  var handleIn = function(){
-    $(this).find(".dropdown").show();
-  };
-  $("[data-content]").popup({
-    position : 'right center'
-  });
-  $(function(){
-    $(".dropdown").dropdown();
-    $(".dropdown").hide();
-    $(".row").hover(handleIn, handleOut);
-  });
+  $(".dropdown").dropdown();
 </script>
