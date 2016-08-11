@@ -14,6 +14,7 @@
         This event is archived
         <%= link "Unarchive it", to: "/this-wont-work"%>
       <% end %>
+        
     </div>
     <div class="extra">
       <%= @event.description %>
@@ -38,9 +39,21 @@
           </div>
         </div>
       <%= end %>
-            
+    <div class="links">
+      <%= link class: "link", to: account_event_reminder_path(@conn, :new, @event.account_id, @event.id) do %>
+        <i class="icon alarm"></i>
+        Add reminder
+      <% end %>
+      <%= link class: "link", to: account_event_path @conn, :edit, @event.account_id, @event.id do %>
+        <i class="icon write"></i>
+        Edit
+      <% end %>
+      <%= link class: "link", to: account_event_path(@conn, :delete, @event.account_id, @event.id), method: :delete do %>
+        <i class="icon archive"></i>
+        Archive
+      <%= end %>          
+    </div>
     </div>
   </div>
-  
 </div>
 
