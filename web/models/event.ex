@@ -45,5 +45,4 @@ defmodule Carbon.Event do
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
     |> foreign_key_constraint(:user_id)
   end
-  
 end

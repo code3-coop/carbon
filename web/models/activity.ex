@@ -23,7 +23,7 @@ defmodule Carbon.Activity do
     struct
     |> cast(params, [:action, :target_schema, :user_id, :account_id])
     |> validate_required([:action, :target_schema, :user_id, :account_id])
-    |> validate_inclusion(:action, ~w(create remove update))
+    |> validate_inclusion(:action, ~w(create remove update restore))
     |> foreign_key_constraint(:user_id)
     |> foreign_key_constraint(:account_id)
   end

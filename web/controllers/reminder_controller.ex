@@ -35,23 +35,23 @@ defmodule Carbon.ReminderController do
     end
   end
 
-  def archive(conn, _params) do 
+  def delete(conn, _params) do 
     %{:params => %{"account_id" => account_id, "id" => reminder_id}} = conn
     reminder = Repo.get(Reminder, reminder_id)
     changeset = Reminder.archive_changeset(reminder, %{active: false})
     case Repo.update(changeset) do
       {:ok, reminder} -> 
         conn
-        |> put_flash(:archived_reminder, reminder)
+        |> put_flash(:deleted_reminder, reminder)
         |> redirect(to: account_event_path(conn, :index, account_id))
       {:error, changeset} ->
         conn
         |> assign(:changeset, changeset)
-        |> put_flash(:info, "Failed to archive reminder.")
+        |> put_flash(:info, "Failed to delete reminder.")
         |> render(account_event_path(conn, :index, account_id))
     end
   end
-  def un_archive(conn, _params) do 
+  def restore(conn, _params) do 
     %{:params => %{"account_id" => account_id, "id" => reminder_id}} = conn
     reminder = Repo.get(Reminder, reminder_id)
     changeset = Reminder.archive_changeset(reminder, %{active: true})
@@ -62,7 +62,7 @@ defmodule Carbon.ReminderController do
       {:error, changeset} ->
         conn
         |> assign(:changeset, changeset)
-        |> put_flash(:info, "Failed to unarchive reminder.")
+        |> put_flash(:info, "Failed to restore reminder.")
         |> render(account_event_path(conn, :index, account_id))
     end
   end

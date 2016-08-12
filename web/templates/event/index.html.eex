@@ -1,16 +1,27 @@
-<%= if get_flash(@conn, :archived_reminder) do %>
+<%= if get_flash(@conn, :deleted_reminder) do %>
   <div class="ui message">
     <div class="header">
       Reminder archived
     </div>
-    <p>
     Reminder successfully 
-      <% reminder = get_flash(@conn, :archived_reminder) %>
-      <% path_to_unarchive =  account_event_reminder_path(@conn, :un_archive, @account.id, reminder.event_id, reminder.id) %>
-      <%= link to: path_to_unarchive, method: :put do %>
+      <% reminder = get_flash(@conn, :deleted_reminder) %>
+      <% path_to_restore = account_event_reminder_path(@conn, :restore, @account.id, reminder.event_id, reminder.id) %>
+      <%= link to: path_to_restore, method: :put, form: [style: "display: inline;"] do %>
         Get it back.
       <% end %>
-    </p>
+  </div>
+<% end %>
+<%= if get_flash(@conn, :deleted_event) do %>
+  <div class="ui message">
+    <div class="header">
+      Event deleted
+    </div>
+    Event successfully deleted.
+      <% event = get_flash(@conn, :deleted_event) %>
+      <% path_to_restore =  account_event_path(@conn, :restore, @account.id, event.id) %>
+      <%= link to: path_to_restore, method: :put, form: [style: "display: inline;"] do %>
+        Get it back.
+      <% end %>
   </div>
 <% end %>
 <div class="ui container">

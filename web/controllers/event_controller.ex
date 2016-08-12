@@ -81,20 +81,39 @@ defmodule Carbon.EventController do
     end
   end
   
-  def delete(conn, %{"account_id" => account_id, "id" => event_id}) do
+  def delete(conn, _params) do
     current_user = conn.assigns[:current_user]
+    %{"account_id" => account_id, "id" => event_id} = conn.params
     event = Repo.get!(Event, event_id)
     changeset = Event.archive_changeset(event, %{active: false})
 
     case Repo.update(changeset) do
       {:ok, event} ->
-        Carbon.Activity.new(String.to_integer(account_id), current_user.id, :delete, :events, event.id, inspect(changeset))
+        Carbon.Activity.new(String.to_integer(account_id), current_user.id, :remove, :events, event.id, inspect(changeset))
         conn
-        |> put_flash(:info, "Event archived successfully.")
+        |> put_flash(:deleted_event, event)
         |> redirect(to: account_event_path(conn, :index, account_id))
       {:error, _changeset} -> 
         conn
-        |> put_flash(:info, "Failed to archive the event.")
+        |> put_flash(:info, "Failed to delete the event.")
+        |> assign(:account_id, account_id)
+        |> redirect(to: account_event_path(conn, :index, account_id))
+    end
+  end
+  def restore(conn, _params) do
+    current_user = conn.assigns[:current_user]
+    %{"account_id" => account_id, "id" => event_id} = conn.params
+    event = Repo.get!(Event, event_id)
+    changeset = Event.archive_changeset(event, %{active: true})
+
+    case Repo.update(changeset) do
+      {:ok, event} ->
+        Carbon.Activity.new(String.to_integer(account_id), current_user.id, :restore, :events, event.id, inspect(changeset))
+        conn
+        |> redirect(to: account_event_path(conn, :index, account_id))
+      {:error, _changeset} -> 
+        conn
+        |> put_flash(:info, "Failed to restore the event.")
         |> assign(:account_id, account_id)
         |> redirect(to: account_event_path(conn, :index, account_id))
     end
