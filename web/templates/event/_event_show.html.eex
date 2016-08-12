@@ -10,10 +10,6 @@
       <div class="date">
         <%= @event.date |> Ecto.Date.to_iso8601 %>
       </div>
-      <%= unless @event.active do %> 
-        This event is archived
-        <%= link "Unarchive it", to: "/this-wont-work"%>
-      <% end %>
     </div>
     <div class="extra">
       <%= @event.description %>
