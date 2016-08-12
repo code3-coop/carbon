@@ -1,3 +1,18 @@
+<%= if get_flash(@conn, :archived_reminder) do %>
+  <div class="ui message">
+    <div class="header">
+      Reminder archived
+    </div>
+    <p>
+    Reminder successfully 
+      <% reminder = get_flash(@conn, :archived_reminder) %>
+      <% path_to_unarchive =  account_event_reminder_path(@conn, :un_archive, @account.id, reminder.event_id, reminder.id) %>
+      <%= link to: path_to_unarchive, method: :put do %>
+        Get it back.
+      <% end %>
+    </p>
+  </div>
+<% end %>
 <div class="ui container">
   <h1 class="ui header">
     <div class="content">

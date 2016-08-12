@@ -47,7 +47,7 @@
           Reminder set to 
           <%= for { reminder, rev_index } <- Enum.zip(@event.reminders, length(@event.reminders)-1..0) do %>
             <div class="ui label">
-              <%= link to: account_event_reminder_path(@conn, :delete, @event.account_id, @event.id, reminder.id), method: :delete, form: [style: "padding-right: 0px;"] do %>
+              <%= link to: account_event_reminder_path(@conn, :archive, @event.account_id, @event.id, reminder.id), method: :put, form: [style: "padding-right: 0px;"] do %>
                 <%= reminder.date |> Ecto.DateTime.to_string() |> String.replace(~r/:00$/, "") %>
                 <i class="icon delete"></i>
               <% end %>

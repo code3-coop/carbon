@@ -27,7 +27,8 @@ defmodule Carbon.Router do
       resources "/events", EventController do
         post "/reminders", ReminderController, :create
         get "/reminders/new", ReminderController, :new
-        delete "/reminders/:id", ReminderController, :delete
+        put "/reminders/:id/archive", ReminderController, :archive
+        put "/reminders/:id/unarchive", ReminderController, :un_archive
       end
     end
     
