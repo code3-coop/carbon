@@ -2,4 +2,7 @@
   .full-width {
     width: 100%;
   }
+  .ui.message .inline-form {
+    display: inline-block; 
+  }
 </style>

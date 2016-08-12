@@ -16,4 +16,7 @@
     display: inline;
     padding-right: 5px;
   }
+  .ui.message .inline-form {
+    display: inline-block; 
+  }
 </style>

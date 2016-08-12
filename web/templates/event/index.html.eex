@@ -6,7 +6,7 @@
     Reminder successfully 
       <% reminder = get_flash(@conn, :deleted_reminder) %>
       <% path_to_restore = account_event_reminder_path(@conn, :restore, @account.id, reminder.event_id, reminder.id) %>
-      <%= link to: path_to_restore, method: :put, form: [style: "display: inline;"] do %>
+      <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
         Get it back.
       <% end %>
   </div>
@@ -19,7 +19,7 @@
     Event successfully deleted.
       <% event = get_flash(@conn, :deleted_event) %>
       <% path_to_restore =  account_event_path(@conn, :restore, @account.id, event.id) %>
-      <%= link to: path_to_restore, method: :put, form: [style: "display: inline;"] do %>
+      <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
         Get it back.
       <% end %>
   </div>

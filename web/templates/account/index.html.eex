@@ -5,7 +5,7 @@
     </div>
     <%account = get_flash(@conn, :deleted_account) %>
     Account <%=account.name%> successfully deleted. 
-    <%= link to: account_path(@conn, :restore, account.id), method: :put, form: [style: "display: inline-block"] do %>
+    <%= link to: account_path(@conn, :restore, account.id), method: :put, form: [class: "inline-form"] do %>
       Get it back.
     <% end %>
   </div>
