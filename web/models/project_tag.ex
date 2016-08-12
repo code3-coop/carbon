@@ -16,5 +16,7 @@ defmodule Carbon.ProjectTag do
     struct
     |> cast(params, [:description, :color, :active])
     |> validate_required([:description, :color, :active])
+    |> validate_inclusion(:color, Carbon.SupportedColors.tags)
+    |> validate_inclusion(:color, Carbon.SupportedColors.tags)
   end
 end

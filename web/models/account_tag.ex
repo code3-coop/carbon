@@ -16,5 +16,6 @@ defmodule Carbon.AccountTag do
     struct
     |> cast(params, [:description])
     |> validate_required([:description])
+    |> validate_inclusion(:color, Carbon.SupportedColors.tags)
   end
 end
