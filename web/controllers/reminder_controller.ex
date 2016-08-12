@@ -1,7 +1,7 @@
 defmodule Carbon.ReminderController do
   use Carbon.Web, :controller
 
-  import Carbon.ControllerUtils
+  #import Carbon.ControllerUtils
 
   alias Carbon.Reminder
   alias Carbon.Event
@@ -48,7 +48,7 @@ defmodule Carbon.ReminderController do
         conn
         |> assign(:changeset, changeset)
         |> put_flash(:info, "Failed to archive reminder.")
-        |> render account_event_path(conn, :index, account_id)
+        |> render(account_event_path(conn, :index, account_id))
     end
   end
   def un_archive(conn, _params) do 
@@ -56,14 +56,14 @@ defmodule Carbon.ReminderController do
     reminder = Repo.get(Reminder, reminder_id)
     changeset = Reminder.archive_changeset(reminder, %{active: true})
     case Repo.update(changeset) do
-      {:ok, reminder} -> 
+      {:ok, _reminder} -> 
         conn
         |> redirect(to: account_event_path(conn, :index, account_id))
       {:error, changeset} ->
         conn
         |> assign(:changeset, changeset)
         |> put_flash(:info, "Failed to unarchive reminder.")
-        |> render account_event_path(conn, :index, account_id)
+        |> render(account_event_path(conn, :index, account_id))
     end
   end
 end
