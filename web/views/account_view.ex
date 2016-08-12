@@ -5,6 +5,8 @@ defmodule Carbon.AccountView do
   def match_table_to_color("account"), do: "blue"
   def match_table_to_color("event"), do: "yellow"
   def match_table_to_color("contact"), do: "purple"
+  def match_table_to_color("project"), do: "pink"
+  def match_table_to_color(_model), do: "grey"
   
   def events_summary(all_events, reference_date \\ :calendar.local_time |> elem(0) |> Ecto.Date.from_erl) do
     prev_events = all_events
