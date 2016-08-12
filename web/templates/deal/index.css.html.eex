@@ -1,0 +1,22 @@
+<style>
+  .ui.small.indicating.progress {
+    display: inline-flex;
+    width: 100px;
+    margin-bottom: 0px;
+  }
+  .ui.progress .bar > .progress {
+    right: 30%;
+    left: 30%;
+  }
+  .ui.comments {
+    max-width: inherit;
+  }
+  .ui.comments .comment .text {
+    font-size: 1.2em;
+  }
+  .ui.comments .comment .author {
+    font-size: 0.9em;
+    color: rgba(0,0,0,.87);
+    font-weight: 700;
+}
+</style>

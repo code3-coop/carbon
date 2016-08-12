@@ -30,47 +30,46 @@
       <% end %>
   </div>
 <% end %>
-<div class="ui container">
-  <h1 class="ui header">
-    <div class="content">
-      Events 
-      <h2 class="ui sub header">
-        <%= @account.name %>
-      </h2>
+
+<h1 class="ui header">
+  <div class="content">
+    Events 
+    <h2 class="ui sub header">
+      <%= @account.name %>
+    </h2>
+  </div>
+  <%= link to: account_event_path @conn, :new, @account.id do %>
+    <div class="ui right floated button">
+      <i class="plus icon"></i>
+      Add event
     </div>
-    <%= link to: account_event_path @conn, :new, @account.id do %>
-      <div class="ui right floated button">
-        <i class="plus icon"></i>
-        Add event
+  <% end %>
+</h1>
+
+<div class="ui two column grid">
+  <% today = Ecto.Date.from_erl(elem(:calendar.local_time, 0))%>
+  <% event_d = @events |> Enum.find(& Ecto.Date.compare(today, &1.date) == :gt)  %>
+  <%= if Enum.empty? @events do %>
+    <div class="row">
+      <div class="sixteen wide column ">
+        <div class="empty-list-message">
+          The (hi)story begins as follow: <%= link to: account_event_path @conn, :new, @account.id do %>
+          <b><%=@current_user.full_name%></b> add an event
+          <% end %>
+        </div>
       </div>
-    <% end %>
-  </h1>
-  
-  <div class="ui two column grid">
-    <% today = Ecto.Date.from_erl(elem(:calendar.local_time, 0))%>
-    <% event_d = @events |> Enum.find(& Ecto.Date.compare(today, &1.date) == :gt)  %>
-    <%= if Enum.empty? @events do %>
+    </div>
+  <% else %>
+    <%= for event <- @events do %>
+      <%= if event == event_d do %>
+        <div class="ui horizontal divider">Now</div>
+      <% end%>
       <div class="row">
-        <div class="sixteen wide column ">
-          <div class="empty-list-message">
-            The (hi)story begins as follow: <%= link to: account_event_path @conn, :new, @account.id do %>
-            <b><%=@current_user.full_name%></b> add an event
-            <% end %>
+        <div class="sixteen wide column">
+          <div class="ui feed">
+            <%= render "_event_show.html", event: event, show_links: true, conn: @conn%>
           </div>
         </div>
       </div>
-    <% else %>
-      <%= for event <- @events do %>
-        <%= if event == event_d do %>
-          <div class="ui horizontal divider">Now</div>
-        <% end%>
-        <div class="row">
-          <div class="sixteen wide column">
-            <div class="ui feed">
-              <%= render "_event_show.html", event: event, show_links: true, conn: @conn%>
-            </div>
-          </div>
-        </div>
-      <% end %>
     <% end %>
-</div>
+  <% end %>

@@ -148,7 +148,7 @@
 <%= if Enum.empty?(@account.deals) do %>
   <center>
     Are there any new or likely deals you want to keep track of?<br/>
-    <%= link "Start adding them here!", to: account_path(@conn, :index) %> <% #Make this point to deal_path(@conn, :new, @account.id) %>
+    <%= link "Start adding them here!", to: account_deal_path(@conn, :new, @account.id) %>
   </center>
 <% else %>
   <div class="ui list">
@@ -177,14 +177,6 @@
           <div class="description">
             <%= deal.description %>
           </div>
-          <%#<div class="ui labels tiny">%>
-            <%#<div class="ui label">%>
-              <%#Edit%>
-            <%#</div>%>
-            <%#<div class="ui label">%>
-              <%#Delete%>
-            <%#</div>%>
-          <%#</div>%>
         </div>
       </div>
     <% end %>

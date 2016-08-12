@@ -1,0 +1,64 @@
+<h1 class="ui header">
+  <div class="content">
+    Deals 
+    <h2 class="ui sub header">
+      <%= @account.name %>
+    </h2>
+  </div>
+  <%= link to: account_deal_path @conn, :new, @account.id do %>
+    <div class="ui right floated button">
+      <i class="plus icon"></i>
+      Add deal
+    </div>
+  <% end %>
+  </h1>
+
+<%= if Enum.empty?(@deals) do %>
+  <center>
+    Are there any new or likely deals you want to keep track of?<br/>
+    <%= link "Start adding them here!", to: account_path(@conn, :index) %> <% #Make this point to deal_path(@conn, :new, @account.id) %>
+  </center>
+<% else %>
+  <div class="ui comments">
+    <%= for deal <- @deals do %>
+      <div class="comment">
+        <div class="content">
+          <div class="author">
+            <%= if deal.expected_value do %>
+              Expected value: <%= humanize(:amount, deal.expected_value) %>
+            <% end %>
+            <%= if deal.closed_value do %>
+              Closed value: <%= humanize(:amount, deal.closed_value) %>
+            <% end %>
+            <%= if deal.closing_date do %>
+              Closing date: <%= deal.closing_date %>
+            <% end %>
+            <%= if deal.probability do %>
+              Probability: 
+              <div class="ui small indicating progress" data-percent="<%=deal.probability%>">
+                  <div class="bar">
+                    <div class="progress"></div>
+                  </div>
+                </div>
+            <% end %>
+          </div>
+          <div class="text">
+            <%= deal.description %>
+          </div>
+          <div class="actions">
+            <%= link to: "" do %>
+              <i class="ui icon write"></i>
+              Edit
+            <% end %>
+            <%= link to: "" do %>
+              <i class="ui icon trash"></i>
+              Delete
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+  
+</h1>

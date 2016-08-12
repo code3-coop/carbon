@@ -1,0 +1,3 @@
+<script>
+  $('.ui.progress').progress();
+</script>
