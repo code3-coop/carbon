@@ -1,3 +1,9 @@
+<%= if get_flash(@conn, :info) do %>
+  <div class="ui message">
+    <%= get_flash(@conn, :info) %>
+  </div>
+<% end %>
+
 <%= if get_flash(@conn, :deleted_reminder) do %>
   <div class="ui message">
     <div class="header">

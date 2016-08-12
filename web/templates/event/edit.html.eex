@@ -1,3 +1,9 @@
+<%= if get_flash(@conn, :info) do %>
+  <div class="ui message">
+    <%= get_flash(@conn, :info) %>
+  </div>
+<% end %>
+
 <h2>Edit event</h2>
 
 <%= form_for @changeset, account_event_path(@conn, :update, @event.account_id, @event.id), fn f -> %>

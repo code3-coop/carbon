@@ -1,33 +1,37 @@
-<div class="ui container">
-  <h1 class="ui header">
-    <div class="content">
-      Activity
-      <h2 class="ui sub header">
-        <%= @account.name%>
-      </h2>
-    </div>
-  </h1>
-  <div class="ui feed">
-    <%= for activity <- @activities  do %>
-      <div class="event">
-        <div class="label">
-            <img class="ui avatar image" src="<%= activity.user.image_url %>">
-        </div>
-        <div class="content">
-          <div class="summary">
-            <div class="user">
-              <%= activity.user.full_name %>
-            </div>
-            <%= past_tense activity.action %> <%= singular activity.target_schema %> #<%= activity.target_id %>
-            <div class="date">
-              <%= activity.inserted_at%>
-            </div>
-          </div>
-          <%#<div class="extra text">%>
-            <%#= activity.target_value %>
-          <%#</div>%>
-        </div>
-      </div>
-    <% end %>
+<%= if get_flash(@conn, :info) do %>
+  <div class="ui message">
+    <%= get_flash(@conn, :info) %>
   </div>
+<% end %>
+
+<h1 class="ui header">
+  <div class="content">
+    Activity
+    <h2 class="ui sub header">
+      <%= @account.name%>
+    </h2>
+  </div>
+</h1>
+<div class="ui feed">
+  <%= for activity <- @activities  do %>
+    <div class="event">
+      <div class="label">
+          <img class="ui avatar image" src="<%= activity.user.image_url %>">
+      </div>
+      <div class="content">
+        <div class="summary">
+          <div class="user">
+            <%= activity.user.full_name %>
+          </div>
+          <%= past_tense activity.action %> <%= singular activity.target_schema %> #<%= activity.target_id %>
+          <div class="date">
+            <%= activity.inserted_at%>
+          </div>
+        </div>
+        <%#<div class="extra text">%>
+          <%#= activity.target_value %>
+        <%#</div>%>
+      </div>
+    </div>
+  <% end %>
 </div>

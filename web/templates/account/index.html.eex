@@ -10,6 +10,11 @@
     <% end %>
   </div>
 <% end %>
+<%= if get_flash(@conn, :info) do %>
+  <div class="ui message">
+    <%= get_flash(@conn, :info) %>
+  </div>
+<% end %>
 <div class="ui grid container">
   <div class="sixteen wide column">
     <h2>Accounts</h2>
