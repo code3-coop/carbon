@@ -1,177 +1,181 @@
-<div class="ui container">
-
-  <h1 class="ui header">
-    <%= @account.name %>
-    <div class="ui label <%=@account.status.color%>">
-      <%= @account.status.key %>
-    </div>
-    <div class="ui label image">
-      <img src="<%=@account.owner.image_url%>">
-      <%= @account.owner.full_name %>
-    </div>
-    <div class="right floated ui buttons">
-      <%= link to: account_path(@conn, :edit, @account.id), class: "ui button" do %>
-        <i class="ui icon write"></i>
-        Edit
-      <% end %>
-      <%= link to: account_path(@conn, :delete, @account.id), method: :delete, form: [class: "ui red button"] do %>
-        <i class="ui icon trash"></i>
-        Delete
-      <% end %>        
-    </div>
-  </h1>
-  
-  <div class="ui grid">
-    <div class="row">
-      <div class="column">
-        <div class="ui tag labels">
-          <%= for tag <- @account.tags do %>
-            <div class="ui tag label <%= tag.color%>">
-              <%= tag.description %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-
-    <div class="row"> 
-      <div class="column">
-        <div class="ui cards">
-          <%= for contact <- @account.contacts do %>
-            <div class="card">
-              <div class="content">
-                <%= if contact.image_url do %>
-                  <img class="right floated mini ui circular image" src="<%= contact.image_url %>">
-                <% else %>
-                  <img class="right floated mini ui circular image" src="/images/avatars/female/5.png">
-                <% end %>
-                <div class="header"><%= contact.full_name %></div>
-                <%= if contact.title do %>
-                  <div class="meta"><%= contact.title %></div>
-                <% else %>
-                  <div class="meta">unknown title</div>
-                <% end %>
-                <div class="description">
-                  <p>
-                    <%= if contact.email do %>
-                      <i class="ui icon mail"></i> <a href="mailto:<%= contact.email %>"><%= contact.email %></a>
-                    <% else %>
-                      <i class="ui icon mail grey"></i> <span style="color: rgba(0,0,0,.4)">unknown email</span>
-                    <% end %>
-                    <br/>
-                    <%= if contact.tel do %>
-                      <i class="ui icon call"></i> <%= contact.tel %>
-                    <% else %>
-                      <i class="ui icon call grey"></i> <span style="color: rgba(0,0,0,.4)">unknown phone number</span>
-                    <% end %>
-                  </p>
-                </div>
-              </div>
-              <div class="extra content">
-                <span class="left floated"><i class="write icon"></i> Edit</span>
-                <span class="right floated">Added in <%= contact.inserted_at |> Ecto.DateTime.to_iso8601 |> String.slice(0, 4) %></span>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="column">
-        <div class="ui top pointing secondary menu">
-          <a class="active item" data-tab="billing-address">Billing address</a>
-          <a class="item" data-tab="shipping-address">Shipping address</a>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="column">
-        <div class="ui bottom attached active tab" data-tab="billing-address">
-          <%= render "_address_show.html", address: @account.billing_address %>
-        </div>
-        <div class="ui bottom attached tab" data-tab="shipping-address">
-          <%= render "_address_show.html", address: @account.shipping_address %>
-        </div>
-      </div>
-    </div>
+<%= if get_flash(@conn, :info) do %>
+  <div class="ui message">
+    <%= get_flash(@conn, :info) %>
   </div>
+<% end %>
 
-  <h1 class="ui header">Events</h1><br/>
-
-  <div class="ui three column very relaxed grid" style="position: relative" >
-    <%= if not Enum.empty?(@account.events) do %>
-      <% { prev_events, next_events } = events_summary(@account.events) %>
-      <div class="row">
-        <div class="seven wide column">
-          <div class="ui feed">
-            <%= for event <- prev_events do %>
-              <%= render Carbon.EventView, "_event_show.html", event: event, show_links: false, conn: @conn %>
-            <% end %>
-          </div>
-        </div>
-        <div class="two wide column">
-          <div class="ui vertical divider">
-           Now 
-          </div>
-        </div>
-        <div class="seven wide column">
-          <div class="ui feed">
-            <%= for event <- next_events do %>
-              <%= render Carbon.EventView, "_event_show.html", event: event, show_links: false, conn: @conn %>
-            <% end %>
-          </div>
-        </div>
-      </div>
+<h1 class="ui header">
+  <%= @account.name %>
+  <div class="ui label <%=@account.status.color%>">
+    <%= @account.status.key %>
+  </div>
+  <div class="ui label image">
+    <img src="<%=@account.owner.image_url%>">
+    <%= @account.owner.full_name %>
+  </div>
+  <div class="right floated ui buttons">
+    <%= link to: account_path(@conn, :edit, @account.id), class: "ui button" do %>
+      <i class="ui icon write"></i>
+      Edit
     <% end %>
-    <div class="row">
-      <div class="sixteen wide column">
-        <div style="text-align: center;">
-          <%= if Enum.empty?(@account.events) do %>
-            Are there any past or planned client interactions you want to keep track of?<br/>
-            <%= link "Start adding events and reminders!", to: account_event_path(@conn, :new, @account.id) %>
-          <% else %>
-            <%= link "See the complete list of events for this account...", to: account_event_path(@conn, :index, @account.id) %>
-          <% end %> 
-        </div>
+    <%= link to: account_path(@conn, :delete, @account.id), method: :delete, form: [class: "ui red button"] do %>
+      <i class="ui icon trash"></i>
+      Delete
+    <% end %>        
+  </div>
+</h1>
+
+<div class="ui grid">
+  <div class="row">
+    <div class="column">
+      <div class="ui tag labels">
+        <%= for tag <- @account.tags do %>
+          <div class="ui tag label <%= tag.color%>">
+            <%= tag.description %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
-  
 
-  <h1>Deals</h1>
+  <div class="row"> 
+    <div class="column">
+      <div class="ui cards">
+        <%= for contact <- @account.contacts do %>
+          <div class="card">
+            <div class="content">
+              <%= if contact.image_url do %>
+                <img class="right floated mini ui circular image" src="<%= contact.image_url %>">
+              <% else %>
+                <img class="right floated mini ui circular image" src="/images/avatars/female/5.png">
+              <% end %>
+              <div class="header"><%= contact.full_name %></div>
+              <%= if contact.title do %>
+                <div class="meta"><%= contact.title %></div>
+              <% else %>
+                <div class="meta">unknown title</div>
+              <% end %>
+              <div class="description">
+                <p>
+                  <%= if contact.email do %>
+                    <i class="ui icon mail"></i> <a href="mailto:<%= contact.email %>"><%= contact.email %></a>
+                  <% else %>
+                    <i class="ui icon mail grey"></i> <span style="color: rgba(0,0,0,.4)">unknown email</span>
+                  <% end %>
+                  <br/>
+                  <%= if contact.tel do %>
+                    <i class="ui icon call"></i> <%= contact.tel %>
+                  <% else %>
+                    <i class="ui icon call grey"></i> <span style="color: rgba(0,0,0,.4)">unknown phone number</span>
+                  <% end %>
+                </p>
+              </div>
+            </div>
+            <div class="extra content">
+              <span class="left floated"><i class="write icon"></i> Edit</span>
+              <span class="right floated">Added in <%= contact.inserted_at |> Ecto.DateTime.to_iso8601 |> String.slice(0, 4) %></span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-  <%= if Enum.empty?(@account.deals) do %>
-    <center>
-      Are there any new or likely deals you want to keep track of?<br/>
-      <%= link "Start adding them here!", to: account_path(@conn, :index) %> <% #Make this point to deal_path(@conn, :new, @account.id) %>
-    </center>
-  <% else %>
-    <ul>
-      <%= for deal <- @account.deals do %>
-        <li><%= deal.description %></li>
-      <% end %>
-    </ul>
-  <% end %>
-
-  <h1>Projects</h1>
-
-  <%= if Enum.empty?(@account.projects) do %>
-    <center>
-      Are any ongoing projects you would want to log billable hours on?<br/>
-      <%= link "Start adding projects!", to: account_path(@conn, :index) %> <% #Make this point to project_path(@conn, :new, @account.id) %>
-    </center>
-  <% else %>
-    <ul>
-      <%= for project <- @account.projects do %>
-        <li><%= project.description %></li>
-      <% end %>
-    </ul>
-  <% end %>
-
-  <center>
-    <%= link "Activity log", to: account_activity_path(@conn, :index, @account.id)  %>
-  </center>
-  
+  <div class="row">
+    <div class="column">
+      <div class="ui top pointing secondary menu">
+        <a class="active item" data-tab="billing-address">Billing address</a>
+        <a class="item" data-tab="shipping-address">Shipping address</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="column">
+      <div class="ui bottom attached active tab" data-tab="billing-address">
+        <%= render "_address_show.html", address: @account.billing_address %>
+      </div>
+      <div class="ui bottom attached tab" data-tab="shipping-address">
+        <%= render "_address_show.html", address: @account.shipping_address %>
+      </div>
+    </div>
+  </div>
 </div>
+
+<h3 class="ui horizontal divider header">Events</h3>
+
+<div class="ui three column very relaxed grid" style="position: relative" >
+  <%= if not Enum.empty?(@account.events) do %>
+    <% { prev_events, next_events } = events_summary(@account.events) %>
+    <div class="row">
+      <div class="seven wide column">
+        <div class="ui feed">
+          <%= for event <- prev_events do %>
+            <%= render Carbon.EventView, "_event_show.html", event: event, show_links: false, conn: @conn %>
+          <% end %>
+        </div>
+      </div>
+      <div class="two wide column">
+        <div class="ui vertical divider">
+         Now 
+        </div>
+      </div>
+      <div class="seven wide column">
+        <div class="ui feed">
+          <%= for event <- next_events do %>
+            <%= render Carbon.EventView, "_event_show.html", event: event, show_links: false, conn: @conn %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="sixteen wide column">
+      <div style="text-align: center;">
+        <%= if Enum.empty?(@account.events) do %>
+          Are there any past or planned client interactions you want to keep track of?<br/>
+          <%= link "Start adding events and reminders!", to: account_event_path(@conn, :new, @account.id) %>
+        <% else %>
+          <%= link "See the complete list of events for this account...", to: account_event_path(@conn, :index, @account.id) %>
+        <% end %> 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<h3 class="ui horizontal divider header">Deals</h3>
+
+<%= if Enum.empty?(@account.deals) do %>
+  <center>
+    Are there any new or likely deals you want to keep track of?<br/>
+    <%= link "Start adding them here!", to: account_path(@conn, :index) %> <% #Make this point to deal_path(@conn, :new, @account.id) %>
+  </center>
+<% else %>
+  <ul>
+    <%= for deal <- @account.deals do %>
+      <li><%= deal.description %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h3 class="ui horizontal divider header">Projects</h3>
+
+<%= if Enum.empty?(@account.projects) do %>
+  <center>
+    Are any ongoing projects you would want to log billable hours on?<br/>
+    <%= link "Start adding projects!", to: account_path(@conn, :index) %> <% #Make this point to project_path(@conn, :new, @account.id) %>
+  </center>
+<% else %>
+  <ul>
+    <%= for project <- @account.projects do %>
+      <li><%= project.description %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<div class="ui section divider"></div>
+<center>
+  <%= link "Activity log", to: account_activity_path(@conn, :index, @account.id)  %>
+</center>
+<div class="ui hidden section divider"></div>
 
