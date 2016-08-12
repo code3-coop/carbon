@@ -62,4 +62,8 @@ defmodule Carbon.AccountView do
     Carbon.Repo.all query
   end
 
+  def humanize(:amount, number) do 
+    Number.Currency.number_to_currency(number)
+  end
+
 end

@@ -23,6 +23,8 @@ alias Carbon.{
   Reminder,
   Repo,
   User,
+  Deal,
+  DealTag
 }
 
 #
@@ -82,6 +84,14 @@ reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local
 Repo.insert! %Project{code: "AAA", description: "Project AAA description", account: account_b, tags: [development_tag, consulting_tag] }
 Repo.insert! %Project{code: "BBB", description: "Project BBB description", account: account_b, tags: [consulting_tag, training_tag] }
 Repo.insert! %Project{code: "CCC", description: "Project CCC description", account: account_b }
+
+casual_tag = Repo.insert! %DealTag{description: "casual", color: "blue"}
+job_tag = Repo.insert! %DealTag{description: "job", color: "black"}
+gordon_gekko_tag = Repo.insert! %DealTag{description: "$$:gordon_gekko$$", color: "green"}
+
+Repo.insert! %Deal{description: "Deal AAA description", account: account_a, tags: [casual_tag], probability: 100 }
+Repo.insert! %Deal{description: "Deal BBB description", account: account_a, tags: [job_tag], probability: 50, expected_value: 100.00, closing_date: Ecto.Date.from_erl(today), closed_value: 40_000.00}
+Repo.insert! %Deal{description: "Deal CCC description", account: account_a, tags: [gordon_gekko_tag], expected_value: 1_000_00.00 }
 
 #
 # Full-text search materialized views and indexes

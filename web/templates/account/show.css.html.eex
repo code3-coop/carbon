@@ -12,4 +12,13 @@
   .ui.red.button a {
     color: #FFF;
   }
+  .ui.small.indicating.progress {
+    display: inline-flex;
+    width: 100px;
+    margin-bottom: 0px;
+  }
+  .ui.progress .bar > .progress {
+    right: 30%;
+    left: 30%;
+  }
 </style>

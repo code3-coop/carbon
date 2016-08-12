@@ -151,11 +151,49 @@
     <%= link "Start adding them here!", to: account_path(@conn, :index) %> <% #Make this point to deal_path(@conn, :new, @account.id) %>
   </center>
 <% else %>
-  <ul>
+  <div class="ui list">
     <%= for deal <- @account.deals do %>
-      <li><%= deal.description %></li>
+      <div class="item">
+        <div class="content">
+          <div class="header">
+            <%= if deal.expected_value do %>
+              Expected value: <%= humanize(:amount, deal.expected_value) %>
+            <% end %>
+            <%= if deal.closed_value do %>
+              Closed value: <%= humanize(:amount, deal.closed_value) %>
+            <% end %>
+            <%= if deal.closing_date do %>
+              Closing date: <%= deal.closing_date %>
+            <% end %>
+            <%= if deal.probability do %>
+              Probability: 
+              <div class="ui small indicating progress" data-percent="<%=deal.probability%>">
+                  <div class="bar">
+                    <div class="progress"></div>
+                  </div>
+                </div>
+            <% end %>
+          </div>
+          <div class="description">
+            <%= deal.description %>
+          </div>
+          <%#<div class="ui labels tiny">%>
+            <%#<div class="ui label">%>
+              <%#Edit%>
+            <%#</div>%>
+            <%#<div class="ui label">%>
+              <%#Delete%>
+            <%#</div>%>
+          <%#</div>%>
+        </div>
+      </div>
     <% end %>
-  </ul>
+    <center>
+      <%= link to: account_deal_path(@conn, :index, @account.id) do %>
+        See the complete list of deals for this account
+      <% end %>
+    </center>
+  </div>
 <% end %>
 
 <h3 class="ui horizontal divider header">Projects</h3>

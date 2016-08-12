@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
-$('.menu .item').tab();
-
+  $('.menu .item').tab();
+  $('.ui.progress').progress();
 </script>

@@ -7,7 +7,7 @@ defmodule Carbon.Deal do
     field :description, :string
     field :expected_value, :float
     field :probability, :integer
-    field :closing_date, Ecto.DateTime
+    field :closing_date, Ecto.Date
     field :closed_value, :float
     field :active, :boolean, default: true
 
