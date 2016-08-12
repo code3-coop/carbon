@@ -22,6 +22,7 @@ defmodule Carbon.Router do
 
     get "/", PageController, :index
 
+    put "/accounts/:id/restore", AccountController, :restore
     resources "/accounts", AccountController do
       get "/activities", ActivityController, :index
       put "/events/:id/restore", EventController, :restore

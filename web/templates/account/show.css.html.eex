@@ -8,5 +8,8 @@
   .ui.feed>.event>.content>.meta .link {
     display: inline;
     padding-right: 5px;
-  }  
+  }
+  .ui.red.button a {
+    color: #FFF;
+  }
 </style>

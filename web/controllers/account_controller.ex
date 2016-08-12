@@ -156,15 +156,37 @@ defmodule Carbon.AccountController do
   end
 
   def delete(conn, %{"id" => id}) do
+    current_user = conn.assigns[:current_user]
     account = Repo.get!(Account, id)
+    changeset = Account.delete_changeset(account, %{active: false})
 
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(account)
+    case Repo.update(changeset) do
+      {:ok, account} ->
+        Carbon.Activity.new(account.id, current_user.id, :delete, :accounts, account.id, inspect(changeset))
+        conn
+        |> put_flash(:deleted_account, account)
+        |> redirect(to: account_path(conn, :index))
+      {:error, _changeset} -> 
+        conn
+        |> put_flash(:info, "Failed to delete account")
+        |> redirect(to: account_path(conn, :show, id))
+    end
+  end
+  def restore(conn, %{"id" => id}) do
+    current_user = conn.assigns[:current_user]
+    account = Repo.get!(Account, id)
+    changeset = Account.delete_changeset(account, %{active: true})
 
-    conn
-    |> put_flash(:info, "Account deleted successfully.")
-    |> redirect(to: account_path(conn, :index))
+    case Repo.update(changeset) do
+      {:ok, account} ->
+        Carbon.Activity.new(account.id, current_user.id, :restore, :accounts, account.id, inspect(changeset))
+        conn
+        |> redirect(to: account_path(conn, :index))
+      {:error, _changeset} -> 
+        conn
+        |> put_flash(:info, "Failed to restore account")
+        |> redirect(to: account_path(conn, :show, id))
+    end
   end
 
 

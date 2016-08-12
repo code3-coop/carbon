@@ -9,11 +9,16 @@
       <img src="<%=@account.owner.image_url%>">
       <%= @account.owner.full_name %>
     </div>
-    <%= link to: account_path @conn, :edit, @account.id do %>
-      <button class="right floated ui button">
-        <i class="ui icon write"></i>Edit
-      </button>
-    <% end %>
+    <div class="right floated ui buttons">
+      <%= link to: account_path(@conn, :edit, @account.id), class: "ui button" do %>
+        <i class="ui icon write"></i>
+        Edit
+      <% end %>
+      <%= link to: account_path(@conn, :delete, @account.id), method: :delete, form: [class: "ui red button"] do %>
+        <i class="ui icon trash"></i>
+        Delete
+      <% end %>        
+    </div>
   </h1>
   
   <div class="ui grid">

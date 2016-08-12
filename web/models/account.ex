@@ -53,4 +53,10 @@ defmodule Carbon.Account do
     |> cast(params, [:name])
     |> validate_required([:name])
   end
+  
+  def delete_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:active])
+    |> validate_required([:active])
+  end
 end

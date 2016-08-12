@@ -1,3 +1,15 @@
+<%= if get_flash(@conn, :deleted_account) do %>
+  <div class="ui message">
+    <div class="header">
+      Account deleted
+    </div>
+    <%account = get_flash(@conn, :deleted_account) %>
+    Account <%=account.name%> successfully deleted. 
+    <%= link to: account_path(@conn, :restore, account.id), method: :put, form: [style: "display: inline-block"] do %>
+      Get it back.
+    <% end %>
+  </div>
+<% end %>
 <div class="ui grid container">
   <div class="sixteen wide column">
     <h2>Accounts</h2>
