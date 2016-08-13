@@ -28,9 +28,11 @@ defmodule Carbon.Activity do
     |> foreign_key_constraint(:account_id)
   end
 
-  def new(account_id, user_id, action, target_schema, target_id \\ nil, target_value \\ nil)
+  def new(account_id, user_id, action, target_schema, target_id \\ nil, %Ecto.Changeset{changes: changes}) do
+    if target_schema in [:accounts, :contacts] do
+      Carbon.SearchIndex.refresh()
+    end
 
-  def new(account_id, user_id, action, target_schema, target_id, %Ecto.Changeset{changes: changes}) do
     string_changes = changes
     |> Map.to_list
     |> Stream.filter(fn {_key, value} -> value != [] end)
@@ -39,18 +41,12 @@ defmodule Carbon.Activity do
     |> Stream.map(&Atom.to_string/1)
     |> Enum.to_list
     |> Enum.join(",")
-    new(account_id, user_id, action, target_schema, target_id, string_changes)
-  end
 
-  def new(account_id, user_id, action, target_schema, target_id,  target_value) do
-    if target_schema in [:accounts, :contacts] do
-      Carbon.SearchIndex.refresh()
-    end
     activity = %__MODULE__{
       :action => Atom.to_string(action),
       :target_schema => Atom.to_string(target_schema),
       :target_id => target_id,
-      :target_value => target_value,
+      :target_value => string_changes,
       :user_id => user_id,
       :account_id => account_id }
     spawn __MODULE__, :do_insert, [activity]
