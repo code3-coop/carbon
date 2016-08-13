@@ -8,7 +8,7 @@
   <div class="content">
     Activity
     <h2 class="ui sub header">
-      <%= @account.name%>
+      <%= @account.name %>
     </h2>
   </div>
 </h1>
