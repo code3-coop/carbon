@@ -173,7 +173,7 @@
             <%= deal.description %>
           </div>
           <div class="meta">
-            <%= if ! deal.closed_value and deal.probability do %>
+            <%= if !deal.closed_value and deal.probability do %>
               <div class="ui mini label <%= probability_color(deal.probability) %>"><%= deal.probability %> %<div class="detail">probability</div></div>
             <% end %>
             <%= for tag <- deal.tags do %>
@@ -195,7 +195,7 @@
 
 <%= if Enum.empty?(@account.projects) do %>
   <center>
-    Are any ongoing projects you would want to log billable hours on?<br/>
+    Are there any ongoing projects you would want to log billable hours to?<br/>
     <%= link "Start adding projects!", to: account_path(@conn, :index) %> <% #Make this point to project_path(@conn, :new, @account.id) %>
   </center>
 <% else %>
