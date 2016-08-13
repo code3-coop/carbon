@@ -182,7 +182,7 @@
     <% end %>
     <center>
       <%= link to: account_deal_path(@conn, :index, @account.id) do %>
-        See the complete list of deals for this account
+        Edit the list of deals for this account
       <% end %>
     </center>
   </div>
