@@ -28,7 +28,19 @@ defmodule Carbon.Activity do
     |> foreign_key_constraint(:account_id)
   end
 
-  def new(account_id, user_id, action, target_schema, target_id \\ nil, target_value \\ nil) do
+  def new(account_id, user_id, action, target_schema, target_id \\ nil, target_value \\ nil)
+
+  def new(account_id, user_id, action, target_schema, target_id, %Ecto.Changeset{changes: changes} = target_value) do
+    string_changes = changes
+    |> Map.to_list
+    |> Enum.filter(fn {_key, value} -> value != [] end)
+    |> Enum.filter(fn {key, _value} -> key != :lock_version end)
+    |> Enum.map(fn {key, _value} -> key end)
+    |> Enum.map_join(",", &Atom.to_string/1)
+    new(account_id, user_id, action, target_schema, target_id, string_changes)
+  end
+
+  def new(account_id, user_id, action, target_schema, target_id,  target_value) do
     if target_schema in [:accounts, :contacts] do
       Carbon.SearchIndex.refresh()
     end

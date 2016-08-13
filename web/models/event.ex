@@ -38,8 +38,8 @@ defmodule Carbon.Event do
     |> validate_required([:active])
   end
   
-  def update_changeset(account, params, tags) do
-    account
+  def update_changeset(struct, params, tags) do
+    struct
     |> cast(params, [:description, :date, :user_id])
     |> validate_required([:description, :date, :user_id])
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))

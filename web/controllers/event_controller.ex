@@ -41,7 +41,7 @@ defmodule Carbon.EventController do
 
     case Repo.insert(changeset) do
       {:ok, event} ->
-        Carbon.Activity.new(event.account.id, current_user.id, :create, :events, event.id, inspect(changeset))
+        Carbon.Activity.new(event.account.id, current_user.id, :create, :events, event.id, changeset)
         conn
         |> put_flash(:info, "Event created successfully.")
         |> redirect(to: account_event_path(conn, :index, account_id))
@@ -71,8 +71,9 @@ defmodule Carbon.EventController do
     changeset = Event.update_changeset(event, event_params, tags)
 
     case Repo.update(changeset) do
-      {:ok, _} ->
-        Carbon.Activity.new(event.account_id, current_user.id, :update, :events, event.id, inspect(changeset))
+      {:ok, _event} ->
+        IO.inspect changeset.changes
+        Carbon.Activity.new(event.account_id, current_user.id, :update, :events, event.id, changeset)
         conn
         |> put_flash(:info, "Event updated successfully.")
         |> redirect(to: account_event_path(conn, :index, account_id))
@@ -89,7 +90,7 @@ defmodule Carbon.EventController do
 
     case Repo.update(changeset) do
       {:ok, event} ->
-        Carbon.Activity.new(String.to_integer(account_id), current_user.id, :remove, :events, event.id, inspect(changeset))
+        Carbon.Activity.new(String.to_integer(account_id), current_user.id, :remove, :events, event.id, changeset)
         conn
         |> put_flash(:deleted_event, event)
         |> redirect(to: account_event_path(conn, :index, account_id))
@@ -108,7 +109,7 @@ defmodule Carbon.EventController do
 
     case Repo.update(changeset) do
       {:ok, event} ->
-        Carbon.Activity.new(String.to_integer(account_id), current_user.id, :restore, :events, event.id, inspect(changeset))
+        Carbon.Activity.new(String.to_integer(account_id), current_user.id, :restore, :events, event.id, changeset)
         conn
         |> redirect(to: account_event_path(conn, :index, account_id))
       {:error, _changeset} -> 
