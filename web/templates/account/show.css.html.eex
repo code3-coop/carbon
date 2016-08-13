@@ -21,4 +21,11 @@
     right: 30%;
     left: 30%;
   }
+  .ui.comments {
+    max-width: inherit;
+  }
+  .ui.comments .item {
+    padding: 10px 0px;
+  }
+  
 </style>

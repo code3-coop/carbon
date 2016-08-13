@@ -72,7 +72,6 @@ defmodule Carbon.EventController do
 
     case Repo.update(changeset) do
       {:ok, _event} ->
-        IO.inspect changeset.changes
         Carbon.Activity.new(event.account_id, current_user.id, :update, :events, event.id, changeset)
         conn
         |> put_flash(:info, "Event updated successfully.")

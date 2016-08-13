@@ -151,11 +151,11 @@
     <%= link "Start adding them here!", to: account_deal_path(@conn, :new, @account.id) %>
   </center>
 <% else %>
-  <div class="ui list">
+  <div class="ui comments">
     <%= for deal <- @account.deals do %>
-      <div class="item">
+      <div class="comment">
         <div class="content">
-          <div class="header">
+          <div class="author">
             <%= if deal.expected_value do %>
               Expected value: <%= humanize(:amount, deal.expected_value) %>
             <% end %>
@@ -174,15 +174,23 @@
                 </div>
             <% end %>
           </div>
-          <div class="description">
+          <div class="text">
             <%= deal.description %>
           </div>
+          <div class="ui mini labels">
+            <%= for tag <- deal.tags do %>
+              <div class="ui label tag <%=tag.color%>">
+                <%= tag.description %>
+              </div>
+            <% end %>
+          </div>
+          
         </div>
       </div>
     <% end %>
     <center>
       <%= link to: account_deal_path(@conn, :index, @account.id) do %>
-        See the complete list of deals for this account
+        Edit the list of deals for this account
       <% end %>
     </center>
   </div>
