@@ -1,7 +1,7 @@
-defmodule Carbon.AccountTag do
+defmodule Carbon.TimesheetEntryTag do
   use Carbon.Web, :model
 
-  schema "account_tags" do
+  schema "timesheet_entry_tags" do
     field :description, :string
     field :color, :string
     field :active, :boolean, default: true
@@ -14,7 +14,7 @@ defmodule Carbon.AccountTag do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:description, :color])
+    |> cast(params, [:description, :color, :active])
     |> validate_required([:description, :color])
     |> validate_inclusion(:color, Carbon.SupportedColors.tags)
   end

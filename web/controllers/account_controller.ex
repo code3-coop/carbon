@@ -172,6 +172,7 @@ defmodule Carbon.AccountController do
         |> redirect(to: account_path(conn, :show, id))
     end
   end
+
   def restore(conn, %{"id" => id}) do
     current_user = conn.assigns[:current_user]
     account = Repo.get!(Account, id)
@@ -188,7 +189,6 @@ defmodule Carbon.AccountController do
         |> redirect(to: account_path(conn, :show, id))
     end
   end
-
 
   defp extract_rows({:error, _}), do: []
   defp extract_rows({:ok, %{:num_rows => 0}}), do: []

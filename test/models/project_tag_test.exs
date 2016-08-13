@@ -3,7 +3,7 @@ defmodule Carbon.ProjectTagTest do
 
   alias Carbon.ProjectTag
 
-  @valid_attrs %{active: true, color: "some content", description: "some content"}
+  @valid_attrs %{active: true, color: "red", description: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

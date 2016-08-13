@@ -21,26 +21,19 @@ defmodule Carbon.Router do
     pipe_through [:browser, :auth]
 
     get "/", PageController, :index
-
     put "/accounts/:id/restore", AccountController, :restore
     
     resources "/accounts", AccountController do
-    
-      resources "/deals", DealController
-      
       get "/activities", ActivityController, :index
       put "/events/:id/restore", EventController, :restore
-
+      resources "/deals", DealController
       resources "/events", EventController do
-      
         post   "/reminders", ReminderController, :create
         get    "/reminders/new", ReminderController, :new
         delete "/reminders/:id", ReminderController, :delete
         put    "/reminders/:id", ReminderController, :restore
       end
     end
-    
-    
   end
 
   scope "/session", Carbon do

@@ -5,9 +5,6 @@ defmodule Carbon.ControllerUtils do
   def get_tags_from(_module, %{"tags_id" => ""}), do: []
   def get_tags_from(module, %{"tags_id" => tags_id_param}) do
     ids = tags_id_param |> String.split(~r{\s*,\s*}) |> Enum.map(&String.to_integer/1)
-    case Repo.all(from t in module, where: t.id in ^ids) do
-      [ ] -> nil
-      otherwise -> otherwise
-    end
+    Repo.all(from t in module, where: t.id in ^ids)
   end
 end
