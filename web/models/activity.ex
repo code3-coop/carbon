@@ -30,13 +30,15 @@ defmodule Carbon.Activity do
 
   def new(account_id, user_id, action, target_schema, target_id \\ nil, target_value \\ nil)
 
-  def new(account_id, user_id, action, target_schema, target_id, %Ecto.Changeset{changes: changes} = target_value) do
+  def new(account_id, user_id, action, target_schema, target_id, %Ecto.Changeset{changes: changes}) do
     string_changes = changes
     |> Map.to_list
-    |> Enum.filter(fn {_key, value} -> value != [] end)
-    |> Enum.filter(fn {key, _value} -> key != :lock_version end)
-    |> Enum.map(fn {key, _value} -> key end)
-    |> Enum.map_join(",", &Atom.to_string/1)
+    |> Stream.filter(fn {_key, value} -> value != [] end)
+    |> Stream.filter(fn {key, _value} -> key != :lock_version end)
+    |> Stream.map(&Kernel.elem(&1, 0))
+    |> Stream.map(&Atom.to_string/1)
+    |> Enum.to_list
+    |> Enum.join(",")
     new(account_id, user_id, action, target_schema, target_id, string_changes)
   end
 
