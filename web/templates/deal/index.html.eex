@@ -36,11 +36,19 @@
             <%= if deal.probability do %>
               Probability: 
               <div class="ui small indicating progress" data-percent="<%=deal.probability%>">
-                  <div class="bar">
-                    <div class="progress"></div>
-                  </div>
+                <div class="bar">
+                  <div class="progress"></div>
                 </div>
+              </div>
             <% end %>
+          <div class="ui mini labels">
+            <%= for tag <- deal.tags do %>
+              <div class="ui label tag <%=tag.color%>">
+                <%= tag.description %>
+              </div>
+            <% end %>
+          </div>
+              
           </div>
           <div class="text">
             <%= deal.description %>
