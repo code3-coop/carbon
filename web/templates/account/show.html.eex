@@ -151,40 +151,35 @@
     <%= link "Start adding them here!", to: account_deal_path(@conn, :new, @account.id) %>
   </center>
 <% else %>
-  <div class="ui comments">
+  <div class="ui feed">
     <%= for deal <- @account.deals do %>
-      <div class="comment">
+      <div class="event">
+        <div class="label">
+          <img src="<%= deal.owner.image_url %>">
+        </div>
         <div class="content">
-          <div class="author">
-            <%= if deal.expected_value do %>
-              Expected value: <%= humanize(:amount, deal.expected_value) %>
-            <% end %>
-            <%= if deal.closed_value do %>
-              Closed value: <%= humanize(:amount, deal.closed_value) %>
-            <% end %>
-            <%= if deal.closing_date do %>
-              Closing date: <%= deal.closing_date %>
-            <% end %>
-            <%= if deal.probability do %>
-              Probability: 
-              <div class="ui small indicating progress" data-percent="<%=deal.probability%>">
-                  <div class="bar">
-                    <div class="progress"></div>
-                  </div>
-                </div>
-            <% end %>
-          </div>
-          <div class="text">
+          <%= if deal.closed_value do %>
+            <div class="summary">
+              <a href=""><%= deal.owner.full_name %></a> closed a <%= humanize(:amount, deal.closed_value) %> deal.
+              <div class="date">on <%= deal.closing_date %></div>
+            </div>
+          <% else %>
+            <div class="summary">
+              <a href=""><%= deal.owner.full_name %></a> is working on a <%= humanize(:amount, deal.expected_value) %> deal.
+              <div class="date">since <%= deal.updated_at |> Ecto.DateTime.to_date %></div>
+            </div>
+          <% end %>
+          <div class="extra text">
             <%= deal.description %>
           </div>
-          <div class="ui mini labels">
+          <div class="meta">
+            <%= if ! deal.closed_value and deal.probability do %>
+              <div class="ui mini label <%= probability_color(deal.probability) %>"><%= deal.probability %> %<div class="detail">probability</div></div>
+            <% end %>
             <%= for tag <- deal.tags do %>
-              <div class="ui label tag <%=tag.color%>">
-                <%= tag.description %>
-              </div>
+              <div class="ui mini label <%= tag.color %>"><%= tag.description %></div>
             <% end %>
           </div>
-          
         </div>
       </div>
     <% end %>
