@@ -15,15 +15,12 @@
       <%= @event.description %>
     </div>
     <div class="meta">
-      <%= if not Enum.empty?(@event.tags) do %>
-        <div class="ui tag labels mini">
-          <%= for tag <- @event.tags do %>
-            <div class="ui label <%= tag.color%>">
-              <%= tag.description %>
-            </div>
-          <%= end %>
-        </div>
+      <%= if not @show_links and not Enum.empty?(@event.reminders) do %>
+        <div class="ui mini orange label "><i class="alarm icon"></i>reminders set</div>
       <% end %>
+      <%= for tag <- @event.tags do %>
+        <div class="ui mini label <%= tag.color %>"><i class="tag icon"></i><%= tag.description %></div>
+      <%= end %>
       <div class="links">
         <%= if @show_links do %>
           <%= link class: "link", to: account_event_reminder_path(@conn, :new, @event.account_id, @event.id) do %>
@@ -38,19 +35,19 @@
             <i class="icon trash"></i>
             Delete
           <%= end %>          
-        <% end %>
-        <%= unless Enum.empty?(@event.reminders) do %>
-          Reminder set to 
-          <%= for { reminder, rev_index } <- Enum.zip(@event.reminders, length(@event.reminders)-1..0) do %>
-            <div class="ui label">
-              <%= link to: account_event_reminder_path(@conn, :delete, @event.account_id, @event.id, reminder.id), method: :delete, form: [style: "padding-right: 0px;"] do %>
-                <i class="icon delete"></i>
-                <%= reminder.date |> Ecto.DateTime.to_string() |> String.replace(~r/:00$/, "") %>              
-              <% end %>
-            </div>
-            <%= unless rev_index == 0, do: " and " %>
+          <%= unless Enum.empty?(@event.reminders) do %>
+            Reminder set to 
+            <%= for { reminder, rev_index } <- Enum.zip(@event.reminders, length(@event.reminders)-1..0) do %>
+              <div class="ui label">
+                <%= link to: account_event_reminder_path(@conn, :delete, @event.account_id, @event.id, reminder.id), method: :delete, form: [style: "padding-right: 0px;"] do %>
+                  <i class="icon delete"></i>
+                  <%= reminder.date |> Ecto.DateTime.to_string() |> String.replace(~r/:00$/, "") %>              
+                <% end %>
+              </div>
+              <%= unless rev_index == 0, do: " and " %>
+            <%= end %>
           <%= end %>
-        <%= end %>
+        <% end %>
       </div>
     </div>
   </div>

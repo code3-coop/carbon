@@ -177,7 +177,7 @@
               <div class="ui mini label <%= probability_color(deal.probability) %>"><%= deal.probability %> %<div class="detail">probability</div></div>
             <% end %>
             <%= for tag <- deal.tags do %>
-              <div class="ui mini label <%= tag.color %>"><%= tag.description %></div>
+              <div class="ui mini label <%= tag.color %>"><i class="tag icon"></i><%= tag.description %></div>
             <% end %>
           </div>
         </div>
