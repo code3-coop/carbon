@@ -12,6 +12,7 @@ defmodule Carbon.Deal do
     field :active, :boolean, default: true
 
     belongs_to :account, Carbon.Account
+    belongs_to :owner, Carbon.User
     many_to_many :tags, Carbon.DealTag, join_through: "j_deals_tags"
 
     timestamps
