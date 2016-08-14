@@ -51,7 +51,7 @@
             <% end %>
             <%= for tag <- deal.tags do %>
               <div class="ui mini label <%= tag.color %>">
-                <i class="tag icon"></i>
+                <i class="ui tag icon"></i>
                 <%= tag.description %>
               </div>
             <% end %>

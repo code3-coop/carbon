@@ -60,7 +60,8 @@
         <div class="menu">
           <%= for tag <- account_tags_select do %>
             <div class="item " data-value="<%= tag.id %>">
-              <div class="ui label tag <%=tag.color%>">
+              <div class="ui label <%=tag.color%>">
+                <i class="ui icon tag"></i>
                 <%= tag.description %>
               </div>
             </div>

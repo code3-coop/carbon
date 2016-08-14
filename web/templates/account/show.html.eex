@@ -28,9 +28,10 @@
 <div class="ui grid">
   <div class="row">
     <div class="column">
-      <div class="ui tag labels">
+      <div class="ui labels">
         <%= for tag <- @account.tags do %>
-          <div class="ui tag label <%= tag.color%>">
+          <div class="ui label <%= tag.color%>">
+            <i class="ui icon tag"></i>
             <%= tag.description %>
           </div>
         <% end %>
