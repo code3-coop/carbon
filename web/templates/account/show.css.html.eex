@@ -12,20 +12,5 @@
   .ui.red.button a {
     color: #FFF;
   }
-  .ui.small.indicating.progress {
-    display: inline-flex;
-    width: 100px;
-    margin-bottom: 0px;
-  }
-  .ui.progress .bar > .progress {
-    right: 30%;
-    left: 30%;
-  }
-  .ui.comments {
-    max-width: inherit;
-  }
-  .ui.comments .item {
-    padding: 10px 0px;
-  }
   
 </style>
