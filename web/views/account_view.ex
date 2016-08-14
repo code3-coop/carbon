@@ -1,6 +1,7 @@
 defmodule Carbon.AccountView do
   use Carbon.Web, :view
   import Ecto.Query, only: [from: 2]
+  import Carbon.ViewHelpers, only: [account_status_select: 0, account_tags_select: 0, account_user_select: 0, humanize: 2, probability_color: 1]
 
   def match_table_to_color("account"), do: "blue"
   def match_table_to_color("event"), do: "yellow"
@@ -42,37 +43,4 @@ defmodule Carbon.AccountView do
     end
   end
 
-  def account_status_select do
-    query = from s in Carbon.AccountStatus,
-      select: {s.key, s.id},
-      order_by: s.id
-    Carbon.Repo.all query
-  end
-
-  def account_tags_select do
-    query = from at in Carbon.AccountTag,
-      order_by: at.id
-    Carbon.Repo.all query
-  end
-
-  def account_user_select do
-    query = from u in Carbon.User,
-      select: %{full_name: u.full_name, id: u.id, image_url: u.image_url},
-      order_by: u.id
-    Carbon.Repo.all query
-  end
-
-  def humanize(:amount, number) do 
-    Number.Currency.number_to_currency(number)
-  end
-
-  def probability_color(percentage) do
-    cond do
-      percentage >= 90 -> "green"
-      percentage >= 75 -> "olive"
-      percentage >= 60 -> "yellow"
-      percentage >= 50 -> "red"
-      true             -> "grey"
-    end
-  end
 end
