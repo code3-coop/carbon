@@ -19,8 +19,8 @@ defmodule Carbon.Duration do
       420
   """
   def parse_minutes(duration_string) do
-    if String.match?(duration_string, ~r/^\d+(?:\.\d+)?[mhd]$/) do
-      [ value_string, unit ] = String.split_at(duration_string, -1) # consider String.split(~r/(?=[mhd]$)/i)
+    if String.match?(duration_string, ~r/^\d{1,4}(?:\.\d{1,2})?[mhd]$/) do
+      { value_string, unit } = String.split_at(duration_string, -1) # consider String.split(~r/(?=[mhd]$)/i)
       { value, _ } = Float.parse value_string
       value |> in_minutes(unit) |> round
     else
