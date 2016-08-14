@@ -9,7 +9,7 @@
     <div class="header">
       Reminder archived
     </div>
-    Reminder successfully 
+    Reminder archived successfully 
       <% reminder = get_flash(@conn, :deleted_reminder) %>
       <% path_to_restore = account_event_reminder_path(@conn, :restore, @account.id, reminder.event_id, reminder.id) %>
       <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
