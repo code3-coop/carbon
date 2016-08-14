@@ -31,10 +31,13 @@ defmodule Carbon.DealController do
   def create(conn, %{"deal" => deal_params}) do
     current_user = conn.assigns[:current_user]
     %{"account_id" => account_id} = conn.params
+    tags = get_tags_from(Carbon.DealTag, deal_params)
     deal = %Deal{owner: current_user, account: Repo.get(Account, String.to_integer(account_id))}
-    changeset = Deal.create_changeset(deal, deal_params)
+    changeset = Deal.create_changeset(deal, deal_params, tags)
+    
     case Repo.insert(changeset) do
-      {:ok, _deal} ->
+      {:ok, deal} ->
+        Carbon.Activity.new(account_id, current_user.id, :create, :deals, deal.id, changeset)        
         conn
         |> put_flash(:info, "Deal created successfully.")
         |> redirect(to: account_deal_path(conn, :index, account_id))
