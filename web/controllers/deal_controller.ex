@@ -22,31 +22,28 @@ defmodule Carbon.DealController do
   end
   
   def new(conn, _params) do
-    #changeset = Deal.changeset(%Deal{})
-    #conn
-    #|> assign(:changeset, changeset)
-    #|> assign(:account_id, account_id)
-    #|> render("new.html")  
+    changeset = Deal.changeset(%Deal{})
+    conn
+    |> assign(:changeset, changeset)
+    |> render("new.html")  
   end
 
-  def create(conn, %{"account_id" => account_id, "event_id" => event_id, "reminder" => reminder_params}) do
-    #current_user = conn.assigns[:current_user]
-    #reminder = %Reminder{user: current_user, event: Repo.get(Event, String.to_integer(event_id))}
-    #date = Ecto.DateTime.cast!("#{reminder_params["date"]} #{reminder_params["time"]}:00")
-    #changeset = Reminder.create_changeset(reminder, %{date:  date})
-    #case Repo.insert(changeset) do
-      #{:ok, _reminder} ->
-        #conn
-        #|> put_flash(:info, "Reminder created successfully.")
-        #|> redirect(to: account_event_path(conn, :index, account_id))
-      #{:error, changeset} -> 
-        #conn
-        #|> put_flash(:info, "Reminder could not be created.")
-        #|> assign(:changeset, changeset)
-        #|> assign(:account_id, account_id)
-        #|> assign(:event_id, event_id)
-        #|> render("new.html")
-    #end
+  def create(conn, %{"deal" => deal_params}) do
+    current_user = conn.assigns[:current_user]
+    %{"account_id" => account_id} = conn.params
+    deal = %Deal{owner: current_user, account: Repo.get(Account, String.to_integer(account_id))}
+    changeset = Deal.create_changeset(deal, deal_params)
+    case Repo.insert(changeset) do
+      {:ok, _deal} ->
+        conn
+        |> put_flash(:info, "Deal created successfully.")
+        |> redirect(to: account_deal_path(conn, :index, account_id))
+      {:error, changeset} -> 
+        conn
+        |> put_flash(:info, "Deal could not be created.")
+        |> assign(:changeset, changeset)
+        |> render("new.html")
+    end
   end
 
   def delete(conn, _params) do 

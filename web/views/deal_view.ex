@@ -1,5 +1,6 @@
 defmodule Carbon.DealView do
   use Carbon.Web, :view
+  import Ecto.Query, only: [from: 2]
 
   def humanize(:amount, number) do 
     Number.Currency.number_to_currency(number)
@@ -13,6 +14,11 @@ defmodule Carbon.DealView do
       percentage >= 50 -> "red"
       true             -> "grey"
     end
+  end
+  def deal_tags_select do
+    query = from dt in Carbon.DealTag,
+      order_by: dt.id
+    Carbon.Repo.all query
   end
   
 end

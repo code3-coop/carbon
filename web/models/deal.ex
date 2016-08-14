@@ -26,4 +26,10 @@ defmodule Carbon.Deal do
     |> cast(params, [:expected_value, :probability, :closing_date, :closed_value])
     |> validate_required([:expected_value, :probability, :closing_date, :closed_value])
   end
+
+  def create_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:description, :probability, ])
+    |> validate_required([:description, :probability])
+  end
 end

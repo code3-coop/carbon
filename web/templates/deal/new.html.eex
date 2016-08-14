@@ -1,0 +1,71 @@
+<%= if get_flash(@conn, :info) do %>
+  <div class="ui message">
+    <%= get_flash(@conn, :info) %>
+  </div>
+<% end %>
+
+<h2 class="ui header">New account</h2>
+
+<%= form_for @changeset, account_deal_path(@conn, :create, @conn.params["account_id"]), fn f -> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+    <div class="field <%= if f.errors[:description], do: "error" %>">
+      <label>Deal description
+        <span class="error">
+          <%= if f.errors[:description], do: translate_error f.errors[:description] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= textarea f, :description %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+    <div class="field <%= if f.errors[:expected_value], do: "error" %>">
+      <label>Deal expected value
+        <span class="error">
+          <%= if f.errors[:expected_value], do: translate_error f.errors[:expected_value] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= number_input f, :expected_value, min: 0, step: 1 %>
+      </div>
+    </div>
+    <div class="field <%= if f.errors[:probability], do: "error" %>">
+      <label>Deal probabaility
+        <span class="error">
+          <%= if f.errors[:probability], do: translate_error f.errors[:probability] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= number_input f, :probability, min: 0, max: 100, step: 1 %>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Deal tags</label>
+      <div class="ui fluid multiple search selection dropdown">
+        <%= hidden_input f, :tags_id  %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select tags</div>
+        <div class="menu">
+          <%= for tag <- deal_tags_select do %>
+            <div class="item " data-value="<%= tag.id %>">
+              <div class="ui label <%=tag.color%>">
+                <i class="ui tag icon"></i>
+                <%= tag.description %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <%= submit "Create deal", class: "ui submit button" %>
+    <%= link "cancel", to: account_deal_path(@conn, :index, @conn.params["account_id"]) %>
+  </div>
+<% end %>
+
+
