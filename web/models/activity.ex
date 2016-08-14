@@ -28,6 +28,9 @@ defmodule Carbon.Activity do
     |> foreign_key_constraint(:account_id)
   end
 
+  def new(account_id, user_id, action, target_schema, target_id, changeset) when is_bitstring(account_id) do
+    new(String.to_integer(account_id), user_id, action, target_schema, target_id, changeset)
+  end
   def new(account_id, user_id, action, target_schema, target_id \\ nil, %Ecto.Changeset{changes: changes}) do
     if target_schema in [:accounts, :contacts] do
       Carbon.SearchIndex.refresh()
