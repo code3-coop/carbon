@@ -1,0 +1,4 @@
+
+<script>
+$('.dropdown').dropdown()
+</script>

@@ -1,0 +1,5 @@
+<style>
+.ui.form textarea {
+  padding: 15px;
+}
+</style>

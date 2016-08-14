@@ -4,19 +4,16 @@
   </div>
 <% end %>
 
-<h2 class="ui header">New event</h2>
+<h2 class="ui header">New account</h2>
 
-<%= form_for @changeset, account_event_path(@conn, :create, @account_id), fn f-> %>
-
+<%= form_for @changeset, account_deal_path(@conn, :create, @conn.params["account_id"]), fn f -> %>
   <div class="ui form <%= if @changeset.action, do: "error" %>">
-  
     <div class="ui error message">
       <div class="header">Ruh roh!</div>
       <p>Something went wrong. Please check the following errors.</p>
     </div>
-    
     <div class="field <%= if f.errors[:description], do: "error" %>">
-      <label>Description 
+      <label>Deal description
         <span class="error">
           <%= if f.errors[:description], do: translate_error f.errors[:description] %>
         </span>
@@ -26,31 +23,35 @@
         <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>
-
-    <div class="field <%= if f.errors[:date], do: "error" %>">
-      <label>Date
+    <div class="field <%= if f.errors[:expected_value], do: "error" %>">
+      <label>Deal expected value
         <span class="error">
-          <%= if f.errors[:date], do: translate_error f.errors[:date] %>
+          <%= if f.errors[:expected_value], do: translate_error f.errors[:expected_value] %>
         </span>
       </label>
       <div class="ui left corner labeled input">
-        <%= if @changeset.changes[:date] do %>
-          <input type="date" name="event[date]" value="<%= @changeset.changes[:date] |> Ecto.DateTime.to_date |> Ecto.Date.to_iso8601 %>"/>
-        <% else %>
-          <input type="date" name="event[date]" />
-        <% end %>
-        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+        <%= number_input f, :expected_value, min: 0, step: 1 %>
+      </div>
+    </div>
+    <div class="field <%= if f.errors[:probability], do: "error" %>">
+      <label>Deal probabaility
+        <span class="error">
+          <%= if f.errors[:probability], do: translate_error f.errors[:probability] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= number_input f, :probability, min: 0, max: 100, step: 1 %>
       </div>
     </div>
 
     <div class="field">
-      <label>Event tags</label>
+      <label>Deal tags</label>
       <div class="ui fluid multiple search selection dropdown">
         <%= hidden_input f, :tags_id  %>
         <i class="dropdown icon"></i>
         <div class="default text">Select tags</div>
         <div class="menu">
-          <%= for tag <- event_tags_select do %>
+          <%= for tag <- deal_tags_select do %>
             <div class="item " data-value="<%= tag.id %>">
               <div class="ui label <%=tag.color%>">
                 <i class="ui tag icon"></i>
@@ -62,8 +63,9 @@
       </div>
     </div>
     
-    
-    <%= submit "Create event", class: "ui button submit"%>
-    <%= link "Cancel", to: account_event_path @conn, :index, @account_id %>
+    <%= submit "Create deal", class: "ui submit button" %>
+    <%= link "cancel", to: account_deal_path(@conn, :index, @conn.params["account_id"]) %>
   </div>
 <% end %>
+
+
