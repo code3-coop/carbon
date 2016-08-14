@@ -1,0 +1,8 @@
+<style>
+.ui.feed>.event>.content .meta>.icon:hover {
+  cursor: inherit;
+}
+.ui.feed>.event>.content .meta>.icon:hover {
+  color: inherit;
+}
+</style>
