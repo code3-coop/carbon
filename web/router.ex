@@ -25,8 +25,9 @@ defmodule Carbon.Router do
     
     resources "/accounts", AccountController do
       get "/activities", ActivityController, :index
-      put "/events/:id/restore", EventController, :restore
+      put "/deals/:id/restore", DealController, :restore
       resources "/deals", DealController
+      put "/events/:id/restore", EventController, :restore
       resources "/events", EventController do
         post   "/reminders", ReminderController, :create
         get    "/reminders/new", ReminderController, :new

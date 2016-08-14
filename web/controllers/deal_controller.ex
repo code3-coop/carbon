@@ -50,35 +50,39 @@ defmodule Carbon.DealController do
   end
 
   def delete(conn, _params) do 
-    #%{:params => %{"account_id" => account_id, "id" => reminder_id}} = conn
-    #reminder = Repo.get(Reminder, reminder_id)
-    #changeset = Reminder.archive_changeset(reminder, %{active: false})
-    #case Repo.update(changeset) do
-      #{:ok, reminder} -> 
-        #conn
-        #|> put_flash(:deleted_reminder, reminder)
-        #|> redirect(to: account_event_path(conn, :index, account_id))
-      #{:error, changeset} ->
-        #conn
-        #|> assign(:changeset, changeset)
-        #|> put_flash(:info, "Failed to delete reminder.")
-        #|> render(account_event_path(conn, :index, account_id))
-    #end
+    current_user = conn.assigns[:current_user]
+    %{:params => %{"account_id" => account_id, "id" => deal_id}} = conn
+    deal = Repo.get(Deal, deal_id)
+    changeset = Deal.archive_changeset(deal, %{active: false})
+    case Repo.update(changeset) do
+      {:ok, deal} -> 
+        Carbon.Activity.new(account_id, current_user.id, :delete, :deals, deal.id, changeset)        
+        conn
+        |> put_flash(:deleted_deal, deal)
+        |> redirect(to: account_deal_path(conn, :index, account_id))
+      {:error, changeset} ->
+        conn
+        |> assign(:changeset, changeset)
+        |> put_flash(:info, "Failed to delete deal.")
+        |> render(account_deal_path(conn, :index, account_id))
+    end
   end
   def restore(conn, _params) do 
-    #%{:params => %{"account_id" => account_id, "id" => reminder_id}} = conn
-    #reminder = Repo.get(Reminder, reminder_id)
-    #changeset = Reminder.archive_changeset(reminder, %{active: true})
-    #case Repo.update(changeset) do
-      #{:ok, _reminder} -> 
-        #conn
-        #|> redirect(to: account_event_path(conn, :index, account_id))
-      #{:error, changeset} ->
-        #conn
-        #|> assign(:changeset, changeset)
-        #|> put_flash(:info, "Failed to restore reminder.")
-        #|> render(account_event_path(conn, :index, account_id))
-    #end
+    current_user = conn.assigns[:current_user]
+    %{:params => %{"account_id" => account_id, "id" => deal_id}} = conn
+    deal = Repo.get(Deal, deal_id)
+    changeset = Deal.archive_changeset(deal, %{active: true})
+    case Repo.update(changeset) do
+      {:ok, _deal} -> 
+        Carbon.Activity.new(account_id, current_user.id, :restore, :deals, deal.id, changeset)        
+        conn
+        |> redirect(to: account_deal_path(conn, :index, account_id))
+      {:error, changeset} ->
+        conn
+        |> assign(:changeset, changeset)
+        |> put_flash(:info, "Failed to restore deal.")
+        |> render(account_deal_path(conn, :index, account_id))
+    end
   end
 end
 

@@ -34,4 +34,10 @@ defmodule Carbon.Deal do
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
     |> foreign_key_constraint(:user_id)
   end
+
+  def archive_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:active])
+  end
+
 end

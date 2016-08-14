@@ -1,3 +1,17 @@
+<%= if get_flash(@conn, :deleted_deal) do %>
+  <div class="ui message">
+    <div class="header">
+      Deal archived
+    </div>
+    Deal archived successfully 
+      <% deal = get_flash(@conn, :deleted_deal) %>
+      <% path_to_restore = account_deal_path(@conn, :restore, @conn.params["account_id"], deal.id) %>
+      <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
+        Get it back.
+      <% end %>
+  </div>
+<% end %>
+
 <h1 class="ui header">
   <div class="content">
     Deals 
@@ -60,7 +74,7 @@
                 <i class="ui icon write"></i>
                 Edit
               <% end %>
-              <%=link to: account_deal_path(@conn, :delete, deal.account_id, deal.id) do %>
+              <%=link to: account_deal_path(@conn, :delete, deal.account_id, deal.id), method: :delete do %>
                 <i class="ui icon trash"></i>
                 Delete
               <% end %>
