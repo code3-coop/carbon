@@ -11,7 +11,8 @@ defmodule Carbon.DealController do
     deal_query = from d in Deal,
       where: d.account_id == ^account_id and d.active == true,
       left_join: t in assoc(d, :tags),
-      preload: [ tags: t], 
+      left_join: o in assoc(d, :owner),
+      preload: [tags: t, owner: o], 
       order_by: d.updated_at
 
     conn

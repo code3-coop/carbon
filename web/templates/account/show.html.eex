@@ -183,12 +183,12 @@
         </div>
       </div>
     <% end %>
-    <center>
-      <%= link to: account_deal_path(@conn, :index, @account.id) do %>
-        Edit the list of deals for this account
-      <% end %>
-    </center>
   </div>
+  <center>
+    <%= link to: account_deal_path(@conn, :index, @account.id) do %>
+      Edit the list of deals for this account
+    <% end %>
+  </center>
 <% end %>
 
 <h3 class="ui horizontal divider header">Projects</h3>
