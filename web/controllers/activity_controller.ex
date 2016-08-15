@@ -1,8 +1,6 @@
 defmodule Carbon.ActivityController do
   use Carbon.Web, :controller
 
-  import Carbon.ControllerUtils
-  
   alias Carbon.Activity
   
   def index(conn, %{"account_id" => account_id}) do

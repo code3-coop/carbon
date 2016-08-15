@@ -1,6 +1,6 @@
 defmodule Carbon.SessionPlug do
   import Plug.Conn
-  alias Carbon.{SessionController, User, Repo}
+  alias Carbon.{User, Repo}
 
   @moduledoc """
   Intercepts protected routes.
