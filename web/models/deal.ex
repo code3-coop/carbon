@@ -29,7 +29,7 @@ defmodule Carbon.Deal do
 
   def create_changeset(struct, params \\ %{}, tags) do
     struct
-    |> cast(params, [:description, :probability, ])
+    |> cast(params, [:description, :probability, :expected_value])
     |> validate_required([:description, :probability])
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
     |> foreign_key_constraint(:user_id)
