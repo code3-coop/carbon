@@ -30,6 +30,11 @@ config :number, currency: [
                   separator: ",",
                   format: "%n\%u",           # "30.00 $"
                   negative_format: "-\u00A0%n\u00A0%u"   # "- 30.00 $"
+                ],
+                delimit: [
+                  precision: 2,
+                  delimiter: " ",
+                  separator: ","
                 ]
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

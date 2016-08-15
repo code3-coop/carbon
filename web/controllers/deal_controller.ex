@@ -67,6 +67,7 @@ defmodule Carbon.DealController do
         |> render(account_deal_path(conn, :index, account_id))
     end
   end
+
   def restore(conn, _params) do 
     current_user = conn.assigns[:current_user]
     %{:params => %{"account_id" => account_id, "id" => deal_id}} = conn
@@ -84,5 +85,40 @@ defmodule Carbon.DealController do
         |> render(account_deal_path(conn, :index, account_id))
     end
   end
+
+  def edit(conn, %{"id" => deal_id}) do
+    deal_query = from d in Deal,
+      where: d.id == ^deal_id,
+      left_join: t in assoc(d, :tags),
+      preload: [ tags: t ]
+    deal = Repo.one(deal_query)
+    changeset = Deal.changeset(deal)
+
+    conn
+    |> assign(:deal, deal)
+    |> assign(:changeset, changeset)
+    |> render("edit.html")
+  end
+
+  def update(conn, %{"account_id" => account_id, "id" => id, "deal" => deal_params}) do
+    current_user = conn.assigns[:current_user]
+    tags = get_tags_from(Carbon.DealTag, deal_params)
+    deal = Repo.get!(Deal, id) |> Repo.preload([:owner, :tags])
+    changeset = Deal.update_changeset(deal, deal_params, tags)
+
+    case Repo.update(changeset) do
+      {:ok, _deal} ->
+        Carbon.Activity.new(account_id, current_user.id, :update, :deals, deal.id, changeset)
+        conn
+        |> put_flash(:info, "Deal updated successfully.")
+        |> redirect(to: account_deal_path(conn, :index, account_id))
+      {:error, changeset} ->
+        conn
+        |> assign(:deal, deal)
+        |> assign(:changeset, changeset)
+        |> render("edit.html")
+    end
+  end
+  
 end
 

@@ -5,15 +5,15 @@ defmodule Carbon.Deal do
     field :lock_version, :integer, default: 1
 
     field :description, :string
-    field :expected_value, :float
+    field :expected_value, :integer
     field :probability, :integer
     field :closing_date, Ecto.Date
-    field :closed_value, :float
+    field :closed_value, :integer
     field :active, :boolean, default: true
 
     belongs_to :account, Carbon.Account
     belongs_to :owner, Carbon.User
-    many_to_many :tags, Carbon.DealTag, join_through: "j_deals_tags"
+    many_to_many :tags, Carbon.DealTag, join_through: "j_deals_tags", on_replace: :delete
 
     timestamps
   end
@@ -32,12 +32,20 @@ defmodule Carbon.Deal do
     |> cast(params, [:description, :probability, ])
     |> validate_required([:description, :probability])
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
-    |> foreign_key_constraint(:user_id)
+    |> foreign_key_constraint(:owner_id)
   end
 
   def archive_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:active])
+  end
+  
+  def update_changeset(struct, params \\ %{}, tags) do
+    struct
+    |> cast(params, [:description, :expected_value, :probability, :closing_date, :closed_value])
+    |> validate_required([:description, :probability])
+    |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
+    |> foreign_key_constraint(:owner_id)
   end
 
 end

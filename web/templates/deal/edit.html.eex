@@ -4,16 +4,17 @@
   </div>
 <% end %>
 
-<h2 class="ui header">New deal</h2>
+<h2 class="ui header">Edit deal</h2>
 
-<%= form_for @changeset, account_deal_path(@conn, :create, @conn.params["account_id"]), fn f -> %>
+<%= form_for @changeset, account_deal_path(@conn, :update, @deal.account_id, @deal.id), fn f -> %>
   <div class="ui form <%= if @changeset.action, do: "error" %>">
     <div class="ui error message">
       <div class="header">Ruh roh!</div>
       <p>Something went wrong. Please check the following errors.</p>
     </div>
+    
     <div class="field <%= if f.errors[:description], do: "error" %>">
-      <label>Deal description
+      <label>Description
         <span class="error">
           <%= if f.errors[:description], do: translate_error f.errors[:description] %>
         </span>
@@ -23,18 +24,20 @@
         <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>
+    
     <div class="field <%= if f.errors[:expected_value], do: "error" %>">
-      <label>Deal expected value
+      <label>Expected value
         <span class="error">
           <%= if f.errors[:expected_value], do: translate_error f.errors[:expected_value] %>
         </span>
       </label>
       <div class="ui left corner labeled input">
-        <%= number_input f, :expected_value, min: 0, step: 1 %>
+        <%= number_input f, :expected_value, min: 0, step: 1, value: @deal.expected_value %>
       </div>
     </div>
+    
     <div class="field <%= if f.errors[:probability], do: "error" %>">
-      <label>Deal probabaility
+      <label>Probabaility
         <span class="error">
           <%= if f.errors[:probability], do: translate_error f.errors[:probability] %>
         </span>
@@ -44,10 +47,11 @@
       </div>
     </div>
 
+
     <div class="field">
       <label>Deal tags</label>
       <div class="ui fluid multiple search selection dropdown">
-        <%= hidden_input f, :tags_id  %>
+        <%= hidden_input f, :tags_id, value: Enum.map_join(@deal.tags, ",", & &1.id) %>
         <i class="dropdown icon"></i>
         <div class="default text">Select tags</div>
         <div class="menu">
@@ -62,10 +66,33 @@
         </div>
       </div>
     </div>
+
+    <div class="field <%= if f.errors[:closed_value], do: "error" %>">
+      <label>Closed value
+        <span class="error">
+          <%= if f.errors[:closed_value], do: translate_error f.errors[:closed_value] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= number_input f, :closed_value, min: 0, step: 1, value: @deal.closed_value %>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:closing_date], do: "error" %>">
+      <label>Closing date
+        <span class="error">
+          <%= if f.errors[:closed_value], do: translate_error f.errors[:closing_date] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <input name="deal[closing_date]" type="date"/>
+      </div>
+    </div>
     
-    <%= submit "Create deal", class: "ui submit button" %>
+    <%= submit "Edit deal", class: "ui submit button" %>
     <%= link "cancel", to: account_deal_path(@conn, :index, @conn.params["account_id"]) %>
   </div>
 <% end %>
+
 
 

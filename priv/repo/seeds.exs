@@ -90,8 +90,8 @@ job_tag = Repo.insert! %DealTag{description: "job", color: "black"}
 gordon_gekko_tag = Repo.insert! %DealTag{description: "$$:gordon_gekko$$", color: "green"}
 
 Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: robert, tags: [casual_tag], probability: 100 }
-Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: joe, tags: [job_tag], probability: 80, expected_value: 100.00, closing_date: Ecto.Date.from_erl(today), closed_value: 40_000.00}
-Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: mike, tags: [gordon_gekko_tag], probability: 80, expected_value: 1_000_00.00 }
+Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: joe, tags: [job_tag], probability: 80, expected_value: 100, closing_date: Ecto.Date.from_erl(today), closed_value: 40_000}
+Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: mike, tags: [gordon_gekko_tag], probability: 80, expected_value: 1_000_00 }
 
 #
 # Full-text search materialized views and indexes
