@@ -1,0 +1,202 @@
+
+<%= form_for @changeset, timesheet_path(@conn, :create), fn f-> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="inline field">
+      <label>Start date</label>
+      <input type="date" name="timesheet[start_date]">
+    </div>
+
+    <table class="ui table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Day</th>
+          <th>Entries</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <a href="">
+              <i class="ui icon plus"></i>
+            </a>
+          </td>
+          <td>Monday</td>
+          <td>
+            <div class="ui labels">
+              <div class="ui yellow small label">
+              3h
+                <div class="detail"> Project (Account A)</div>
+              </div>
+              <div class="ui red small label">
+                nb hour
+                <div class="detail"> Project (Account A)</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            30 min
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="">
+              <i class="ui icon plus"></i>
+            </a>
+          </td>
+          <td>Tuesday</td>
+          <td>
+            <div class="ui labels">
+              <div class="ui yellow small label">
+              3h
+                <div class="detail"> Project (Account A)</div>
+              </div>
+              <div class="ui red small label">
+                nb hour
+                <div class="detail"> Project (Account A)</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            30 min
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="">
+              <i class="ui icon plus"></i>
+            </a>
+          </td>
+          <td>Wednesday</td>
+          <td>
+            <div class="ui labels">
+              <div class="ui yellow small label">
+              3h
+                <div class="detail"> Project (Account A)</div>
+              </div>
+              <div class="ui red small label">
+                nb hour
+                <div class="detail"> Project (Account A)</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            30 min
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="">
+              <i class="ui icon plus"></i>
+            </a>
+          </td>
+          <td>Thursday</td>
+          <td>
+            <div class="ui labels">
+              <div class="ui yellow small label">
+              3h
+                <div class="detail"> Project (Account A)</div>
+              </div>
+              <div class="ui red small label">
+                nb hour
+                <div class="detail"> Project (Account A)</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            30 min
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="">
+              <i class="ui icon plus"></i>
+            </a>
+          </td>
+          <td>Friday</td>
+          <td>
+            <div class="ui labels">
+              <div class="ui yellow small label">
+              3h
+                <div class="detail"> Project (Account A)</div>
+              </div>
+              <div class="ui red small label">
+                nb hour
+                <div class="detail"> Project (Account A)</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            30 min
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="">
+              <i class="ui icon plus"></i>
+            </a>
+          </td>
+          <td>Saturday</td>
+          <td>
+            <div class="ui labels">
+              <div class="ui yellow small label">
+              3h
+                <div class="detail"> Project (Account A)</div>
+              </div>
+              <div class="ui red small label">
+                nb hour
+                <div class="detail"> Project (Account A)</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            30 min
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="">
+              <i class="ui icon plus"></i>
+            </a>
+          </td>
+          <td>Sunday</td>
+          <td>
+            <div class="ui labels">
+              <div class="ui yellow small label">
+              3h
+                <div class="detail"> Project (Account A)</div>
+              </div>
+              <div class="ui red small label">
+                nb hour
+                <div class="detail"> Project (Account A)</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            30 min
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>4h 30 min</th>
+        </tr>
+    </tfoot>
+    </table>
+
+    <div class="field">
+        <label>Notes</label>
+        <%= textarea f, :notes %>
+    </div>
+
+    <div>
+      <%= submit "Save timesheet", class: "ui button submit primary"%>
+      <%= link "Submit", to: timesheet_path(@conn, :index), class: "ui button positive" %>
+      <%= link "Cancel", to: timesheet_path @conn, :index %>
+    </div>
+  </div>
+<% end %>

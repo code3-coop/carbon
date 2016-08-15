@@ -21,8 +21,9 @@ defmodule Carbon.Router do
     pipe_through [:browser, :auth]
 
     get "/", PageController, :index
+    resources "/timesheets", TimesheetController
     put "/accounts/:id/restore", AccountController, :restore
-    
+
     resources "/accounts", AccountController do
       get "/activities", ActivityController, :index
       put "/deals/:id/restore", DealController, :restore
