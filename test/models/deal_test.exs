@@ -3,7 +3,7 @@ defmodule Carbon.DealTest do
 
   alias Carbon.Deal
 
-  @valid_attrs %{closed_value: "120.5", closing_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, expected_value: "120.5", probability: 42}
+  @valid_attrs %{closed_value: "120", closing_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, expected_value: "120", probability: 42}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
