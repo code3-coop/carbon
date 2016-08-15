@@ -30,7 +30,7 @@
 <%= if Enum.empty?(@deals) do %>
   <center>
     Are there any new or likely deals you want to keep track of?<br/>
-    <%= link "Start adding them here!", to: account_path(@conn, :index) %> <% #Make this point to deal_path(@conn, :new, @account.id) %>
+    <%= link "Start adding them here!", to: account_deal_path(@conn, :new, @conn.params["account_id"]) %>
   </center>
 <% else %>
   <div class="ui feed">
