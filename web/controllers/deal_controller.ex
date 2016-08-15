@@ -6,25 +6,22 @@ defmodule Carbon.DealController do
   alias Carbon.Deal
   alias Carbon.Account
 
-  def index(conn, _params) do 
-    %{"account_id" => account_id} = conn.params
-    deal_query = from d in Deal,
+  def index(conn, %{ "account_id" => account_id }) do 
+    query = from d in Deal,
       where: d.account_id == ^account_id and d.active == true,
       left_join: t in assoc(d, :tags),
       left_join: o in assoc(d, :owner),
       preload: [tags: t, owner: o], 
       order_by: d.updated_at
-
     conn
     |> assign(:account, Repo.get(Account, account_id))
-    |> assign(:deals, Repo.all(deal_query))
+    |> assign(:deals, Repo.all(query))
     |> render("index.html")
   end
   
   def new(conn, _params) do
-    changeset = Deal.changeset(%Deal{})
     conn
-    |> assign(:changeset, changeset)
+    |> assign(:changeset, Deal.changeset(%Deal{}))
     |> render("new.html")  
   end
 
