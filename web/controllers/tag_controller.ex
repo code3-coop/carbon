@@ -16,6 +16,31 @@ defmodule Carbon.TagController do
     |> render("index.html")
   end
 
+  def find_all({ name, module, tag_module }) do
+    [
+      { name <> "_tags", Repo.all(find_all_query tag_module) },
+      { name <> "_tag_occurs", Repo.all(find_occurs_query module) |> Enum.into(%{}) }
+    ]
+  end
+
+  defp assign_resultset({key, value}, conn) do
+    assign(conn, String.to_atom(key), value)
+  end
+
+  defp find_all_query(tag_module) do
+    from tag_module,
+      where: [ active: true ],
+      order_by: fragment("lower(description)")
+  end
+
+  defp find_occurs_query(module) do
+    from m in module,
+      left_join: t in assoc(m, :tags),
+      where: m.active == true and t.active == true,
+      select: { t.id, count(t.id) },
+      group_by: [ t.id ]
+  end
+
   def new(conn, %{"tagged" => type}) do
     tag_module = type_to_module(type)
     tag_struct = type_to_struct(type)
@@ -104,42 +129,17 @@ defmodule Carbon.TagController do
     end
   end
 
-  def find_all({ name, module, tag_module }) do
-    [
-      { name <> "_tags", Repo.all(find_all_query tag_module) },
-      { name <> "_tag_occurs", Repo.all(find_occurs_query module) |> Enum.into(%{}) }
-    ]
-  end
-
-  defp assign_resultset({key, value}, conn) do
-    assign(conn, String.to_atom(key), value)
-  end
-
-  defp find_all_query(tag_module) do
-    from tag_module,
-      where: [ active: true ],
-      order_by: fragment("lower(description)")
-  end
-
-  defp find_occurs_query(module) do
-    from m in module,
-      left_join: t in assoc(m, :tags),
-      where: m.active == true and t.active == true,
-      select: { t.id, count(t.id) },
-      group_by: [ t.id ]
-  end
-
-  defp type_to_module("account"), do: Carbon.AccountTag
-  defp type_to_module("contact"), do: Carbon.ContactTag
-  defp type_to_module("deal"), do: Carbon.DealTag
-  defp type_to_module("event"), do: Carbon.EventTag
-  defp type_to_module("project"), do: Carbon.ProjectTag
+  defp type_to_module("account"),   do: Carbon.AccountTag
+  defp type_to_module("contact"),   do: Carbon.ContactTag
+  defp type_to_module("deal"),      do: Carbon.DealTag
+  defp type_to_module("event"),     do: Carbon.EventTag
+  defp type_to_module("project"),   do: Carbon.ProjectTag
   defp type_to_module("timesheet"), do: Carbon.TimesheetEntryTag
 
-  defp type_to_struct("account"), do: %Carbon.AccountTag{}
-  defp type_to_struct("contact"), do: %Carbon.ContactTag{}
-  defp type_to_struct("deal"), do: %Carbon.DealTag{}
-  defp type_to_struct("event"), do: %Carbon.EventTag{}
-  defp type_to_struct("project"), do: %Carbon.ProjectTag{}
+  defp type_to_struct("account"),   do: %Carbon.AccountTag{}
+  defp type_to_struct("contact"),   do: %Carbon.ContactTag{}
+  defp type_to_struct("deal"),      do: %Carbon.DealTag{}
+  defp type_to_struct("event"),     do: %Carbon.EventTag{}
+  defp type_to_struct("project"),   do: %Carbon.ProjectTag{}
   defp type_to_struct("timesheet"), do: %Carbon.TimesheetEntryTag{}
 end
