@@ -17,8 +17,12 @@
           <div class="meta"><%= message %></div>
         </div>
         <div class="extra content">
-          <span class="left floated"><i class="write icon"></i> Edit</span>
-          <span class="right floated"><i class="trash icon"></i> Remove</span>
+          <%= link to: tag_path(@conn, :edit, tag.id, tagged: @tagged) do %>
+            <span class="left floated"><i class="write icon"></i> Edit</span>
+          <% end %>
+          <%= link method: "delete", to: tag_path(@conn, :delete, tag.id, tagged: @tagged) do %>
+            <span class="right floated"><i class="trash icon"></i> Remove</span>
+          <% end %>
         </div>
       </div>
     <% end %>

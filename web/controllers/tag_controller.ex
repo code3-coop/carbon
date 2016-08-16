@@ -32,12 +32,33 @@ defmodule Carbon.TagController do
     conn
   end
 
-  def delete(conn, _params) do
-    conn
+  def delete(conn, %{"id" => tag_id, "tagged" => type}) do
+    tag = Repo.get!(type_to_module(type), tag_id) |> Ecto.Changeset.change(active: false)
+    case Repo.update(tag) do
+      {:ok, tag} ->
+        conn
+        |> put_flash(:success, "Tag successfully deleted")
+        |> put_flash(:restore_link, tag_path(conn, :restore, tag.id, tagged: type))
+        |> redirect(to: tag_path(conn, :index))
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:info, "Failed to delete tag.")
+        |> redirect(to: tag_path(conn, :index))
+    end
   end
 
-  def restore(conn, _params) do
-    conn
+  def restore(conn, %{"id" => tag_id, "tagged" => type}) do
+    tag = Repo.get!(type_to_module(type), tag_id) |> Ecto.Changeset.change(active: true)
+    case Repo.update(tag) do
+      {:ok, tag} ->
+        conn
+        |> put_flash(:success, "Tag successfully restored")
+        |> redirect(to: tag_path(conn, :index))
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:info, "Failed to restore tag.")
+        |> redirect(to: tag_path(conn, :index))
+    end
   end
 
   def find_all({ name, module, tag_module }) do
@@ -64,4 +85,11 @@ defmodule Carbon.TagController do
       select: { t.id, count(t.id) },
       group_by: [ t.id ]
   end
+
+  defp type_to_module("account"), do: Carbon.AccountTag
+  defp type_to_module("contact"), do: Carbon.ContactTag
+  defp type_to_module("deal"), do: Carbon.DealTag
+  defp type_to_module("event"), do: Carbon.EventTag
+  defp type_to_module("project"), do: Carbon.ProjectTag
+  defp type_to_module("timesheet"), do: Carbon.TimesheetEntryTag
 end
