@@ -13,7 +13,7 @@ defmodule Carbon.TimesheetEntry do
     belongs_to :timesheet, Carbon.Timesheet
     belongs_to :account, Carbon.Account
     belongs_to :project, Carbon.Project
-    many_to_many :tags, Carbon.TimesheetEntryTags, join_through: "j_timesheet_entries_tags", on_replace: :delete
+    many_to_many :tags, Carbon.TimesheetEntryTag, join_through: "j_timesheet_entries_tags", on_replace: :delete
 
     timestamps
   end
