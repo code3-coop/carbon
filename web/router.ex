@@ -36,7 +36,8 @@ defmodule Carbon.Router do
       end
     end
 
-    get "/tags", TagController, :index
+    resources "/tags", TagController, except: [:show]
+    put "/tags/:id/restore", TagController, :restore
   end
 
   scope "/session", Carbon do

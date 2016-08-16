@@ -16,6 +16,30 @@ defmodule Carbon.TagController do
     |> render("index.html")
   end
 
+  def new(conn, _params) do
+    conn
+  end
+
+  def create(conn, _params) do
+    conn
+  end
+
+  def edit(conn, _params) do
+    conn
+  end
+
+  def update(conn, _params) do
+    conn
+  end
+
+  def delete(conn, _params) do
+    conn
+  end
+
+  def restore(conn, _params) do
+    conn
+  end
+
   def find_all({ name, module, tag_module }) do
     [
       { name <> "_tags", Repo.all(find_all_query tag_module) },
