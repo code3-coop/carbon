@@ -28,7 +28,13 @@ defmodule Carbon.Activity do
     |> foreign_key_constraint(:account_id)
   end
 
-  def new(account_id, user_id, action, target_schema, target_id \\ nil, %Ecto.Changeset{changes: changes}) do
+  def new(account_id, user_id, action, target_schema, target_id, changeset) do
+    if Mix.env != :test do
+      do_new(account_id, user_id, action, target_schema, target_id, changeset)
+    end
+  end
+
+  defp do_new(account_id, user_id, action, target_schema, target_id, %Ecto.Changeset{changes: changes}) do
     if target_schema in [:accounts, :contacts] do
       Carbon.SearchIndex.refresh()
     end

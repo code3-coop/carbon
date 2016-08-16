@@ -1,0 +1,36 @@
+<div style="margin-bottom: 10rem">
+  <h2 class="ui dividing header"><%= String.capitalize @tagged %> tags</h2>
+
+  <div class="ui four cards">
+    <%= for tag <- @tags do %>
+      <div class="card <%= tag.color %>">
+        <div class="content">
+          <i class="right floated circular inverted  <%= tag.color %> tags icon"></i>
+          <div class="header"><%= tag.description %></div>
+          <%
+          message = case Map.get(@occurrences, tag.id, 0) do
+            0 -> "no #{@tagged}s tagged yet!"
+            1 -> "1 #{@tagged} tagged"
+            n -> "#{n} #{@tagged}s tagged"
+          end
+          %>
+          <div class="meta"><%= message %></div>
+        </div>
+        <div class="extra content">
+          <span class="left floated"><i class="write icon"></i> Edit</span>
+          <span class="right floated"><i class="trash icon"></i> Remove</span>
+        </div>
+      </div>
+    <% end %>
+    <div class="card">
+      <div class="content">
+        <i class="right floated circular inverted grey tags icon"></i>
+        <div class="header"><a href="">create new&hellip;</a></div>
+        <div class="meta">no <%= @tagged %>s tagged yet!</div>
+      </div>
+      <div class="extra content">
+        <span class="left floated"><i class="add icon"></i> Create</span>
+      </div>
+    </div>
+  </div>
+</div>

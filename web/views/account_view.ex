@@ -1,6 +1,5 @@
 defmodule Carbon.AccountView do
   use Carbon.Web, :view
-  import Ecto.Query, only: [from: 2]
   import Carbon.ViewHelpers, only: [account_status_select: 0, account_tags_select: 0, account_user_select: 0, humanize: 2, probability_color: 1]
 
   def match_table_to_color("account"), do: "blue"

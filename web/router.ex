@@ -36,6 +36,8 @@ defmodule Carbon.Router do
         put    "/reminders/:id", ReminderController, :restore
       end
     end
+
+    get "/tags", TagController, :index
   end
 
   scope "/session", Carbon do

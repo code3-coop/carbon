@@ -49,11 +49,13 @@ lead_status = Repo.insert!(%AccountStatus{key: "lead"})
 customer_status = Repo.insert!(%AccountStatus{key: "customer"})
 former_customer_status = Repo.insert!(%AccountStatus{key: "former_customer"})
 
-slow_payer = Repo.insert!(%AccountTag{description: "Slow payer", color: "red"})
 usless_meeting = Repo.insert!(%EventTag{description: "Useless meeting", color: "red"})
 
+slow_payer = Repo.insert!(%AccountTag{description: "bad-payer", color: "red"})
 noisy_office_tag = Repo.insert!(%AccountTag{description: "noisy-office", color: "violet"})
 good_coffee_tag = Repo.insert!(%AccountTag{description: "good-coffee", color: "purple"})
+Repo.insert!(%AccountTag{description: "friendly", color: "green"})
+Repo.insert!(%AccountTag{description: "great-food", color: "olive"})
 
 development_tag = Repo.insert! %ProjectTag{description: "development", color: "blue"}
 consulting_tag = Repo.insert! %ProjectTag{description: "consulting", color: "violet"}
@@ -85,9 +87,9 @@ Repo.insert! %Project{code: "AAA", description: "Project AAA description", accou
 Repo.insert! %Project{code: "BBB", description: "Project BBB description", account: account_b, tags: [consulting_tag, training_tag] }
 Repo.insert! %Project{code: "CCC", description: "Project CCC description", account: account_b }
 
-casual_tag = Repo.insert! %DealTag{description: "casual", color: "blue"}
+casual_tag = Repo.insert! %DealTag{description: "show-me-the-money", color: "blue"}
 job_tag = Repo.insert! %DealTag{description: "job", color: "black"}
-gordon_gekko_tag = Repo.insert! %DealTag{description: "$$:gordon_gekko$$", color: "green"}
+gordon_gekko_tag = Repo.insert! %DealTag{description: "gordon-gekko", color: "green"}
 
 Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: robert, tags: [casual_tag], probability: 100 }
 Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: joe, tags: [job_tag], probability: 80, expected_value: 100, closing_date: Ecto.Date.from_erl(today), closed_value: 40_000}

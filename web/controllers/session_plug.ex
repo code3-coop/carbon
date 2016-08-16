@@ -1,6 +1,6 @@
 defmodule Carbon.SessionPlug do
   import Plug.Conn
-  alias Carbon.{SessionController, User, Repo}
+  alias Carbon.{User, Repo}
 
   @moduledoc """
   Intercepts protected routes.
@@ -22,7 +22,7 @@ defmodule Carbon.SessionPlug do
   end
 
   defp maybe_assign_user(conn) do
-    case get_session(conn, :user_id) do
+    case get_key(conn, :user_id) do
       nil -> conn
       user_id -> assign(conn, :current_user, Repo.get!(User, user_id))
     end
@@ -34,6 +34,14 @@ defmodule Carbon.SessionPlug do
     |> Phoenix.Controller.put_flash(:error, "You must be logged in to access this page")
     |> Phoenix.Controller.redirect(to: Carbon.Router.Helpers.session_path(conn, :index))
     |> halt()
+  end
+
+  defp get_key(conn, key) do
+    if Mix.env == :test do
+      conn.private[key]
+    else
+      get_session(conn, key)
+    end
   end
 end
 
