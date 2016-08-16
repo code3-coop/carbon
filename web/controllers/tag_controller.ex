@@ -12,7 +12,7 @@ defmodule Carbon.TagController do
     ]
     |> Enum.map(&Task.async(__MODULE__, :find_all, [&1]))
     |> Enum.flat_map(&Task.await/1)
-    |> Enum.reduce(conn, &assign_all/2)
+    |> Enum.reduce(conn, &assign_resultset/2)
     |> render("index.html")
   end
 
@@ -23,7 +23,7 @@ defmodule Carbon.TagController do
     ]
   end
 
-  defp assign_all({key, value}, conn) do
+  defp assign_resultset({key, value}, conn) do
     assign(conn, String.to_atom(key), value)
   end
 
