@@ -15,3 +15,9 @@
 <%= render Carbon.TagView, "_show_card.html", conn: @conn, tags: @event_tags, occurrences: @event_tag_occurs, tagged: "event" %>
 <%= render Carbon.TagView, "_show_card.html", conn: @conn, tags: @project_tags, occurrences: @project_tag_occurs, tagged: "project" %>
 <%= render Carbon.TagView, "_show_card.html", conn: @conn, tags: @timesheet_tags, occurrences: @timesheet_tag_occurs, tagged: "timesheet" %>
+
+<script>
+$('.message .close').on('click', function() {
+  $(this).closest('.message').transition('fade');
+});
+</script>

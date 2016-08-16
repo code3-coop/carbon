@@ -14,8 +14,8 @@ defmodule Carbon.EventTag do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:description])
-    |> validate_required([:description])
+    |> cast(params, [:description, :color])
+    |> validate_required([:description, :color])
     |> validate_inclusion(:color, Carbon.SupportedColors.tags)
   end
 end

@@ -24,12 +24,35 @@ defmodule Carbon.TagController do
     conn
   end
 
-  def edit(conn, _params) do
+  def edit(conn, %{"id" => tag_id, "tagged" => type}) do
+    tag_module = type_to_module(type)
+    tag = Repo.get!(tag_module, tag_id)
     conn
+    |> assign(:tag, tag)
+    |> assign(:changeset, tag_module.changeset(tag))
+    |> assign(:tagged, type)
+    |> render("edit.html")
   end
 
-  def update(conn, _params) do
-    conn
+  def update(conn, %{"id" => tag_id, "tagged" => type} = params) do
+    tag_params = params[type <> "_tag"]
+    tag_module = type_to_module(type)
+    tag = Repo.get!(tag_module, tag_id)
+    changeset = tag_module.changeset(tag, tag_params)
+    case Repo.update(changeset) do
+      {:ok, _tag} ->
+        conn
+        |> put_flash(:success, "Tag successfully updated")
+        |> redirect(to: tag_path(conn, :index))
+      {:error, changeset} ->
+        IO.inspect changeset
+        conn
+        |> put_flash(:error, "Error while updating tag")
+        |> assign(:tag, tag)
+        |> assign(:changeset, changeset)
+        |> assign(:tagged, type)
+        |> redirect(to: tag_path(conn, :edit))
+    end
   end
 
   def delete(conn, %{"id" => tag_id, "tagged" => type}) do
@@ -50,7 +73,7 @@ defmodule Carbon.TagController do
   def restore(conn, %{"id" => tag_id, "tagged" => type}) do
     tag = Repo.get!(type_to_module(type), tag_id) |> Ecto.Changeset.change(active: true)
     case Repo.update(tag) do
-      {:ok, tag} ->
+      {:ok, _tag} ->
         conn
         |> put_flash(:success, "Tag successfully restored")
         |> redirect(to: tag_path(conn, :index))
