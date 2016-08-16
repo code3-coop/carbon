@@ -16,12 +16,32 @@ defmodule Carbon.TagController do
     |> render("index.html")
   end
 
-  def new(conn, _params) do
+  def new(conn, %{"tagged" => type}) do
+    tag_module = type_to_module(type)
+    tag_struct = type_to_struct(type)
     conn
+    |> assign(:changeset, tag_module.changeset(tag_struct))
+    |> assign(:tagged, type)
+    |> render("new.html")
   end
 
-  def create(conn, _params) do
-    conn
+  def create(conn, %{"tagged" => type} = params) do
+    tag_params = params[type <> "_tag"]
+    tag_module = type_to_module(type)
+    tag_struct = type_to_struct(type)
+    changeset = tag_module.changeset(tag_struct, tag_params)
+
+    case Repo.insert(changeset) do
+      {:ok, _tag} ->
+        conn
+        |> put_flash(:success, "Tag successfully created")
+        |> redirect(to: tag_path(conn, :index))
+      {:error, changeset} ->
+        conn
+        |> assign(:changeset, changeset)
+        |> assign(:tagged, type)
+        |> render("new.html")
+    end
   end
 
   def edit(conn, %{"id" => tag_id, "tagged" => type}) do
@@ -115,4 +135,11 @@ defmodule Carbon.TagController do
   defp type_to_module("event"), do: Carbon.EventTag
   defp type_to_module("project"), do: Carbon.ProjectTag
   defp type_to_module("timesheet"), do: Carbon.TimesheetEntryTag
+
+  defp type_to_struct("account"), do: %Carbon.AccountTag{}
+  defp type_to_struct("contact"), do: %Carbon.ContactTag{}
+  defp type_to_struct("deal"), do: %Carbon.DealTag{}
+  defp type_to_struct("event"), do: %Carbon.EventTag{}
+  defp type_to_struct("project"), do: %Carbon.ProjectTag{}
+  defp type_to_struct("timesheet"), do: %Carbon.TimesheetEntryTag{}
 end

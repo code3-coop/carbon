@@ -29,11 +29,13 @@
     <div class="card">
       <div class="content">
         <i class="right floated circular inverted grey tags icon"></i>
-        <div class="header"><a href="">create new&hellip;</a></div>
+        <div class="header"><%= link to: tag_path(@conn, :new, tagged: @tagged) do %>create new&hellip;<% end %></div>
         <div class="meta">no <%= @tagged %>s tagged yet!</div>
       </div>
       <div class="extra content">
-        <span class="left floated"><i class="add icon"></i> Create</span>
+        <%= link to: tag_path(@conn, :new, tagged: @tagged) do %>
+          <span class="left floated"><i class="add icon"></i> Create</span>
+        <% end %>
       </div>
     </div>
   </div>
