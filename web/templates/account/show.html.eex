@@ -73,7 +73,7 @@
                   <%= if not Enum.empty? contact.tags do %>
                     <i class="ui icon tags"></i>
                     <%= for tag <- contact.tags do %>
-                      <span class="ui <%= tag.color %> empty circular label popup-tag" data-content="<%= tag.description %>" data-position="right center" data-variation="inverted"></span>
+                      <span class="ui <%= tag.color %> empty circular label popup-tag" data-content="<%= tag.description %>" data-position="bottom center" data-variation="inverted"></span>
                     <% end %>
                   <% else %>
                     <i class="ui icon tags grey"></i> <span style="color: rgba(0,0,0,.4)">not tagged</span>
