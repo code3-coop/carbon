@@ -13,6 +13,11 @@ defmodule Carbon.ViewHelpers do
       order_by: at.id
     Carbon.Repo.all query
   end
+  def contact_tags_select do
+    query = from at in Carbon.ContactTag,
+      order_by: at.id
+    Carbon.Repo.all query
+  end
   def deal_tags_select do
     query = from dt in Carbon.DealTag,
       order_by: dt.id
