@@ -3,81 +3,97 @@ defmodule Carbon.TimesheetController do
 
   import Carbon.ControllerUtils
 
-  alias Carbon.{ Timesheet }
+  alias Carbon.{ Timesheet, TimesheetEntry }
 
-  def index(conn, %{"account_id" => account_id}) do
-    # current_user = conn.assigns[:current_user]
-    #
-    # events_query = from e in Event,
-    #   where: e.account_id == ^account_id and e.active == true,
-    #   left_join: t in assoc(e, :tags),
-    #   left_join: u in assoc(e, :user),
-    #   left_join: er in Reminder, on:
-    #     er.event_id == e.id and
-    #     er.user_id == ^current_user.id and
-    #     er.active == true and
-    #     fragment("current_date <= ?", er.date),
-    #   order_by: [desc: e.date],
-    #   preload: [ tags: t, reminders: er, user: u ]
-    #
-    # conn
-    # |> assign(:events, Repo.all(events_query))
-    # |> assign(:account, Repo.get(Account, account_id))
-    # |> render("index.html")
+  def index(conn, _params) do
+    current_user = conn.assigns[:current_user]
+
+    timesheets_query = from t in Timesheet,
+      where: t.user_id == ^current_user.id and t.active == true,
+      left_join: e in assoc(t, :entries),
+      left_join: u in assoc(t, :user),
+      left_join: s in assoc(t, :status),
+      order_by: [desc: t.start_date],
+      preload: [ entries: e, user: u, status: s ]
+
+    timesheets = Repo.all(timesheets_query)
+    groupped_timesheets = Enum.group_by timesheets, &(&1.status.key)
+    conn
+    |> assign(:groupped_timesheets, groupped_timesheets)
+    |> render("index.html")
   end
 
   def new(conn, _params) do
     conn
-    |> assign(:changeset, Timesheet.changeset(%Timesheet{}))
+    |> assign(:changeset, Timesheet.create_changeset(%Timesheet{}))
     |> render("new.html")
   end
 
-  def create(conn, %{"account_id" => account_id, "event" => event_params}) do
-    # current_user = conn.assigns[:current_user]
-    # tags = get_tags_from(Event, event_params)
-    # event = %Event{user: current_user, account: Repo.get(Account, account_id)}
-    # changeset = Event.create_changeset(event, event_params, tags)
-    #
-    # case Repo.insert(changeset) do
-    #   {:ok, event} ->
-    #     Carbon.Activity.new(event.account.id, current_user.id, :create, :events, event.id, changeset)
-    #     conn
-    #     |> put_flash(:info, "Event created successfully.")
-    #     |> redirect(to: account_event_path(conn, :index, account_id))
-    #   {:error, changeset} ->
-    #     conn
-    #     |> assign(:changeset, changeset)
-    #     |> assign(:account_id, account_id)
-    #     |> render("new.html")
-    # end
+  def create(conn, %{"timesheet" => timesheet_params}) do
+    current_user = conn.assigns[:current_user]
+    timesheet = %Timesheet{user_id: current_user.id}
+    changeset = Timesheet.create_changeset(timesheet, timesheet_params)
+    case Repo.insert changeset do
+      {:ok, timesheet} ->
+        conn
+        |> put_flash(:info, "Timesheet created successfully")
+        |> redirect(to: timesheet_path(conn, :show, timesheet.id))
+      {:error, changeset} ->
+        conn
+        |> assign(:changeset, changeset)
+        |> render("new.html")
+    end
+  end
+  def show(conn, %{"id" => timesheet_id}) do
+    timesheet_entry_query = from te in TimesheetEntry,
+      where: te.timesheet_id == ^timesheet_id,
+      left_join: p in assoc(te, :project),
+      left_join: a in assoc(te, :account),
+      left_join: ta in assoc(te, :tags),
+      preload: [project: p, account: a, tags: ta]
+    timesheet = Repo.get!(Timesheet, timesheet_id)
+    timesheet_entries = Repo.all(timesheet_entry_query)
+    timesheet_entries_by_date = Enum.group_by(timesheet_entries, &(&1.date))
+    total_duration = Enum.reduce timesheet_entries, 0, &(&1.duration_in_minutes + &2)
+
+    conn
+    |> assign(:timesheet, timesheet)
+    |> assign(:timesheet_entries_by_date, timesheet_entries_by_date)
+    |> assign(:total_duration, total_duration)
+    |> render("show.html")
+  end
+  def edit(conn, %{"id" => timesheet_id}) do
+    #TODO Theses two query could be one, just don't kown how.
+    timesheet_entry_query = from te in TimesheetEntry,
+      where: te.timesheet_id == ^timesheet_id,
+      left_join: p in assoc(te, :project),
+      left_join: a in assoc(te, :account),
+      left_join: ta in assoc(te, :tags),
+      preload: [project: p, account: a, tags: ta]
+    timesheet = Repo.get!(Timesheet, timesheet_id)
+    timesheet_entries = Repo.all(timesheet_entry_query)
+    timesheet_entries_by_date = Enum.group_by(timesheet_entries, &(&1.date))
+    total_duration = Enum.reduce timesheet_entries, 0, &(&1.duration_in_minutes + &2)
+    changeset = Timesheet.update_changeset(timesheet)
+    conn
+    |> assign(:timesheet, timesheet)
+    |> assign(:timesheet_entries_by_date, timesheet_entries_by_date)
+    |> assign(:changeset, changeset)
+    |> assign(:total_duration, total_duration)
+    |> render("edit.html")
   end
 
-  def edit(conn, %{"id" => event_id}) do
-    # event_query = from e in Event,
-    #   where: e.id == ^event_id,
-    #   left_join: t in assoc(e, :tags),
-    #   preload: [ tags: t ]
-    # event = Repo.one(event_query)
-    # changeset = Event.changeset(event)
-    #
-    # render(conn, "edit.html", event: event, changeset: changeset)
-  end
-
-  def update(conn, %{"account_id" => account_id, "id" => id, "event" => event_params}) do
-    # current_user = conn.assigns[:current_user]
-    # tags = get_tags_from(Carbon.EventTag, event_params)
-    # event = Repo.get!(Event, id) |> Repo.preload([:user, :tags])
-    # changeset = Event.update_changeset(event, event_params, tags)
-    #
-    # case Repo.update(changeset) do
-    #   {:ok, _event} ->
-    #     Carbon.Activity.new(event.account_id, current_user.id, :update, :events, event.id, changeset)
-    #     conn
-    #     |> put_flash(:info, "Event updated successfully.")
-    #     |> redirect(to: account_event_path(conn, :index, account_id))
-    #   {:error, changeset} ->
-    #     render(conn, "edit.html", event: event, changeset: changeset)
-    # end
+  def update(conn, %{"id" => id, "timesheet" => timesheet_params}) do
+    timesheet = Repo.get!(Timesheet, id) |> Repo.preload([:user, :entries])
+    changeset = Timesheet.update_changeset(timesheet, timesheet_params)
+    case Repo.update(changeset) do
+      {:ok, _timesheet} ->
+        conn
+        |> put_flash(:info, "timesheet updated successfully.")
+        |> redirect(to: timesheet_path(conn, :index))
+      {:error, changeset} ->
+        render(conn, "edit.html", timesheet: timesheet, changeset: changeset)
+    end
   end
 
   def delete(conn, _params) do

@@ -23,6 +23,11 @@ defmodule Carbon.ViewHelpers do
       order_by: et.id
     Carbon.Repo.all query
   end
+  def timehseet_entry_tags_select do
+    query = from tet in Carbon.TimesheetEntryTag,
+      order_by: tet.id
+    Carbon.Repo.all query
+  end
 
   def account_user_select do
     query = from u in Carbon.User,
@@ -31,7 +36,7 @@ defmodule Carbon.ViewHelpers do
     Carbon.Repo.all query
   end
 
-  def humanize(:amount, number) do 
+  def humanize(:amount, number) do
     Number.Currency.number_to_currency(number)
   end
 

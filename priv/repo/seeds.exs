@@ -24,7 +24,9 @@ alias Carbon.{
   Repo,
   User,
   Deal,
-  DealTag
+  DealTag,
+  TimesheetStatus,
+  Timesheet
 }
 
 #
@@ -95,6 +97,12 @@ Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owne
 Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: joe, tags: [job_tag], probability: 80, expected_value: 100, closing_date: Ecto.Date.from_erl(today), closed_value: 40_000}
 Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: mike, tags: [gordon_gekko_tag], probability: 80, expected_value: 1_000_00 }
 
+draft_status = Repo.insert! %TimesheetStatus{key: "Draft"}
+candidate_status =Repo.insert! %TimesheetStatus{key: "Candidate"}
+approved_status = Repo.insert! %TimesheetStatus{key: "Approved"}
+rejected_status = Repo.insert! %TimesheetStatus{key: "Rejected"}
+
+Repo.insert! %Timesheet{status: draft_status, user: joe, start_date: Ecto.Date.from_erl(today), notes: "abc" }
 #
 # Full-text search materialized views and indexes
 #
@@ -170,7 +178,7 @@ Ecto.Adapters.SQL.query! Carbon.Repo, "
 "
 
 Ecto.Adapters.SQL.query! Carbon.Repo, "
-  create materialized view search_words as 
+  create materialized view search_words as
   select word from ts_stat ('
 
     select

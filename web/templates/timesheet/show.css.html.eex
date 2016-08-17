@@ -1,0 +1,11 @@
+<style>
+.meta {
+  display: inline;
+}
+.meta a {
+  color: grey;
+}
+.meta a:hover {
+  color; black;
+}
+</style>

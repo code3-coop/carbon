@@ -1,0 +1,85 @@
+
+<%= form_for @changeset, timesheet_path(@conn, :update, @timesheet.id ), fn f-> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+
+
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+
+    <%= link to: timesheet_timesheet_entry_path(@conn, :new, @timesheet.id), class: "ui right floated button" do %>
+      <i class="ui icon plus"></i>
+      Add entry
+    <% end %>
+
+    <div class="ui left floated labeled inline field <%= if f.errors[:description], do: "error" %>">
+      <label>Start date
+        <span class="error">
+          <%= if f.errors[:start_date], do: translate_error f.errors[:start_date] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <input type="date" name="timesheet[start_date]">
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+    <table class="ui table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Entries</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for {date, entries} <- @timesheet_entries_by_date do %>
+        <tr>
+          <td>
+            <%= date %>
+          </td>
+          <td>
+            <div class="ui small labels">
+              <%= for entry <- entries do %>
+                <div class="ui label">
+                  <%= entry.duration_in_minutes %>
+                  <div class="detail"> <%= entry.project.code %> (<%= entry.account.name %>)</div>
+                  <%= if entry.notes != "" do %>
+                    <span data-tooltip="<%= entry.notes %>">
+                      <i class="icon write"></i>
+                    </span>
+                  <% end %>
+                  <i class="icon close"></i>
+                </div>
+              <% end %>
+            </div>
+          </td>
+          <td>
+            <%= Enum.reduce entries, 0, &(&1.duration_in_minutes + &2) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>
+            <%= @total_duration %>
+          </th>
+        </tr>
+    </tfoot>
+    </table>
+
+    <div class="field">
+        <label>Notes</label>
+        <%= textarea f, :notes %>
+    </div>
+
+    <div>
+      <%= submit "Save draft", class: "ui button submit primary"%>
+      <%= link "Submit for approval", to: timesheet_path(@conn, :index), class: "ui button positive" %>
+      <%= link "Cancel", to: timesheet_path @conn, :index %>
+    </div>
+  </div>
+<% end %>

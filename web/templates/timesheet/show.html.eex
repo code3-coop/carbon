@@ -1,0 +1,87 @@
+<h1 class="ui header">
+  <div class="content">
+    Timehseet
+    <h3 class="ui sub header">
+      <%= @timesheet.start_date%>
+    </h3>
+  </div>
+
+  <div class="ui right floated buttons">
+    <%= link to: timesheet_timesheet_entry_path(@conn, :new, @timesheet.id), class: "ui button" do %>
+      <i class="ui icon plus"></i>
+      Add entry
+    <% end %>
+    <%= link to: timesheet_path(@conn, :delete, @timesheet.id), class: "ui red button" do %>
+      <i class="ui icon trash"></i>
+      Delete timesheet
+    <% end %>
+
+  </div>
+
+</h1>
+
+  <%= if Enum.empty?(@timesheet_entries_by_date)  do %>
+    <center>Let's fill this timesheet, nice and sweet! </center>
+  <% else %>
+    <table class="ui table">
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Entries</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for {date, entries} <- @timesheet_entries_by_date do %>
+        <tr>
+          <td>
+            <%= date %>
+          </td>
+          <td>
+            <div class="ui small labels">
+              <%= for entry <- entries do %>
+                <div class="ui label">
+                  <%= entry.duration_in_minutes %>
+                  <div class="detail"> <%= entry.project.code %> (<%= entry.account.name %>)</div>
+                  <%= if entry.notes != "" do %>
+                    <span data-tooltip="<%= entry.notes %>">
+                      <i class="icon write"></i>
+                    </span>
+                  <% end %>
+                  <i class="icon close"></i>
+                </div>
+              <% end %>
+            </div>
+          </td>
+          <td>
+            <%= Enum.reduce entries, 0, &(&1.duration_in_minutes + &2) %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>
+            <%= @total_duration %>
+          </th>
+        </tr>
+    </tfoot>
+    </table>
+  <% end %>
+
+  <%= if @timesheet.notes do %>
+    <b>Notes</b>
+    <div class="meta">
+      <a href="">
+        Edit
+        <i class="ui icon write"></i>
+      </a>
+    </div>
+    <br>
+    <%= @timesheet.notes %>
+  <% end %>
+
+
+</div>

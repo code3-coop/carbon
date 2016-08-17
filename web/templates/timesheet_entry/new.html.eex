@@ -1,0 +1,128 @@
+ <% if get_flash(@conn, :info) do %>
+   <div class="ui message">
+     <%= get_flash(@conn, :info) %>
+   </div>
+ <% end %>
+
+
+<h2>New timesheet entry</h2>
+
+<%= form_for @changeset, timesheet_timesheet_entry_path(@conn, :create, @timesheet_id), fn f -> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+
+    </div>
+
+
+    <div class="inline fields">
+      <div class="field">
+        <label>Account</label>
+        <div class="ui search selection dropdown">
+          <%= hidden_input f, :account_id %>
+          <i class="dropdown icon"></i>
+          <div class="default text">Select account</div>
+          <div class="menu">
+            <%= for account <- account_select do %>
+              <div class="item" data-value="<%= account.id %>">
+                <%= account.name %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Project</label>
+        <div class="ui search selection dropdown">
+          <%= hidden_input f, :project_id %>
+          <i class="dropdown icon"></i>
+          <div class="default text">Select project</div>
+          <div class="menu">
+            <%= for project <- project_select do %>
+              <div class="item" data-value="<%= project.id %>">
+                  <%= project.code %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="inline fields">
+
+      <div class="field <%= if f.errors[:duration_in_minutes], do: "error" %>">
+        <label>Duration
+          <span class="error">
+            <%= if f.errors[:duration_in_minutes], do: translate_error f.errors[:duration_in_minutes] %>
+          </span>
+        </label>
+        <%= text_input f, :duration_in_minutes%>
+      </div>
+      <div class="field <%= if f.errors[:date], do: "error" %>">
+        <label>Date
+          <span class="error">
+            <%= if f.errors[:date], do: translate_error f.errors[:date] %>
+          </span>
+        </label>
+        <div class="ui left corner labeled input">
+          <%= if @changeset.changes[:date] do %>
+            <input type="date" name="timesheet_entry[date]" value="<%= @changeset.changes[:date] |> Ecto.Date.to_iso8601 %>"/>
+          <% else %>
+            <input type="date" name="timesheet_entry[date]"/>
+          <% end %>
+          <div class="ui left corner label"><i class="asterisk icon"></i></div>
+        </div>
+      </div>
+
+
+      <div class="field <%= if f.errors[:description], do: "error" %>">
+
+        <div class="ui toggle checkbox">
+          <%= checkbox f, :billable %>
+          <label>Entry is billable
+            <span class="error">
+              <%= if f.errors[:billable], do: translate_error f.errors[:billable] %>
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Entry tags</label>
+      <div class="ui fluid multiple search selection dropdown">
+        <%= hidden_input f, :tags_id %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select tags</div>
+        <div class="menu">
+          <%= for tag <- timehseet_entry_tags_select do %>
+            <div class="item " data-value="<%= tag.id %>">
+              <div class="ui label <%=tag.color%>">
+                <i class="ui icon tag"></i>
+                <%= tag.description %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:description], do: "error" %>">
+      <label>Entry notes
+        <span class="error">
+          <%= if f.errors[:notes], do: translate_error f.errors[:notes] %>
+        </span>
+      </label>
+      <div class="ui labeled input">
+        <%= textarea f, :notes %>
+      </div>
+    </div>
+
+
+
+
+    <%= submit "Add entry", class: "ui submit primary button" %>
+    <%= link "cancel", to: timesheet_path(@conn, :new), class: "ui button" %>
+
+<% end %>

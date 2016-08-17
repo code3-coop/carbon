@@ -21,9 +21,12 @@ defmodule Carbon.TimesheetEntry do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
-  def changeset(struct, params \\ %{}) do
+  def create_changeset(struct, params \\ %{}, tags \\ []) do
     struct
     |> cast(params, [:duration_in_minutes, :date, :notes, :billable])
-    |> validate_required([:duration_in_minutes, :date, :notes, :billable])
+    |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
+    |> validate_required([:duration_in_minutes, :date, :billable, :project, :account])
+    |> foreign_key_constraint(:account_id)
+    |> foreign_key_constraint(:project_id)
   end
 end

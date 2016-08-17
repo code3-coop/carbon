@@ -1,0 +1,43 @@
+
+<h1 class="ui header">
+  <div class="content">
+    Your timesheets
+  </div>
+
+  <%= link to: timesheet_path(@conn, :new), class: "ui dropdown right floated button" do %>
+    New timesheet
+    <i class="icon plus"></i>
+  <% end %>
+</h1>
+
+<%= for {status_id, timesheets} <- @groupped_timesheets do %>
+
+  <h3 class="ui horizontal divider header"> <%= status_id %></h3>
+  <div class="ui feed">
+    <%= for timesheet <- timesheets do %>
+      <div class="event">
+        <div class="content">
+          <div class="summary">
+            60 hours billable and 10 hours non billable
+            <div class="date">
+              <%= timesheet.start_date %>
+            </div>
+          </div>
+          <div class="extra text">
+            <%= timesheet.notes %>
+          </div>
+          <div class="meta">
+            <%= link to: timesheet_path(@conn, :edit, timesheet.id) do %>
+              Edit
+              <i class="icon write"></i>
+            <% end %>
+            <%= link to: timesheet_path(@conn, :delete, timesheet.id), method: :delete, form: [style: "display: inline;"] do %>
+              Delete
+              <i class="icon trash"></i>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
