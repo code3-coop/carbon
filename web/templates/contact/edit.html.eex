@@ -9,12 +9,12 @@
 </div>
 <div class="ui grid">
   <div class="three wide column">
-    <img id="chosen-avatar" class="ui circular image" src="/images/avatars/female/12.png" />
+    <img id="chosen-avatar" class="ui circular image" src="<%= @changeset.changes["image_url"] || @contact.image_url %>" />
   </div>
   <div class="thirteen wide column">
     <%= for { gender, range } <- [ {"female", 1..114}, {"male", 1..129} ] do %>
-      <div class="ui bottom tab" data-tab="<%= gender %>-avatars">
-        <div style="height: 200px; overflow-y: scroll">
+      <div class="ui bottom <%= if gender == "female", do: "active" %> tab" data-tab="<%= gender %>-avatars">
+        <div style="height: 200px; overflow-y: scroll; padding: 0.7rem; ">
           <%= for i <- range do %>
             <img class="ui circular image avatar-selector grow" src="/images/avatars/<%= gender %>/<%= i %>.png" style="display: inline-block; margin: 0.7rem; width: 3rem"/>
           <% end %>

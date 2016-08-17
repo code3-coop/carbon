@@ -9,8 +9,11 @@ defmodule Carbon.ContactController do
     conn
   end
 
-  def edit(conn, _params) do
+  def edit(conn, %{"id" => contact_id}) do
+    contact = Repo.get(Carbon.Contact, contact_id) |> Repo.preload(:tags)
     conn
+    |> assign(:contact, contact)
+    |> assign(:changeset, Carbon.Contact.changeset(contact))
     |> render("edit.html")
   end
 
