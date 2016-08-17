@@ -3,31 +3,39 @@
   .grow:hover { transform: scale(1.8); }
 </style>
 
-<div id="avatar-tabs" class="ui secondary pointing menu">
-  <a class="active item" data-tab="female-avatars">female</a>
-  <a class="item" data-tab="male-avatars">male</a>
-</div>
-<div class="ui grid">
-  <div class="three wide column">
-    <img id="chosen-avatar" class="ui circular image" src="<%= @changeset.changes["image_url"] || @contact.image_url %>" />
+<%= form_for @changeset, account_contact_path(@conn, :update, @account_id, @contact.id), fn f -> %>
+  <%= hidden_input f, :image_url %>
+  <div id="avatar-tabs" class="ui secondary pointing menu">
+    <a class="active item" data-tab="female-avatars">female</a>
+    <a class="item" data-tab="male-avatars">male</a>
   </div>
-  <div class="thirteen wide column">
-    <%= for { gender, range } <- [ {"female", 1..114}, {"male", 1..129} ] do %>
-      <div class="ui bottom <%= if gender == "female", do: "active" %> tab" data-tab="<%= gender %>-avatars">
-        <div style="height: 200px; overflow-y: scroll; padding: 0.7rem; ">
-          <%= for i <- range do %>
-            <img class="ui circular image avatar-selector grow" src="/images/avatars/<%= gender %>/<%= i %>.png" style="display: inline-block; margin: 0.7rem; width: 3rem"/>
-          <% end %>
+  <div class="ui grid">
+    <div class="three wide column">
+      <img id="chosen-avatar" class="ui circular image" src="<%= @changeset.changes["image_url"] || @contact.image_url %>" />
+    </div>
+    <div class="thirteen wide column">
+      <%= for { gender, range } <- [ {"female", 1..114}, {"male", 1..129} ] do %>
+        <div class="ui bottom <%= if gender == "female", do: "active" %> tab" data-tab="<%= gender %>-avatars">
+          <div style="height: 200px; overflow-y: scroll; padding: 0.7rem; ">
+            <%= for i <- range do %>
+              <img class="ui circular image avatar-selector grow" src="/images/avatars/<%= gender %>/<%= i %>.png" style="display: inline-block; margin: 0.7rem; width: 3rem"/>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
 
 <script>
+  var $chosen_avatar = $('#chosen-avatar');
+  var $contact_image_url = $('#contact_image_url');
+
   $('#avatar-tabs .item').tab();
 
   $('.avatar-selector').click(function(e) {
-    $('#chosen-avatar').attr('src', $(e.target).attr('src'));
+    var image_url = $(e.target).attr('src');
+    $chosen_avatar.attr('src', image_url);
+    $contact_image_url.val(image_url);
   });
 </script>
