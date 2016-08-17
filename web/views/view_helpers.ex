@@ -8,32 +8,24 @@ defmodule Carbon.ViewHelpers do
     Carbon.Repo.all query
   end
 
-  def account_tags_select do
-    query = from at in Carbon.AccountTag,
-      order_by: at.id
-    Carbon.Repo.all query
-  end
-  def contact_tags_select do
-    query = from at in Carbon.ContactTag,
-      order_by: at.id
-    Carbon.Repo.all query
-  end
-  def deal_tags_select do
-    query = from dt in Carbon.DealTag,
-      order_by: dt.id
-    Carbon.Repo.all query
-  end
-  def event_tags_select do
-    query = from et in Carbon.EventTag,
-      order_by: et.id
-    Carbon.Repo.all query
-  end
-
   def account_user_select do
     query = from u in Carbon.User,
       select: %{full_name: u.full_name, id: u.id, image_url: u.image_url},
       order_by: u.id
     Carbon.Repo.all query
+  end
+
+  def account_tags_select do
+    Carbon.Repo.all from Carbon.AccountTag, where: [active: true], order_by: [:id]
+  end
+  def contact_tags_select do
+    Carbon.Repo.all from Carbon.ContactTag, where: [active: true], order_by: [:id]
+  end
+  def deal_tags_select do
+    Carbon.Repo.all from Carbon.DealTag, where: [active: true], order_by: [:id]
+  end
+  def event_tags_select do
+    Carbon.Repo.all from Carbon.EventTag, where: [active: true], order_by: [:id]
   end
 
   def humanize(:amount, number) do 

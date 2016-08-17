@@ -60,7 +60,7 @@
 
     <div class="field">
       <label>Tags</label>
-      <div class="ui fluid multiple search selection dropdown">
+      <div id="contact_tag_ids" class="ui fluid multiple search selection dropdown">
         <%= hidden_input f, :tags_id, value: Enum.map_join(@contact.tags, ",", & &1.id) %>
         <i class="dropdown icon"></i>
         <div class="default text">Select tags</div>
@@ -117,4 +117,6 @@
     $chosen_avatar.attr('src', image_url);
     $contact_image_url.val(image_url);
   });
+
+  $('#contact_tag_ids').dropdown();
 </script>
