@@ -1,0 +1,46 @@
+<%= form_for @changeset, tag_path(@conn, :update, @tag.id, tagged: @tagged), fn f -> %>
+
+  <%= hidden_input f, :tagged, value: @tagged %>
+
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+
+    <div class="field <%= if f.errors[:description], do: "error" %>">
+      <label>Description
+        <span class="error">
+          <%= if f.errors[:description], do: translate_error f.errors[:description] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= text_input f, :description %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Color</label>
+      <div class="ui fluid selection dropdown">
+        <%= hidden_input f, :color, value: @tag.color %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select color</div>
+        <div class="menu">
+          <%= for color <- Carbon.SupportedColors.tags do %>
+            <div class="item" data-value="<%= color %>">
+              <div class="ui <%= color %> empty circular label"></div>
+              <%= color %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <%= submit "Update tag", class: "ui submit primary button" %>
+    <%= link "cancel", to: tag_path(@conn, :index), class: "ui button" %>
+  </div>
+<% end %>
+<script>
+  $('.ui.dropdown').dropdown();
+</script>

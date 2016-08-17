@@ -14,7 +14,7 @@ defmodule Carbon.TimesheetEntryTag do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:description, :color, :active])
+    |> cast(params, [:description, :color])
     |> validate_required([:description, :color])
     |> validate_inclusion(:color, Carbon.SupportedColors.tags)
   end
