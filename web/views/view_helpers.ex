@@ -27,8 +27,11 @@ defmodule Carbon.ViewHelpers do
   def event_tags_select do
     Carbon.Repo.all from Carbon.EventTag, where: [active: true], order_by: [:id]
   end
+  def timehseet_entry_tags_select do
+    Carbon.Repo.all from Carbon.TimesheetEntryTag, where: [active: true], order_by: [:id]
+  end
 
-  def humanize(:amount, number) do 
+  def humanize(:amount, number) do
     Number.Currency.number_to_currency(number)
   end
 

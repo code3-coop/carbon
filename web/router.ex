@@ -21,8 +21,13 @@ defmodule Carbon.Router do
     pipe_through [:browser, :auth]
 
     get "/", PageController, :index
+
+    resources "/timesheets", TimesheetController do
+      resources "/entries", TimesheetEntryController, only: [:new, :create, :delete]
+    end
+
     put "/accounts/:id/restore", AccountController, :restore
-    
+
     resources "/accounts", AccountController do
       resources "/contacts", ContactController, except: [:index, :show]
       put "/contacts/:id/restore", DealController, :restore

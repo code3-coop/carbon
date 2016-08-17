@@ -1,0 +1,44 @@
+<%= if get_flash(@conn, :info) do %>
+  <div class="ui message">
+    <%= get_flash(@conn, :info) %>
+  </div>
+<% end %>
+
+<h2 class="ui header">New timesheet</h2>
+
+<%= form_for @changeset, timesheet_path(@conn, :create), fn f -> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+
+    <div class="field <%= if f.errors[:start_date], do: "error" %>">
+      <label>Start date
+        <span class="error">
+          <%= if f.errors[:start_date], do: translate_error f.errors[:start_date] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <input type="date" name="timesheet[start_date]">
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+    <div class="field <%= if f.errors[:notes], do: "error" %>">
+      <label>Notes
+        <span class="error">
+          <%= if f.errors[:notes], do: translate_error f.errors[:notes] %>
+        </span>
+      </label>
+      <div class="ui labeled input">
+        <%= textarea f, :notes %>
+      </div>
+    </div>
+
+
+
+    <%= submit "Create timesheet", class: "ui submit button" %>
+    <%= link "cancel", to: timesheet_path(@conn, :index) %>
+
+  </div>
+<% end %>

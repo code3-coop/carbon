@@ -18,7 +18,13 @@ defmodule Carbon.Timesheet do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
-  def changeset(struct, params \\ %{}) do
+  def update_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:start_date, :notes])
+    |> validate_required([:start_date])
+  end
+
+  def create_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:start_date, :notes])
     |> validate_required([:start_date])
