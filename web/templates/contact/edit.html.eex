@@ -1,0 +1,33 @@
+<style>
+  .grow { transition: all .1s ease-in-out; }
+  .grow:hover { transform: scale(1.8); }
+</style>
+
+<div id="avatar-tabs" class="ui secondary pointing menu">
+  <a class="active item" data-tab="female-avatars">female</a>
+  <a class="item" data-tab="male-avatars">male</a>
+</div>
+<div class="ui grid">
+  <div class="three wide column">
+    <img id="chosen-avatar" class="ui circular image" src="/images/avatars/female/12.png" />
+  </div>
+  <div class="thirteen wide column">
+    <%= for { gender, range } <- [ {"female", 1..114}, {"male", 1..129} ] do %>
+      <div class="ui bottom tab" data-tab="<%= gender %>-avatars">
+        <div style="height: 200px; overflow-y: scroll">
+          <%= for i <- range do %>
+            <img class="ui circular image avatar-selector grow" src="/images/avatars/<%= gender %>/<%= i %>.png" style="display: inline-block; margin: 0.7rem; width: 3rem"/>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  $('#avatar-tabs .item').tab();
+
+  $('.avatar-selector').click(function(e) {
+    $('#chosen-avatar').attr('src', $(e.target).attr('src'));
+  });
+</script>

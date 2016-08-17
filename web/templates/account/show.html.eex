@@ -73,7 +73,9 @@
               </div>
             </div>
             <div class="extra content">
-              <span class="left floated"><i class="write icon"></i> Edit</span>
+              <%= link to: account_contact_path(@conn, :edit, @account.id, contact.id) do %>
+                <span class="left floated"><i class="write icon"></i> Edit</span>
+              <% end %>
               <span class="right floated">Added in <%= contact.inserted_at |> Ecto.DateTime.to_iso8601 |> String.slice(0, 4) %></span>
             </div>
           </div>
