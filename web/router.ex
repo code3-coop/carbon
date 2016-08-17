@@ -30,7 +30,7 @@ defmodule Carbon.Router do
 
     resources "/accounts", AccountController do
       resources "/contacts", ContactController, except: [:index, :show]
-      put "/contacts/:id/restore", DealController, :restore
+      put "/contacts/:id/restore", ContactController, :restore
 
       get "/activities", ActivityController, :index
 

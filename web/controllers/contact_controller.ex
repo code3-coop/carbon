@@ -2,11 +2,11 @@ defmodule Carbon.ContactController do
   use Carbon.Web, :controller
   import Carbon.ControllerUtils
 
-  def new(conn, _params) do
+  def new(conn, %{"account_id" => account_id}) do
     conn
   end
 
-  def create(conn, _params) do
+  def create(conn, %{"account_id" => account_id}) do
     conn
   end
 
@@ -40,11 +40,34 @@ defmodule Carbon.ContactController do
     end
   end
 
-  def delete(conn, _params) do
-    conn
+  def delete(conn, %{"account_id" => account_id, "id" => contact_id}) do
+    contact = Repo.get!(Carbon.Contact, contact_id) |> Ecto.Changeset.change(active: false)
+
+    case Repo.update(contact) do
+      {:ok, contact} ->
+        conn
+        |> put_flash(:success, "Contact deleted successfully")
+        |> put_flash(:restore_link, account_contact_path(conn, :restore, account_id, contact_id))
+        |> redirect(to: account_path(conn, :show, account_id))
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:info, "Failed to delete contact.")
+        |> redirect(to: account_path(conn, :show, account_id))
+    end
   end
 
-  def restore(conn, _params) do
-    conn
+  def restore(conn, %{"account_id" => account_id, "id" => contact_id}) do
+    contact = Repo.get!(Carbon.Contact, contact_id) |> Ecto.Changeset.change(active: true)
+
+    case Repo.update(contact) do
+      {:ok, contact} ->
+        conn
+        |> put_flash(:success, "Contact restored successfully")
+        |> redirect(to: account_path(conn, :show, account_id))
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:info, "Failed to restore contact.")
+        |> redirect(to: account_path(conn, :show, account_id))
+    end
   end
 end

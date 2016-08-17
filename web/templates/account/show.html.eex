@@ -4,6 +4,17 @@
   </div>
 <% end %>
 
+<%= if success_message = get_flash(@conn, :success) do %>
+<div class="ui positive message">
+  <i class="close icon"></i>
+  <div class="header"><%= success_message %></div>
+  <%= if restore_link = get_flash(@conn, :restore_link) do %>
+    <br/>
+    <b>Oops!</b> That's not what I wanted to do. <%= link method: "put", to: restore_link, form: [class: "inline-form", style: "display:inline"] do %>Put it back!<% end %>
+  <% end %>
+</div>
+<% end %>
+
 <div class="ui grid">
 
   <div class="row">
@@ -90,7 +101,9 @@
               <%= link to: account_contact_path(@conn, :edit, @account.id, contact.id) do %>
                 <span class="left floated"><i class="write icon"></i> Edit</span>
               <% end %>
-              <span class="right floated">Added in <%= contact.inserted_at |> Ecto.DateTime.to_iso8601 |> String.slice(0, 4) %></span>
+              <%= link method: "delete", to: account_contact_path(@conn, :delete, @account.id, contact.id) do %>
+                <span class="right floated"><i class="trash icon"></i> Remove</span>
+              <% end %>
             </div>
           </div>
         <% end %>
@@ -238,4 +251,8 @@
 
 <script>
   $('.popup-tag').popup();
+
+  $('.message .close').on('click', function() {
+    $(this).closest('.message').transition('fade');
+  });
 </script>
