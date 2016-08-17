@@ -4,16 +4,22 @@
   </div>
 <% end %>
 
-<h1 class="ui header">
-  <%= @account.name %>
-  <div class="ui label <%=@account.status.color%>">
-    <%= @account.status.key %>
-  </div>
-  <div class="ui label image">
-    <img src="<%=@account.owner.image_url%>">
-    <%= @account.owner.full_name %>
-  </div>
-  <div class="right floated ui buttons">
+<div class="ui grid">
+
+  <div class="row">
+    <div class="eight wide column">
+      <h1 class="ui header">
+        <%= @account.name %>
+        <div class="ui label <%=@account.status.color%>">
+          <%= @account.status.key %>
+        </div>
+        <div class="ui label image">
+          <img src="<%=@account.owner.image_url%>">
+          <%= @account.owner.full_name %>
+        </div>
+      </h1>
+    </div>
+    <div class="right aligned eight wide column">
     <%= link to: account_path(@conn, :edit, @account.id), class: "ui button" do %>
       <i class="ui icon write"></i>
       Edit
@@ -22,10 +28,9 @@
       <i class="ui icon trash"></i>
       Delete
     <% end %>        
+    </div>
   </div>
-</h1>
 
-<div class="ui grid">
   <div class="row">
     <div class="column">
       <div class="ui labels">
@@ -72,7 +77,7 @@
                   <br/>
                   <%= if not Enum.empty? contact.tags do %>
                     <i class="ui icon tags"></i>
-                    <%= for tag <- contact.tags do %>
+                    <%= for tag <- Enum.sort_by(contact.tags, &(&1.description)) do %>
                       <span class="ui <%= tag.color %> empty circular label popup-tag" data-content="<%= tag.description %>" data-position="bottom center" data-variation="inverted"></span>
                     <% end %>
                   <% else %>
@@ -101,6 +106,7 @@
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="column">
       <div class="ui bottom attached active tab" data-tab="billing-address">
