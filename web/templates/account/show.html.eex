@@ -69,6 +69,15 @@
                   <% else %>
                     <i class="ui icon call grey"></i> <span style="color: rgba(0,0,0,.4)">unknown phone number</span>
                   <% end %>
+                  <br/>
+                  <%= if not Enum.empty? contact.tags do %>
+                    <i class="ui icon tags"></i>
+                    <%= for tag <- contact.tags do %>
+                      <span class="ui <%= tag.color %> empty circular label popup-tag" data-content="<%= tag.description %>" data-position="right center" data-variation="inverted"></span>
+                    <% end %>
+                  <% else %>
+                    <i class="ui icon tags grey"></i> <span style="color: rgba(0,0,0,.4)">not tagged</span>
+                  <% end %>
                 </p>
               </div>
             </div>
@@ -221,3 +230,6 @@
 </center>
 <div class="ui hidden section divider"></div>
 
+<script>
+  $('.popup-tag').popup();
+</script>
