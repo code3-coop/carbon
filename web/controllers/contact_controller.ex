@@ -4,6 +4,8 @@ defmodule Carbon.ContactController do
 
   def new(conn, %{"account_id" => account_id}) do
     conn
+    |> assign(:changeset, Carbon.Contact.changeset(%Carbon.Contact{}))
+    |> render("new.html")
   end
 
   def create(conn, %{"account_id" => account_id}) do

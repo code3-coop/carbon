@@ -107,6 +107,27 @@
             </div>
           </div>
         <% end %>
+        <div class="card">
+          <div class="content">
+            <img class="right floated mini ui circular image" src="/images/avatars/<%= Enum.random(["female", "male"]) %>/<%= Enum.random(1..114) %>.png">
+            <div class="header"><%= link to: account_contact_path(@conn, :new, @account.id) do %>create new&hellip;<% end %></div>
+            <div class="meta">Job title</div>
+            <div class="description">
+              <p>
+                <i class="ui icon mail grey"></i> <span style="color: rgba(0,0,0,.4)">contact@placeholder-email.com</span>
+                <br/>
+                <i class="ui icon call grey"></i> <span style="color: rgba(0,0,0,.4)">+1 123-123-1234</span>
+                <br/>
+                <i class="ui icon tags grey"></i> <span style="color: rgba(0,0,0,.4)">not tagged</span>
+              </p>
+            </div>
+          </div>
+          <div class="extra content">
+            <%= link to: account_contact_path(@conn, :new, @account.id) do %>
+              <span class="left floated"><i class="add icon"></i> Create&hellip;</span>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
