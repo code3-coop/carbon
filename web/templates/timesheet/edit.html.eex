@@ -13,15 +13,13 @@
       Add entry
     <% end %>
 
-    <div class="ui left floated labeled inline field <%= if f.errors[:description], do: "error" %>">
+    <div class="ui left floated labeled inline field">
       <label>Start date
-        <span class="error">
-          <%= if f.errors[:start_date], do: translate_error f.errors[:start_date] %>
-        </span>
       </label>
       <div class="ui left corner labeled input">
-        <input type="date" name="timesheet[start_date]">
-        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+        <%= @timesheet.start_date %>
+
+
       </div>
     </div>
     <table class="ui table">

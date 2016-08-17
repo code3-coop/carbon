@@ -7,15 +7,10 @@
   </div>
 
   <div class="ui right floated buttons">
-    <%= link to: timesheet_timesheet_entry_path(@conn, :new, @timesheet.id), class: "ui button" do %>
-      <i class="ui icon plus"></i>
-      Add entry
+    <%= link to: timesheet_path(@conn, :edit, @timesheet.id), class: "ui button" do %>
+      <i class="ui icon write"></i>
+      Edit timesheet
     <% end %>
-    <%= link to: timesheet_path(@conn, :delete, @timesheet.id), class: "ui red button" do %>
-      <i class="ui icon trash"></i>
-      Delete timesheet
-    <% end %>
-
   </div>
 
 </h1>
@@ -73,12 +68,6 @@
 
   <%= if @timesheet.notes do %>
     <b>Notes</b>
-    <div class="meta">
-      <a href="">
-        Edit
-        <i class="ui icon write"></i>
-      </a>
-    </div>
     <br>
     <%= @timesheet.notes %>
   <% end %>
