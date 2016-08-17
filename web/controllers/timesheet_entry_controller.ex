@@ -5,27 +5,6 @@ defmodule Carbon.TimesheetEntryController do
 
   alias Carbon.{ TimesheetEntry }
 
-  def index(conn, %{"account_id" => account_id}) do
-    # current_user = conn.assigns[:current_user]
-    #
-    # events_query = from e in Event,
-    #   where: e.account_id == ^account_id and e.active == true,
-    #   left_join: t in assoc(e, :tags),
-    #   left_join: u in assoc(e, :user),
-    #   left_join: er in Reminder, on:
-    #     er.event_id == e.id and
-    #     er.user_id == ^current_user.id and
-    #     er.active == true and
-    #     fragment("current_date <= ?", er.date),
-    #   order_by: [desc: e.date],
-    #   preload: [ tags: t, reminders: er, user: u ]
-    #
-    # conn
-    # |> assign(:events, Repo.all(events_query))
-    # |> assign(:account, Repo.get(Account, account_id))
-    # |> render("index.html")
-  end
-
   def new(conn, %{"timesheet_id" => timesheet_id}) do
     conn
     |> assign(:changeset, TimesheetEntry.create_changeset(%TimesheetEntry{}))
@@ -46,7 +25,7 @@ defmodule Carbon.TimesheetEntryController do
       {:ok, timesheet_entry} ->
         conn
         |> put_flash(:info, "Timesheet entry created successfully.")
-        |> redirect(to: timesheet_path(conn, :show, timesheet_entry.timesheet_id))
+        |> redirect(to: timesheet_path(conn, :edit, timesheet_entry.timesheet_id))
       {:error, changeset} ->
         conn
         |> assign(:changeset, changeset)
