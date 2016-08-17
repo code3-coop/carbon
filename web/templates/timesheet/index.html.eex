@@ -18,9 +18,18 @@
       <div class="event">
         <div class="content">
           <div class="summary">
-            60 hours billable and 10 hours non billable
+              <%= link to: timesheet_path(@conn, :show, timesheet.id) do %>
+                <%= timesheet.start_date %>
+              <% end %>
+
             <div class="date">
-              <%= timesheet.start_date %>
+              <% {billable_entries, non_billable_entries} = Enum.partition timesheet.entries, &(&1.billable)%>
+              <% billable_minutes = Enum.reduce billable_entries, 0, &(&1.duration_in_minutes + &2)%>
+              <% non_billable_minutes = Enum.reduce non_billable_entries, 0, &(&1.duration_in_minutes + &2)%>
+              <%= billable_minutes %> billables
+              <%= if non_billable_minutes > 0 do %>
+                and <%= non_billable_minutes %> hours non billables
+              <% end %>
             </div>
           </div>
           <div class="extra text">
