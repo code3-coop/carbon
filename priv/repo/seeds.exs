@@ -47,9 +47,9 @@ joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", ima
 mike = Repo.insert! %User{ handle: "mike", full_name: "Mike", title: "Awesome", image_url: "/images/avatars/male/39.png", email_hash: (:crypto.hash(:sha, "mike@erlang.com") |> Base.encode16 |> String.downcase) }
 robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awesome", image_url: "/images/avatars/male/98.png", email_hash: (:crypto.hash(:sha, "robert@erlang.com") |> Base.encode16 |> String.downcase) }
 
-lead_status = Repo.insert!(%AccountStatus{key: "lead"})
-customer_status = Repo.insert!(%AccountStatus{key: "customer"})
-former_customer_status = Repo.insert!(%AccountStatus{key: "former_customer"})
+lead_status = Repo.insert!(%AccountStatus{key: "lead", color: "olive"})
+customer_status = Repo.insert!(%AccountStatus{key: "customer", color: "green"})
+former_customer_status = Repo.insert!(%AccountStatus{key: "former_customer", "grey"})
 
 usless_meeting = Repo.insert!(%EventTag{description: "Useless meeting", color: "red"})
 

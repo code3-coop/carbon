@@ -21,13 +21,6 @@
     <div class="eight wide column">
       <h1 class="ui header">
         <%= @account.name %>
-        <div class="ui label <%=@account.status.color%>">
-          <%= @account.status.key %>
-        </div>
-        <div class="ui label image">
-          <img src="<%=@account.owner.image_url%>">
-          <%= @account.owner.full_name %>
-        </div>
       </h1>
     </div>
     <div class="right aligned eight wide column">
@@ -45,6 +38,16 @@
   <div class="row">
     <div class="column">
       <div class="ui labels">
+        <div class="ui label image <%= @account.status.color %>">
+          <i class="ui icon check"></i>
+          <%= @account.status.key %>
+          <div class="detail">status</div>
+        </div>
+        <div class="ui label image">
+          <img src="<%=@account.owner.image_url%>">
+          <%= @account.owner.full_name %>
+          <div class="detail">owner</div>
+        </div>
         <%= for tag <- @account.tags do %>
           <div class="ui label <%= tag.color%>">
             <i class="ui icon tag"></i>
