@@ -17,21 +17,7 @@
 
 
     <div class="inline fields">
-      <div class="field">
-        <label>Account</label>
-        <div class="ui search selection dropdown">
-          <%= hidden_input f, :account_id %>
-          <i class="dropdown icon"></i>
-          <div class="default text">Select account</div>
-          <div class="menu">
-            <%= for account <- account_select do %>
-              <div class="item" data-value="<%= account.id %>">
-                <%= account.name %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
+
 
       <div class="field">
         <label>Project</label>
@@ -42,14 +28,12 @@
           <div class="menu">
             <%= for project <- project_select do %>
               <div class="item" data-value="<%= project.id %>">
-                  <%= project.code %>
+                  <%= project.code %> (<%=project.account.name%>)
               </div>
             <% end %>
           </div>
         </div>
       </div>
-    </div>
-    <div class="inline fields">
 
       <div class="field <%= if f.errors[:duration_in_minutes], do: "error" %>">
         <label>Duration

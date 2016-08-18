@@ -14,10 +14,14 @@ defmodule Carbon.TimesheetEntryController do
 
   def create(conn, %{"timesheet_id" => timesheet_id, "timesheet_entry" => timesheet_entry_params}) do
     tags = get_tags_from(TimesheetEntryTag, timesheet_entry_params)
-    project = get_project_from(timesheet_entry_params)
     timesheet_id = String.to_integer(timesheet_id)
-    project = get_project_from(timesheet_entry_params)
-    timesheet_entry = %TimesheetEntry{timesheet_id: timesheet_id, project: project, account: project.account}
+    ctx = get_context_from(timesheet_entry_params)
+    timesheet_entry = %TimesheetEntry{
+      timesheet_id: timesheet_id,
+      project: ctx.project,
+      account: ctx.account,
+      duration_in_minutes: Carbon.Duration.parse_minutes(timesheet_entry_params["duration_in_minutes"])
+    }
     changeset = TimesheetEntry.create_changeset(timesheet_entry, timesheet_entry_params, tags)
     case Repo.insert(changeset) do
       {:ok, timesheet_entry} ->
@@ -32,10 +36,12 @@ defmodule Carbon.TimesheetEntryController do
     end
   end
 
-  defp get_project_from(%{"project_id"=> project_id}) do
-    Repo.get!(Carbon.Project, project_id) |> Repo.preload([:account])
+  defp get_context_from(%{"project_id"=> ""}), do: %{project: nil, account: nil}
+  defp get_context_from(%{"project_id"=> project_id}) do
+    project = Repo.get!(Carbon.Project, project_id) |> Repo.preload([:account])
+    %{project: project, account: project.account}
   end
-  defp get_project_from(_params), do: nil
+
 
   def delete(conn, _params) do
     # current_user = conn.assigns[:current_user]

@@ -6,15 +6,10 @@ defmodule Carbon.TimesheetEntryView do
 
   def project_select do
     query = from p in Carbon.Project,
-      order_by: p.id
-    Carbon.Repo.all query
+      order_by: p.id,
+      left_join: a in assoc(p, :account),
+      preload: [account: a]
+    Carbon.Repo.all(query)
   end
-
-  def account_select do
-    query = from a in Carbon.Account,
-      order_by: a.id
-    Carbon.Repo.all query
-  end
-
 
 end
