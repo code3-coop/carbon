@@ -26,9 +26,9 @@
               <% {billable_entries, non_billable_entries} = Enum.partition timesheet.entries, &(&1.billable)%>
               <% billable_minutes = Enum.reduce billable_entries, 0, &(&1.duration_in_minutes + &2)%>
               <% non_billable_minutes = Enum.reduce non_billable_entries, 0, &(&1.duration_in_minutes + &2)%>
-              <%= billable_minutes %> billables
+              <%= billable_minutes |> Carbon.Duration.format_minutes %> billables
               <%= if non_billable_minutes > 0 do %>
-                and <%= non_billable_minutes %> hours non billables
+                and <%= non_billable_minutes |> Carbon.Duration.format_minutes %> hours non billables
               <% end %>
             </div>
           </div>
