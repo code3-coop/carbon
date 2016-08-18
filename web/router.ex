@@ -29,16 +29,22 @@ defmodule Carbon.Router do
     put "/accounts/:id/restore", AccountController, :restore
 
     resources "/accounts", AccountController do
+      resources "/contacts", ContactController, except: [:index, :show]
+      put "/contacts/:id/restore", ContactController, :restore
+
       get "/activities", ActivityController, :index
-      put "/deals/:id/restore", DealController, :restore
+
       resources "/deals", DealController
-      put "/events/:id/restore", EventController, :restore
+      put "/deals/:id/restore", DealController, :restore
+
       resources "/events", EventController do
         post   "/reminders", ReminderController, :create
         get    "/reminders/new", ReminderController, :new
         delete "/reminders/:id", ReminderController, :delete
         put    "/reminders/:id", ReminderController, :restore
       end
+      put "/events/:id/restore", EventController, :restore
+
     end
 
     resources "/tags", TagController, except: [:show]

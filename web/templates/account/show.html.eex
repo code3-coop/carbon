@@ -4,16 +4,26 @@
   </div>
 <% end %>
 
-<h1 class="ui header">
-  <%= @account.name %>
-  <div class="ui label <%=@account.status.color%>">
-    <%= @account.status.key %>
-  </div>
-  <div class="ui label image">
-    <img src="<%=@account.owner.image_url%>">
-    <%= @account.owner.full_name %>
-  </div>
-  <div class="right floated ui buttons">
+<%= if success_message = get_flash(@conn, :success) do %>
+<div class="ui positive message">
+  <i class="close icon"></i>
+  <div class="header"><%= success_message %></div>
+  <%= if restore_link = get_flash(@conn, :restore_link) do %>
+    <br/>
+    <b>Oops!</b> That's not what I wanted to do. <%= link method: "put", to: restore_link, form: [class: "inline-form", style: "display:inline"] do %>Put it back!<% end %>
+  <% end %>
+</div>
+<% end %>
+
+<div class="ui grid">
+
+  <div class="row">
+    <div class="eight wide column">
+      <h1 class="ui header">
+        <%= @account.name %>
+      </h1>
+    </div>
+    <div class="right aligned eight wide column">
     <%= link to: account_path(@conn, :edit, @account.id), class: "ui button" do %>
       <i class="ui icon write"></i>
       Edit
@@ -22,27 +32,55 @@
       <i class="ui icon trash"></i>
       Delete
     <% end %>        
+    </div>
   </div>
-</h1>
 
-<div class="ui grid">
   <div class="row">
     <div class="column">
       <div class="ui labels">
-        <%= for tag <- @account.tags do %>
-          <div class="ui label <%= tag.color%>">
-            <i class="ui icon tag"></i>
-            <%= tag.description %>
-          </div>
-        <% end %>
+        <div class="ui label image <%= @account.status.color %>">
+          <i class="ui icon check"></i>
+          <%= @account.status.key %>
+          <div class="detail">status</div>
+        </div>
+        <div class="ui label image">
+          <img src="<%=@account.owner.image_url%>">
+          <%= @account.owner.full_name %>
+          <div class="detail">owner</div>
+        </div>
+        <div class="ui label image">
+          <i class="ui icon dollar"></i>
+          <%= @account.billing_address.street_address %>
+          <div class="detail"><%= @account.billing_address.locality %>, <%= @account.billing_address.region %></div>
+        </div>
+        <div class="ui label image">
+          <i class="ui icon truck"></i>
+          <%= @account.shipping_address.street_address %>
+          <div class="detail"><%= @account.shipping_address.locality %>, <%= @account.shipping_address.region %></div>
+        </div>
       </div>
     </div>
   </div>
 
+  <%= if not Enum.empty?(@account.tags) do %>
+    <div class="row">
+      <div class="column">
+        <div class="ui labels">
+          <%= for tag <- @account.tags do %>
+            <div class="ui label <%= tag.color%>">
+              <i class="ui icon tag"></i>
+              <%= tag.description %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <div class="row"> 
     <div class="column">
       <div class="ui cards">
-        <%= for contact <- @account.contacts do %>
+        <%= for contact <- Enum.sort_by(@account.contacts, &(&1.full_name)) do %>
           <div class="card">
             <div class="content">
               <%= if contact.image_url do %>
@@ -69,37 +107,55 @@
                   <% else %>
                     <i class="ui icon call grey"></i> <span style="color: rgba(0,0,0,.4)">unknown phone number</span>
                   <% end %>
+                  <br/>
+                  <%= if not Enum.empty? contact.tags do %>
+                    <i class="ui icon tags"></i>
+                    <%= for tag <- Enum.sort_by(contact.tags, &(&1.description)) do %>
+                      <span class="ui <%= tag.color %> empty circular label popup-tag" data-content="<%= tag.description %>" data-position="bottom center" data-variation="inverted"></span>
+                    <% end %>
+                  <% else %>
+                    <i class="ui icon tags grey"></i> <span style="color: rgba(0,0,0,.4)">not tagged</span>
+                  <% end %>
                 </p>
               </div>
             </div>
             <div class="extra content">
-              <span class="left floated"><i class="write icon"></i> Edit</span>
-              <span class="right floated">Added in <%= contact.inserted_at |> Ecto.DateTime.to_iso8601 |> String.slice(0, 4) %></span>
+              <%= link to: account_contact_path(@conn, :edit, @account.id, contact.id) do %>
+                <span class="left floated"><i class="write icon"></i> Edit</span>
+              <% end %>
+              <%= link method: "delete", to: account_contact_path(@conn, :delete, @account.id, contact.id) do %>
+                <span class="right floated"><i class="trash icon"></i> Remove</span>
+              <% end %>
             </div>
           </div>
         <% end %>
+        <div class="card">
+          <div class="content">
+            <img class="right floated mini ui circular image"
+                 style="-webkit-filter: grayscale(100%);"
+                 src="/images/avatars/<%= Enum.random(["female", "male"]) %>/<%= Enum.random(1..114) %>.png">
+            <div class="header"><%= link to: account_contact_path(@conn, :new, @account.id) do %>create new&hellip;<% end %></div>
+            <div class="meta"><%= Enum.random(["Senior ", "Junior ", ""]) %><%= Enum.random(["Marketing", "Accounting", "Production", "R&D", "HR", "Purchasing"]) %> Placeholder</div>
+            <div class="description">
+              <p>
+                <i class="ui icon mail grey"></i> <span style="color: rgba(0,0,0,.4)">placeholder@company-email.io</span>
+                <br/>
+                <i class="ui icon call grey"></i> <span style="color: rgba(0,0,0,.4)">+1 123-123-1234</span>
+                <br/>
+                <i class="ui icon tags grey"></i> <span style="color: rgba(0,0,0,.4)"><%= for _ <- 1..Enum.random(1..3) do %><span class="ui grey empty circular label popup-tag"></span><% end %></span>
+              </p>
+            </div>
+          </div>
+          <div class="extra content">
+            <%= link to: account_contact_path(@conn, :new, @account.id) do %>
+              <span class="left floated"><i class="add icon"></i> Create&hellip;</span>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="column">
-      <div class="ui top pointing secondary menu">
-        <a class="active item" data-tab="billing-address">Billing address</a>
-        <a class="item" data-tab="shipping-address">Shipping address</a>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="column">
-      <div class="ui bottom attached active tab" data-tab="billing-address">
-        <%= render "_address_show.html", address: @account.billing_address %>
-      </div>
-      <div class="ui bottom attached tab" data-tab="shipping-address">
-        <%= render "_address_show.html", address: @account.shipping_address %>
-      </div>
-    </div>
-  </div>
 </div>
 
 <h3 class="ui horizontal divider header">Events</h3>
@@ -219,3 +275,10 @@
 </center>
 <div class="ui hidden section divider"></div>
 
+<script>
+  $('.popup-tag').popup();
+
+  $('.message .close').on('click', function() {
+    $(this).closest('.message').transition('fade');
+  });
+</script>

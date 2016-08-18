@@ -34,7 +34,7 @@
       </div>
       <div class="extra content">
         <%= link to: tag_path(@conn, :new, tagged: @tagged) do %>
-          <span class="left floated"><i class="add icon"></i> Create</span>
+          <span class="left floated"><i class="add icon"></i> Create&hellip;</span>
         <% end %>
       </div>
     </div>
