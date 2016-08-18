@@ -1,0 +1,11 @@
+<style>
+form.inline-link {
+  display: inline;
+}
+.inline-link a{
+  color: grey;
+}
+.inline-link:hover a{
+  color: black;
+}
+</style>

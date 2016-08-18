@@ -1,12 +1,4 @@
 
-<%= form_for @changeset, timesheet_path(@conn, :update, @timesheet.id ), fn f-> %>
-  <div class="ui form <%= if @changeset.action, do: "error" %>">
-
-
-    <div class="ui error message">
-      <div class="header">Ruh roh!</div>
-      <p>Something went wrong. Please check the following errors.</p>
-    </div>
 
     <%= link to: timesheet_timesheet_entry_path(@conn, :new, @timesheet.id), class: "ui right floated button" do %>
       <i class="ui icon plus"></i>
@@ -41,14 +33,25 @@
               <%= for entry <- entries do %>
                 <div class="ui label">
                   <%= entry.duration_in_minutes %>
-                  <div class="detail"> <%= entry.project.code %> (<%= entry.account.name %>)</div>
-                  <%= if entry.notes != "" do %>
-                    <span data-tooltip="<%= entry.notes %>">
-                      <i class="icon write"></i>
-                    </span>
-                  <% end %>
-                  <i class="icon close"></i>
-                </div>
+                  <div class="detail">
+                    <%= entry.project.code %> (<%= entry.account.name %>)
+                    <%= if entry.notes != "" do %>
+                      <span data-tooltip="<%= entry.notes %>">
+                        <i class="icon write"></i>
+                      </span>
+                    <% end %>
+                    <%= for tag <- entry.tags do %>
+                      <span data-tooltip="<%= tag.description %>">
+                        <a class="ui <%= tag.color %> empty circular label tooltip"></a>
+                      </span>
+                    <% end %>
+                  </div>
+
+                    <%= link(to: timesheet_timesheet_entry_path(@conn, :delete, @timesheet.id, entry.id), method: :delete, form: [class: "inline-link"]) do %>
+                      <i class="icon close"></i>
+                    <% end %>
+
+                  </div>
               <% end %>
             </div>
           </td>
@@ -68,6 +71,15 @@
         </tr>
     </tfoot>
     </table>
+
+<%= form_for @changeset, timesheet_path(@conn, :update, @timesheet.id ), fn f-> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+
+
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+        </div>
 
     <div class="field">
         <label>Notes</label>
