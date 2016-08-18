@@ -24,6 +24,7 @@ defmodule Carbon.Router do
 
     resources "/timesheets", TimesheetController do
       resources "/entries", TimesheetEntryController, only: [:new, :create, :delete]
+      put "/entries/:id/restore", TimesheetEntryController, :restore
     end
 
     put "/accounts/:id/restore", AccountController, :restore

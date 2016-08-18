@@ -46,7 +46,7 @@ defmodule Carbon.TimesheetController do
   end
   def show(conn, %{"id" => timesheet_id}) do
     timesheet_entry_query = from te in TimesheetEntry,
-      where: te.timesheet_id == ^timesheet_id,
+      where: te.timesheet_id == ^timesheet_id and te.active == true,
       left_join: p in assoc(te, :project),
       left_join: a in assoc(te, :account),
       left_join: ta in assoc(te, :tags),
@@ -66,7 +66,7 @@ defmodule Carbon.TimesheetController do
   def edit(conn, %{"id" => timesheet_id}) do
     #TODO Theses two query could be one, just don't kown how.
     timesheet_entry_query = from te in TimesheetEntry,
-      where: te.timesheet_id == ^timesheet_id,
+      where: te.timesheet_id == ^timesheet_id and te.active == true,
       left_join: p in assoc(te, :project),
       left_join: a in assoc(te, :account),
       left_join: ta in assoc(te, :tags),

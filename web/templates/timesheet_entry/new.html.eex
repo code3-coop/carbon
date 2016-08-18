@@ -20,7 +20,11 @@
 
 
       <div class="field">
-        <label>Project</label>
+        <label>Project
+          <span class="error">
+            <%= if f.errors[:project], do: translate_error f.errors[:project] %>
+          </span>
+        </label>
         <div class="ui search selection dropdown">
           <%= hidden_input f, :project_id %>
           <i class="dropdown icon"></i>

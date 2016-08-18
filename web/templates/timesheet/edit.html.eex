@@ -1,3 +1,17 @@
+<%= if get_flash(@conn, :deleted_timesheet_entry) do %>
+  <div class="ui message">
+    <div class="header">
+      Reminder archived
+    </div>
+    Reminder archived successfully
+      <% timesheet_entry = get_flash(@conn, :deleted_timesheet_entry) %>
+      <% path_to_restore = timesheet_timesheet_entry_path(@conn, :restore, timesheet_entry.timesheet_id, timesheet_entry.id) %>
+      <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
+        Get it back.
+      <% end %>
+  </div>
+<% end %>
+
 <h1 class="ui header">
   <div class="content">
     Edit Timehseet
