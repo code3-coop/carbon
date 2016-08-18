@@ -48,6 +48,23 @@
           <%= @account.owner.full_name %>
           <div class="detail">owner</div>
         </div>
+        <div class="ui label image olive">
+          <i class="ui icon dollar"></i>
+          <%= @account.billing_address.street_address %>
+          <div class="detail"><%= @account.billing_address.locality %>, <%= @account.billing_address.region %></div>
+        </div>
+        <div class="ui label image teal">
+          <i class="ui icon truck"></i>
+          <%= @account.shipping_address.street_address %>
+          <div class="detail"><%= @account.shipping_address.locality %>, <%= @account.shipping_address.region %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <div class="ui labels">
         <%= for tag <- @account.tags do %>
           <div class="ui label <%= tag.color%>">
             <i class="ui icon tag"></i>
@@ -137,25 +154,6 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="column">
-      <div class="ui top pointing secondary menu">
-        <a class="active item" data-tab="billing-address">Billing address</a>
-        <a class="item" data-tab="shipping-address">Shipping address</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="column">
-      <div class="ui bottom attached active tab" data-tab="billing-address">
-        <%= render "_address_show.html", address: @account.billing_address %>
-      </div>
-      <div class="ui bottom attached tab" data-tab="shipping-address">
-        <%= render "_address_show.html", address: @account.shipping_address %>
-      </div>
-    </div>
-  </div>
 </div>
 
 <h3 class="ui horizontal divider header">Events</h3>
