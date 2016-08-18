@@ -29,6 +29,15 @@ defmodule Carbon.TimesheetEntry do
     |> foreign_key_constraint(:project_id)
     |> foreign_key_constraint(:account_id)
   end
+  def update_changeset(struct, params \\ %{}, tags \\ []) do
+    struct
+    |> cast(params, [:date, :notes, :billable])
+    |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
+    |> validate_required([:duration_in_minutes, :date, :billable, :project, :account])
+    |> foreign_key_constraint(:project_id)
+    |> foreign_key_constraint(:account_id)
+  end
+
   def archive_changeset(struct, params \\ %{}, tags \\ []) do
     struct
     |> cast(params, [:active])

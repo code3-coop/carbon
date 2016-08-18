@@ -12,6 +12,14 @@ defmodule Carbon.TimesheetEntryController do
     |> render("new.html")
   end
 
+  def edit(conn, %{"timesheet_id" => timesheet_id, "id" => entry_id}) do
+    timesheet_entry = Repo.get!(TimesheetEntry, entry_id) |> Repo.preload([:tags, :project, :account])
+    conn
+    |> assign(:changeset, TimesheetEntry.update_changeset(timesheet_entry))
+    |> assign(:timesheet_entry, timesheet_entry)
+    |> render("edit.html")
+  end
+
   def create(conn, %{"timesheet_id" => timesheet_id, "timesheet_entry" => timesheet_entry_params}) do
     tags = get_tags_from(TimesheetEntryTag, timesheet_entry_params)
     timesheet_id = String.to_integer(timesheet_id)
