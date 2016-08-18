@@ -50,10 +50,12 @@ defmodule Carbon.Duration do
   """
   def format_minutes(duration_in_minutes) do
     days = duration_in_minutes / (60 * @work_hours_per_day)
-    unless days < 1, do: "#{Float.round(days, 2)}d"
     hours = duration_in_minutes / 60
-    unless hours < 1, do: "#{Float.round(hours, 2)}h"
-    "#{duration_in_minutes}m"
 
+    cond do
+      days < 1  -> "#{Float.round(days, 2)}d"
+      hours < 1 -> "#{Float.round(hours, 2)}h"
+      true     -> "#{duration_in_minutes}m"
+    end
   end
 end
