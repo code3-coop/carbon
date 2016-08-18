@@ -20,8 +20,8 @@ defmodule Carbon.Timesheet do
   """
   def update_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:start_date, :notes])
-    |> validate_required([:start_date])
+    |> cast(params, [:start_date, :notes, :status_id])
+    |> validate_required([:start_date, :status_id])
   end
 
   def create_changeset(struct, params \\ %{}) do

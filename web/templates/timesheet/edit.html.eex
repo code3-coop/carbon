@@ -86,7 +86,7 @@
       <div class="field">
         <label>Status</label>
         <div class="ui fluid selection dropdown">
-          <%= hidden_input f, :status_id, value: @timesheet.status_id %>
+          <%= hidden_input f, :status_id %>
           <i class="dropdown icon"></i>
           <div class="default text">Select status</div>
           <div class="menu">

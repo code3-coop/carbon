@@ -62,6 +62,7 @@ defmodule Carbon.TimesheetController do
     |> assign(:total_duration, total_duration)
     |> render("show.html")
   end
+
   def edit(conn, %{"id" => timesheet_id}) do
     #TODO Theses two query could be one, just don't kown how.
     timesheet_entry_query = from te in TimesheetEntry,
@@ -70,7 +71,7 @@ defmodule Carbon.TimesheetController do
       left_join: a in assoc(te, :account),
       left_join: ta in assoc(te, :tags),
       preload: [project: p, account: a, tags: ta]
-    timesheet = Repo.get!(Timesheet, timesheet_id)
+    timesheet = Repo.get!(Timesheet, timesheet_id)|> Repo.preload([:status])
     timesheet_entries = Repo.all(timesheet_entry_query)
     timesheet_entries_by_date = Enum.group_by(timesheet_entries, &(&1.date))
     total_duration = Enum.reduce timesheet_entries, 0, &(&1.duration_in_minutes + &2)
@@ -84,7 +85,7 @@ defmodule Carbon.TimesheetController do
   end
 
   def update(conn, %{"id" => id, "timesheet" => timesheet_params}) do
-    timesheet = Repo.get!(Timesheet, id) |> Repo.preload([:user, :entries])
+    timesheet = Repo.get!(Timesheet, id) |> Repo.preload([:status])
     changeset = Timesheet.update_changeset(timesheet, timesheet_params)
     case Repo.update(changeset) do
       {:ok, _timesheet} ->
