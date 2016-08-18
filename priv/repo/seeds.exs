@@ -26,7 +26,8 @@ alias Carbon.{
   Deal,
   DealTag,
   TimesheetStatus,
-  Timesheet
+  Timesheet,
+  TimesheetEntryTag
 }
 
 #
@@ -103,6 +104,9 @@ approved_status = Repo.insert! %TimesheetStatus{key: "Approved"}
 rejected_status = Repo.insert! %TimesheetStatus{key: "Rejected"}
 
 Repo.insert! %Timesheet{status: draft_status, user: joe, start_date: Ecto.Date.from_erl(today), notes: "abc" }
+
+Repo.insert! %TimesheetEntryTag{description: "Suspect", color: "red"}
+Repo.insert! %TimesheetEntryTag{description: "Not billable, yet", color: "yellow"}
 #
 # Full-text search materialized views and indexes
 #

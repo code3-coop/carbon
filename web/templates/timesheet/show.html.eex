@@ -43,6 +43,11 @@
                       <i class="icon write"></i>
                     </span>
                   <% end %>
+                  <%= for tag <- entry.tags do %>
+                    <span data-tooltip="<%= tag.description %>">
+                      <a class="ui <%= tag.color %> empty circular label tooltip" data-content=></a>
+                    </span>
+                  <% end %>
                   <i class="icon close"></i>
                 </div>
               <% end %>

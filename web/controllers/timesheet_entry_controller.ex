@@ -3,7 +3,7 @@ defmodule Carbon.TimesheetEntryController do
 
   import Carbon.ControllerUtils
 
-  alias Carbon.{ TimesheetEntry }
+  alias Carbon.{ TimesheetEntry, Timesheet, TimesheetEntryTag }
 
   def new(conn, %{"timesheet_id" => timesheet_id}) do
     conn
@@ -13,14 +13,12 @@ defmodule Carbon.TimesheetEntryController do
   end
 
   def create(conn, %{"timesheet_id" => timesheet_id, "timesheet_entry" => timesheet_entry_params}) do
-
-    tags = get_tags_from(TimesheetEntryTags, timesheet_entry_params)
-    account = get_account_from(timesheet_entry_params)
+    tags = get_tags_from(TimesheetEntryTag, timesheet_entry_params)
     project = get_project_from(timesheet_entry_params)
     timesheet_id = String.to_integer(timesheet_id)
-    timesheet_entry = %TimesheetEntry{timesheet_id: timesheet_id, project: project, account: account}
+    project = get_project_from(timesheet_entry_params)
+    timesheet_entry = %TimesheetEntry{timesheet_id: timesheet_id, project: project, account: project.account}
     changeset = TimesheetEntry.create_changeset(timesheet_entry, timesheet_entry_params, tags)
-
     case Repo.insert(changeset) do
       {:ok, timesheet_entry} ->
         conn
@@ -34,13 +32,8 @@ defmodule Carbon.TimesheetEntryController do
     end
   end
 
-  defp get_account_from(%{"account_id" => account_id}) do
-    Repo.get!(Carbon.Account, account_id)
-  end
-  defp get_account_from(_params), do: nil
-
   defp get_project_from(%{"project_id"=> project_id}) do
-    Repo.get!(Carbon.Project, project_id)
+    Repo.get!(Carbon.Project, project_id) |> Repo.preload([:account])
   end
   defp get_project_from(_params), do: nil
 
