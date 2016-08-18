@@ -53,8 +53,8 @@ defmodule Carbon.Duration do
     hours = duration_in_minutes / 60
 
     cond do
-      days < 1  -> "#{Float.round(days, 2)}d"
-      hours < 1 -> "#{Float.round(hours, 2)}h"
+      days > 1  -> "#{Float.round(days, 2)}d"
+      hours > 1 -> "#{Float.round(hours, 2)}h"
       true     -> "#{duration_in_minutes}m"
     end
   end
