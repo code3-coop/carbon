@@ -4,7 +4,7 @@
     Your timesheets
   </div>
 
-  <%= link to: timesheet_path(@conn, :new), class: "ui dropdown right floated button" do %>
+  <%= link to: timesheet_path(@conn, :new), class: "ui right floated button" do %>
     New timesheet
     <i class="icon plus"></i>
   <% end %>
