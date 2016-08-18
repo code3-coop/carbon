@@ -83,14 +83,31 @@
         <p>Something went wrong. Please check the following errors.</p>
       </div>
 
+      <div class="field">
+        <label>Status</label>
+        <div class="ui fluid selection dropdown">
+          <%= hidden_input f, :status_id, value: @timesheet.status_id %>
+          <i class="dropdown icon"></i>
+          <div class="default text">Select status</div>
+          <div class="menu">
+            <%= for status <- timesheet_status_select do %>
+              <div class="item " data-value="<%= status.id %>">
+                <div class="ui label">
+                  <%= status.key %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
     <div class="field">
         <label>Notes</label>
         <%= textarea f, :notes %>
     </div>
 
     <div>
-      <%= submit "Save draft", class: "ui button submit primary"%>
-      <%= link "Submit for approval", to: timesheet_path(@conn, :index), class: "ui button positive" %>
+      <%= submit "Save", class: "ui button submit primary"%>
       <%= link "Cancel", to: timesheet_path @conn, :index %>
     </div>
   </div>

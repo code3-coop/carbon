@@ -51,7 +51,7 @@ defmodule Carbon.TimesheetController do
       left_join: a in assoc(te, :account),
       left_join: ta in assoc(te, :tags),
       preload: [project: p, account: a, tags: ta]
-    timesheet = Repo.get!(Timesheet, timesheet_id)
+    timesheet = Repo.get!(Timesheet, timesheet_id) |> Repo.preload([:status])
     timesheet_entries = Repo.all(timesheet_entry_query)
     timesheet_entries_by_date = Enum.group_by(timesheet_entries, &(&1.date))
     total_duration = Enum.reduce timesheet_entries, 0, &(&1.duration_in_minutes + &2)

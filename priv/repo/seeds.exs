@@ -50,7 +50,7 @@ robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awes
 
 lead_status = Repo.insert!(%AccountStatus{key: "lead", color: "olive"})
 customer_status = Repo.insert!(%AccountStatus{key: "customer", color: "green"})
-former_customer_status = Repo.insert!(%AccountStatus{key: "former_customer", "grey"})
+former_customer_status = Repo.insert!(%AccountStatus{key: "former_customer", color: "grey"})
 
 usless_meeting = Repo.insert!(%EventTag{description: "Useless meeting", color: "red"})
 
@@ -98,9 +98,9 @@ Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owne
 Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: joe, tags: [job_tag], probability: 80, expected_value: 100, closing_date: Ecto.Date.from_erl(today), closed_value: 40_000}
 Repo.insert! %Deal{description: Enum.random(paragraph), account: account_a, owner: mike, tags: [gordon_gekko_tag], probability: 80, expected_value: 1_000_00 }
 
-draft_status = Repo.insert! %TimesheetStatus{key: "Draft"}
-candidate_status =Repo.insert! %TimesheetStatus{key: "Candidate"}
-approved_status = Repo.insert! %TimesheetStatus{key: "Approved"}
+draft_status = Repo.insert! %TimesheetStatus{key: "Draft", active: true}
+candidate_status =Repo.insert! %TimesheetStatus{key: "Candidate", active: true}
+approved_status = Repo.insert! %TimesheetStatus{key: "Approved", active: true}
 rejected_status = Repo.insert! %TimesheetStatus{key: "Rejected"}
 
 Repo.insert! %Timesheet{status: draft_status, user: joe, start_date: Ecto.Date.from_erl(today), notes: "abc" }

@@ -3,6 +3,7 @@
     Timehseet
     <h3 class="ui sub header">
       <%= @timesheet.start_date%>
+      <div class="ui label"><%= @timesheet.status.key %></div>
     </h3>
   </div>
 
