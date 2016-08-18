@@ -4,6 +4,7 @@ defmodule Carbon.ContactController do
 
   def new(conn, %{"account_id" => account_id}) do
     conn
+    |> assign(:account_id, account_id)
     |> assign(:changeset, Carbon.Contact.changeset(%Carbon.Contact{}))
     |> render("new.html")
   end
@@ -22,7 +23,7 @@ defmodule Carbon.ContactController do
         |> redirect(to: account_path(conn, :show, account_id))
       {:error, changeset} -> 
         conn
-        |> put_flash(:info, "Contact could not be created.")
+        |> assign(:account_id, account_id)
         |> assign(:changeset, changeset)
         |> render("new.html")
     end
