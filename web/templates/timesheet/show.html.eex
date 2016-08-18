@@ -36,7 +36,7 @@
             <div class="ui small labels">
               <%= for entry <- entries do %>
                 <div class="ui label">
-                  <%= entry.duration_in_minutes %>
+                  <%= entry.duration_in_minutes |> Carbon.Duration.format_minutes %>
                   <div class="detail"> <%= entry.project.code %> (<%= entry.account.name %>)</div>
                   <%= if entry.notes != "" do %>
                     <span data-tooltip="<%= entry.notes %>">
@@ -53,7 +53,7 @@
             </div>
           </td>
           <td>
-            <%= Enum.reduce entries, 0, &(&1.duration_in_minutes + &2) %>
+            <%= Enum.reduce(entries, 0, &(&1.duration_in_minutes + &2)) |> Carbon.Duration.format_minutes %>
           </td>
         </tr>
         <% end %>
@@ -63,7 +63,7 @@
           <th></th>
           <th></th>
           <th>
-            <%= @total_duration %>
+            <%= @total_duration |> Carbon.Duration.format_minutes %>
           </th>
         </tr>
     </tfoot>

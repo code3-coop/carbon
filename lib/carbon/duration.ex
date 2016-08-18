@@ -8,7 +8,7 @@ defmodule Carbon.Duration do
   unit descriptor such as "m", "h", or "d".
 
   ## Examples
-  
+
       iex> Carbon.Duration.parse_minutes("30m")
       30
 
@@ -31,4 +31,29 @@ defmodule Carbon.Duration do
   defp in_minutes(value, "m"), do: value
   defp in_minutes(value, "h"), do: value * 60
   defp in_minutes(value, "d"), do: value * @work_hours_per_day * 60
+
+  @doc """
+  Format a duration in minutes to a human readble string. Returns a string in the Format
+  "1.5h", "30m", "2.5d". There will never be more than one unit at the time.
+  This function is the opposite of Carbon.Duration.parse_minutes/1
+
+  ## Examples
+
+      iex> Carbon.Duration.format_minutes(30)
+      "30m"
+
+      iex> Carbon.Duration.format_minutes(90)
+      "1.5h"
+
+      iex> Carbon.Duration.format_minutes(420)
+      "1d"
+  """
+  def format_minutes(duration_in_minutes) do
+    days = duration_in_minutes / (60 * @work_hours_per_day)
+    unless days < 1, do: "#{Float.round(days, 2)}d"
+    hours = duration_in_minutes / 60
+    unless hours < 1, do: "#{Float.round(hours, 2)}h"
+    "#{duration_in_minutes}m"
+
+  end
 end
