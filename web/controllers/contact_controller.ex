@@ -4,12 +4,29 @@ defmodule Carbon.ContactController do
 
   def new(conn, %{"account_id" => account_id}) do
     conn
+    |> assign(:account_id, account_id)
     |> assign(:changeset, Carbon.Contact.changeset(%Carbon.Contact{}))
     |> render("new.html")
   end
 
-  def create(conn, %{"account_id" => account_id}) do
-    conn
+  def create(conn, %{"account_id" => account_id, "contact" => contact_params}) do
+    current_user = conn.assigns[:current_user]
+    tags = get_tags_from(Carbon.ContactTag, contact_params)
+    contact = %Carbon.Contact{ account: Repo.get(Account, account_id) }
+    changeset = Carbon.Contact.changeset(contact, contact_params) |> Ecto.Changeset.put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
+
+    case Repo.insert(changeset) do
+      {:ok, contact} ->
+        Carbon.Activity.new(account_id, current_user.id, :create, :contacts, contact.id, changeset)        
+        conn
+        |> put_flash(:info, "Contact created successfully.")
+        |> redirect(to: account_path(conn, :show, account_id))
+      {:error, changeset} -> 
+        conn
+        |> assign(:account_id, account_id)
+        |> assign(:changeset, changeset)
+        |> render("new.html")
+    end
   end
 
   def edit(conn, %{"account_id" => account_id, "id" => contact_id}) do

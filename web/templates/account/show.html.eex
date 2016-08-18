@@ -5,9 +5,9 @@
 <% end %>
 
 <%= if success_message = get_flash(@conn, :success) do %>
-<div class="ui positive message">
+<div class="ui message">
   <i class="close icon"></i>
-  <div class="header"><%= success_message %></div>
+  <%= success_message %>
   <%= if restore_link = get_flash(@conn, :restore_link) do %>
     <br/>
     <b>Oops!</b> That's not what I wanted to do. <%= link method: "put", to: restore_link, form: [class: "inline-form", style: "display:inline"] do %>Put it back!<% end %>
