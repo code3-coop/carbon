@@ -48,7 +48,6 @@
                       <a class="ui <%= tag.color %> empty circular label tooltip" data-content=></a>
                     </span>
                   <% end %>
-                  <i class="icon close"></i>
                 </div>
               <% end %>
             </div>
