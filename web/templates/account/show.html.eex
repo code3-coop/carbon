@@ -62,18 +62,20 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="column">
-      <div class="ui labels">
-        <%= for tag <- @account.tags do %>
-          <div class="ui label <%= tag.color%>">
-            <i class="ui icon tag"></i>
-            <%= tag.description %>
-          </div>
-        <% end %>
+  <%= if not Enum.empty?(@account.tags) do %>
+    <div class="row">
+      <div class="column">
+        <div class="ui labels">
+          <%= for tag <- @account.tags do %>
+            <div class="ui label <%= tag.color%>">
+              <i class="ui icon tag"></i>
+              <%= tag.description %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="row"> 
     <div class="column">
