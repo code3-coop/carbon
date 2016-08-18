@@ -48,12 +48,12 @@
           <%= @account.owner.full_name %>
           <div class="detail">owner</div>
         </div>
-        <div class="ui label image olive">
+        <div class="ui label image">
           <i class="ui icon dollar"></i>
           <%= @account.billing_address.street_address %>
           <div class="detail"><%= @account.billing_address.locality %>, <%= @account.billing_address.region %></div>
         </div>
-        <div class="ui label image teal">
+        <div class="ui label image">
           <i class="ui icon truck"></i>
           <%= @account.shipping_address.street_address %>
           <div class="detail"><%= @account.shipping_address.locality %>, <%= @account.shipping_address.region %></div>
