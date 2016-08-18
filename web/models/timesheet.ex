@@ -29,4 +29,9 @@ defmodule Carbon.Timesheet do
     |> cast(params, [:start_date, :notes, :status_id])
     |> validate_required([:start_date, :status_id])
   end
+  def archive_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:active])
+  end
+
 end

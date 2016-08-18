@@ -98,40 +98,34 @@ defmodule Carbon.TimesheetController do
   end
 
   def delete(conn, _params) do
-    # current_user = conn.assigns[:current_user]
-    # %{"account_id" => account_id, "id" => event_id} = conn.params
-    # event = Repo.get!(Event, event_id)
-    # changeset = Event.archive_changeset(event, %{active: false})
-    #
-    # case Repo.update(changeset) do
-    #   {:ok, event} ->
-    #     Carbon.Activity.new(account_id, current_user.id, :remove, :events, event.id, changeset)
-    #     conn
-    #     |> put_flash(:deleted_event, event)
-    #     |> redirect(to: account_event_path(conn, :index, account_id))
-    #   {:error, _changeset} ->
-    #     conn
-    #     |> put_flash(:info, "Failed to delete the event.")
-    #     |> assign(:account_id, account_id)
-    #     |> redirect(to: account_event_path(conn, :index, account_id))
-    # end
+    %{"id" => timesheet_id} = conn.params
+    timesheet = Repo.get!(Timesheet, timesheet_id)
+    changeset = Timesheet.archive_changeset(timesheet, %{active: false})
+
+    case Repo.update(changeset) do
+      {:ok, timesheet} ->
+        conn
+        |> put_flash(:deleted_timesheet, timesheet)
+        |> redirect(to: timesheet_path(conn, :index))
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:info, "Failed to delete timesheet.")
+        |> redirect(to: timesheet_path(conn, :index))
+    end
   end
   def restore(conn, _params) do
-    # current_user = conn.assigns[:current_user]
-    # %{"account_id" => account_id, "id" => event_id} = conn.params
-    # event = Repo.get!(Event, event_id)
-    # changeset = Event.archive_changeset(event, %{active: true})
-    #
-    # case Repo.update(changeset) do
-    #   {:ok, event} ->
-    #     Carbon.Activity.new(account_id, current_user.id, :restore, :events, event.id, changeset)
-    #     conn
-    #     |> redirect(to: account_event_path(conn, :index, account_id))
-    #   {:error, _changeset} ->
-    #     conn
-    #     |> put_flash(:info, "Failed to restore the event.")
-    #     |> assign(:account_id, account_id)
-    #     |> redirect(to: account_event_path(conn, :index, account_id))
-    # end
+    %{"id" => timesheet_id} = conn.params
+    timesheet = Repo.get!(Timesheet, timesheet_id)
+    changeset = Timesheet.archive_changeset(timesheet, %{active: true})
+
+    case Repo.update(changeset) do
+      {:ok, timesheet} ->
+        conn
+        |> redirect(to: timesheet_path(conn, :index))
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:info, "Failed to restore the event.")
+        |> redirect(to: timesheet_path(conn, :index))
+    end
   end
 end

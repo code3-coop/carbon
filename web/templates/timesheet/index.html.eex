@@ -1,3 +1,16 @@
+<%= if get_flash(@conn, :deleted_timesheet) do %>
+  <div class="ui message">
+    <div class="header">
+      Timesheet archived
+    </div>
+    Timesheet archived successfully
+      <% timesheet = get_flash(@conn, :deleted_timesheet) %>
+      <% path_to_restore = timesheet_path(@conn, :restore, timesheet.id) %>
+      <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
+        Get it back.
+      <% end %>
+  </div>
+<% end %>
 
 <h1 class="ui header">
   <div class="content">
@@ -10,9 +23,9 @@
   <% end %>
 </h1>
 
-<%= for {status_id, timesheets} <- @groupped_timesheets do %>
+<%= for {status, timesheets} <- @groupped_timesheets do %>
 
-  <h3 class="ui horizontal divider header"> <%= status_id %></h3>
+  <h3 class="ui horizontal divider header"> <%= status %></h3>
   <div class="ui feed">
     <%= for timesheet <- timesheets do %>
       <div class="event">
