@@ -63,9 +63,9 @@ defmodule Carbon.Duration do
     do_format_minutes(minutes, {days, hours})
   end
   defp do_format_minutes(minutes, {days, hours}) do
-    days_description = if days > 0, do: "#{days}d ", else: ""
-    hours_description = if hours > 0, do: "#{hours}h ", else: ""
+    days_description = if days > 0, do: "#{days}d", else: ""
+    hours_description = if hours > 0, do: "#{hours}h", else: ""
     minutes_description = if minutes > 0, do: "#{minutes}m", else: ""
-    days_description <> hours_description <> minutes_description
+    [ days_description, hours_description, minutes_description ] |> Enum.join(" ")
   end
 end
