@@ -1,1 +1,123 @@
-hi! welcome to the new contact page! nothing to see here. Move along.
+<style>
+  .grow { transition: all .1s ease-in-out; }
+  .grow:hover { transform: scale(1.8); }
+</style>
+
+<%= form_for @changeset, account_contact_path(@conn, :create, @account_id), fn f -> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+
+    <div class="field <%= if f.errors[:full_name], do: "error" %>">
+      <label>Name
+        <span class="error">
+          <%= if f.errors[:full_name], do: translate_error f.errors[:full_name] %>
+        </span>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= text_input f, :full_name %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:title], do: "error" %>">
+      <label>Job title
+        <span class="error">
+          <%= if f.errors[:title], do: translate_error f.errors[:title] %>
+        </span>
+      </label>
+      <div class="ui left icon input">
+        <%= text_input f, :title %>
+        <i class="sitemap icon"></i>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:email], do: "error" %>">
+      <label>Email
+        <span class="error">
+          <%= if f.errors[:email], do: translate_error f.errors[:email] %>
+        </span>
+      </label>
+      <div class="ui left icon input">
+        <%= text_input f, :email %>
+        <i class="mail icon"></i>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:tel], do: "error" %>">
+      <label>Phone number
+        <span class="error">
+          <%= if f.errors[:tel], do: translate_error f.errors[:tel] %>
+        </span>
+      </label>
+      <div class="ui left icon input">
+        <%= text_input f, :tel %>
+        <i class="call icon"></i>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Tags</label>
+      <div id="contact_tag_ids" class="ui fluid multiple search selection dropdown">
+        <%= hidden_input f, :tags_id, value: "" %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select tags</div>
+        <div class="menu">
+          <%= for tag <- contact_tags_select do %>
+            <div class="item " data-value="<%= tag.id %>">
+              <div class="ui label <%=tag.color%>">
+                <i class="ui icon tag"></i>
+                <%= tag.description %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <% image_url = @changeset.changes[:image_url] || "/images/avatars/#{Enum.random(["male", "female"])}/#{Enum.random(1..114)}.png" %>
+    <%= hidden_input f, :image_url, value: image_url %>
+    <div id="avatar-tabs" class="ui secondary pointing menu">
+      <span class="item" style="font-weight: 700; font-size: .92857143em; padding-bottom: .92857143em; padding-left: 0">Profile picture</span>
+      <a class="active item" data-tab="female-avatars">female</a>
+      <a class="item" data-tab="male-avatars">male</a>
+    </div>
+    <div class="ui grid">
+      <div class="three wide column">
+        <img id="chosen-avatar" class="ui circular image" src="<%= image_url %>" />
+      </div>
+      <div class="thirteen wide column">
+        <%= for { gender, range } <- [ {"female", 1..114}, {"male", 1..129} ] do %>
+          <div class="ui bottom <%= if gender == "female", do: "active" %> tab" data-tab="<%= gender %>-avatars">
+            <div style="height: 200px; overflow-y: scroll; padding: 0.7rem; ">
+              <%= for i <- range do %>
+                <img class="ui circular image avatar-selector grow" src="/images/avatars/<%= gender %>/<%= i %>.png" style="display: inline-block; margin: 0.7rem; width: 3rem"/>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <br/>
+    <%= submit "Update contact", class: "ui submit primary button" %>
+    <%= link "cancel", to: account_path(@conn, :show, @account_id), class: "ui button" %>
+  </div>
+<% end %>
+
+<script>
+  var $chosen_avatar = $('#chosen-avatar');
+  var $contact_image_url = $('#contact_image_url');
+
+  $('#avatar-tabs .item').tab();
+
+  $('.avatar-selector').click(function(e) {
+    var image_url = $(e.target).attr('src');
+    $chosen_avatar.attr('src', image_url);
+    $contact_image_url.val(image_url);
+  });
+
+  $('#contact_tag_ids').dropdown();
+</script>
