@@ -12,22 +12,29 @@ defmodule Carbon.Duration do
       iex> Carbon.Duration.parse_minutes("30m")
       30
 
-      iex> Carbon.Duration.parse_minutes("1.5h")
+      iex> Carbon.Duration.parse_minutes("1h 30m")
       90
 
       iex> Carbon.Duration.parse_minutes("1d")
       420
   """
   def parse_minutes(duration_string) do
-    if String.match?(duration_string, ~r/^\d{1,4}(?:\.\d{1,2})?[mhd]$/) do
-      { value_string, unit } = String.split_at(duration_string, -1) # consider String.split(~r/(?=[mhd]$)/i)
-      { value, _ } = Float.parse value_string
-      value |> in_minutes(unit) |> round
+    exp = ~r/\d{1,4}(?:\.\d{1,2})?[mhd]/
+    if String.match?(duration_string, exp) do
+      Regex.scan(exp, duration_string, catch: :all)
+      |> Enum.map(&(hd &1))
+      |> Enum.map(&in_minutes/1)
+      |> Enum.reduce(0, &Kernel.+/2)
+      |> round()
     else
       0
     end
   end
-
+  defp in_minutes(duration_string) do
+      {value_string, unit} = String.split_at(duration_string, -1)
+      {value, _arg} = Float.parse value_string
+      in_minutes(value, unit)
+  end
   defp in_minutes(value, "m"), do: value
   defp in_minutes(value, "h"), do: value * 60
   defp in_minutes(value, "d"), do: value * @work_hours_per_day * 60
@@ -66,6 +73,6 @@ defmodule Carbon.Duration do
     days_description = if days > 0, do: "#{days}d", else: ""
     hours_description = if hours > 0, do: "#{hours}h", else: ""
     minutes_description = if minutes > 0, do: "#{minutes}m", else: ""
-    [ days_description, hours_description, minutes_description ] |> Enum.join("")
+    [ days_description, hours_description, minutes_description ] |> Enum.join(" ") |> String.trim
   end
 end
