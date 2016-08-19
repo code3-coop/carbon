@@ -49,7 +49,7 @@
 </div>
 
 <h3 class="ui horizontal divider header">
-  Lastest timesheets
+  <%= @current_user.handle %>'s lastest timesheets
 </h3>
 <%= if Enum.empty? @timesheets do %>
   <center>
@@ -92,7 +92,7 @@
 <% end %>
 
 <h3 class="ui horizontal divider header">
-  Accounts
+  Accounts handled by <%= @current_user.handle %>
 </h3>
 <%= if Enum.empty? @accounts do %>
   <center>
