@@ -43,11 +43,11 @@
           <%= @account.status.key %>
           <div class="detail">status</div>
         </div>
-        <div class="ui label image">
+        <a class="ui label image" href="<%= user_path(@conn, :show, @account.owner.id) %>">
           <img src="<%=@account.owner.image_url%>">
-          <a href="<%= user_path(@conn, :show, @account.owner.id) %>"><%= @account.owner.full_name %></a>
+          <%= @account.owner.full_name %>
           <div class="detail">owner</div>
-        </div>
+        </a>
         <div class="ui label image">
           <i class="ui icon dollar"></i>
           <%= @account.billing_address.street_address %>
