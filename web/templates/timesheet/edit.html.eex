@@ -108,9 +108,7 @@
           <div class="menu">
             <%= for status <- timesheet_status_select do %>
               <div class="item " data-value="<%= status.id %>">
-                <div class="ui label">
-                  <%= status.key %>
-                </div>
+                <%= status.key %>
               </div>
             <% end %>
           </div>
