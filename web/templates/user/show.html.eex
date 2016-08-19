@@ -90,3 +90,41 @@
     See the complete list of timesheets
   </center>
 <% end %>
+
+<h3 class="ui horizontal divider header">
+  Accounts
+</h3>
+<%= if Enum.empty? @accounts do %>
+  <center>
+    <%= @current_user.handle%> doesn't handle any account now
+  </center>
+<% else %>
+  <div class="ui cards">
+    <%= for account <- @accounts do %>
+      <div class="ui card">
+
+        <div class="content">
+          <div class="ui right ribbon <%= account.status.color %> label">
+            <%=account.status.key%>
+          </div>
+          <%= link to: account_path(@conn, :show, account.id), class: "header" do %>
+            <%= account.name %>
+          <% end %>
+        </div>
+        <div class="extra content">
+          <%= for tag <- account.tags do %>
+            <div class="ui tiny label <%= tag.color%>">
+              <i class="ui icon tag"></i>
+              <%= tag.description %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<center>
+  <%= link to: account_path(@conn, :index) do %>
+    See the complete list of accounts
+  <% end %>
+</center>

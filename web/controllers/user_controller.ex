@@ -3,7 +3,7 @@ defmodule Carbon.UserController do
 
   import Carbon.ControllerUtils
 
-  alias Carbon.{User, Timesheet}
+  alias Carbon.{User, Timesheet, Account}
 
 
   def show(conn, %{"id" => user_id}) do
@@ -18,10 +18,17 @@ defmodule Carbon.UserController do
       limit: 5,
       preload: [status: s, entries: e]
     timesheets = Repo.all timesheets_query
+    account_query = from a in Account,
+      where: a.owner_id == ^user_id and a.active == true,
+      left_join: s in assoc(a, :status),
+      left_join: t in assoc(a, :tags),
+      preload: [status: s, tags: t]
+    accounts = Repo.all account_query
 
     conn
     |> assign(:user, user)
     |> assign(:timesheets, timesheets)
+    |> assign(:accounts, accounts)
     |> render("show.html")
   end
 end
