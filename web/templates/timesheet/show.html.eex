@@ -41,7 +41,7 @@
                   <div class="detail"> <%= entry.project.code %> (<%= entry.account.name %>)</div>
                   <%= if entry.notes != "" do %>
                     <span data-tooltip="<%= entry.notes %>">
-                      <i class="icon write"></i>
+                      <i class="icon comment"></i>
                     </span>
                   <% end %>
                   <%= for tag <- entry.tags do %>

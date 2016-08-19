@@ -7,7 +7,7 @@
 
 <h2>Edit timesheet entry</h2>
 
-<%= form_for @changeset, timesheet_timesheet_entry_path(@conn, :edit, @timesheet_entry.timesheet_id, @timesheet_entry.id), fn f -> %>
+<%= form_for @changeset, timesheet_timesheet_entry_path(@conn, :update, @timesheet_entry.timesheet_id, @timesheet_entry.id), fn f -> %>
  <div class="ui form <%= if @changeset.action, do: "error" %>">
    <div class="ui error message">
      <div class="header">Ruh roh!</div>
@@ -106,7 +106,7 @@
 
 
 
-   <%= submit "Add entry", class: "ui submit primary button" %>
+   <%= submit "Update entry", class: "ui submit primary button" %>
    <%= link "cancel", to: timesheet_path(@conn, :new), class: "ui button" %>
 
 <% end %>

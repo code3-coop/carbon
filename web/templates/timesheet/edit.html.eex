@@ -53,7 +53,7 @@
                 <%= entry.project.code %> (<%= entry.account.name %>)
                 <%= if entry.notes != "" do %>
                   <span data-tooltip="<%= entry.notes %>">
-                    <i class="icon write"></i>
+                    <i class="icon comment"></i>
                   </span>
                 <% end %>
                 <%= for tag <- entry.tags do %>
@@ -62,10 +62,12 @@
                   </span>
                 <% end %>
               </div>
-
-                <%= link(to: timesheet_timesheet_entry_path(@conn, :delete, @timesheet.id, entry.id), method: :delete, form: [class: "inline-link"]) do %>
-                  <i class="icon close"></i>
-                <% end %>
+              <%= link(to: timesheet_timesheet_entry_path(@conn, :edit, @timesheet.id, entry.id)) do %>
+                <i class="icon write"></i>
+              <% end %>
+              <%= link(to: timesheet_timesheet_entry_path(@conn, :delete, @timesheet.id, entry.id), method: :delete, form: [class: "inline-link"]) do %>
+                <i class="icon close"></i>
+              <% end %>
 
               </div>
           <% end %>
