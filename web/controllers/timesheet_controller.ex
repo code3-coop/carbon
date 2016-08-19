@@ -1,8 +1,6 @@
 defmodule Carbon.TimesheetController do
   use Carbon.Web, :controller
 
-  import Carbon.ControllerUtils
-
   alias Carbon.{ Timesheet, TimesheetEntry }
 
   def index(conn, _params) do
@@ -17,9 +15,15 @@ defmodule Carbon.TimesheetController do
       preload: [ entries: e, user: u, status: s ]
 
     timesheets = Repo.all(timesheets_query)
-    groupped_timesheets = Enum.group_by timesheets, &(&1.status.key)
+    groupped_timesheets = Enum.group_by timesheets, &(&1.status)
+
+    sorted_status = groupped_timesheets
+    |> Map.keys()
+    |> Enum.sort_by(&(&1.id))
+
     conn
     |> assign(:groupped_timesheets, groupped_timesheets)
+    |> assign(:sorted_status, sorted_status)
     |> render("index.html")
   end
 
@@ -119,7 +123,7 @@ defmodule Carbon.TimesheetController do
     changeset = Timesheet.archive_changeset(timesheet, %{active: true})
 
     case Repo.update(changeset) do
-      {:ok, timesheet} ->
+      {:ok, _timesheet} ->
         conn
         |> redirect(to: timesheet_path(conn, :index))
       {:error, _changeset} ->

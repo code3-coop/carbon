@@ -4,7 +4,9 @@ defmodule Carbon.TimesheetStatus do
   schema "timesheet_statuses" do
     field :key, :string
     field :active, :boolean, default: false
-
+    field :editable_by_owner?, :boolean, default: false
+    field :editable_by_manager?, :boolean, default: false
+    field :presentation_order, :integer
     timestamps
   end
 

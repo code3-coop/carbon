@@ -39,7 +39,7 @@ defmodule Carbon.TimesheetEntry do
     |> foreign_key_constraint(:account_id)
   end
 
-  def archive_changeset(struct, params \\ %{}, tags \\ []) do
+  def archive_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:active])
   end

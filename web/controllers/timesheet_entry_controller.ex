@@ -3,7 +3,7 @@ defmodule Carbon.TimesheetEntryController do
 
   import Carbon.ControllerUtils
 
-  alias Carbon.{ TimesheetEntry, Timesheet, TimesheetEntryTag }
+  alias Carbon.{ Timesheet, TimesheetEntry, TimesheetEntryTag }
 
   def new(conn, %{"timesheet_id" => timesheet_id}) do
     conn
@@ -36,7 +36,7 @@ defmodule Carbon.TimesheetEntryController do
     end
   end
 
-  def edit(conn, %{"timesheet_id" => timesheet_id, "id" => entry_id}) do
+  def edit(conn, %{"id" => entry_id}) do
     timesheet_entry = Repo.get!(TimesheetEntry, entry_id) |> Repo.preload([:tags, :project, :account])
     conn
     |> assign(:changeset, TimesheetEntry.update_changeset(timesheet_entry))
@@ -105,7 +105,7 @@ defmodule Carbon.TimesheetEntryController do
     changeset = TimesheetEntry.archive_changeset(timesheet_entry, %{active: true})
 
     case Repo.update(changeset) do
-      {:ok, event} ->
+      {:ok, _event} ->
         conn
         |> redirect(to: timesheet_path(conn, :edit, timehseet_id))
       {:error, _changeset} ->
