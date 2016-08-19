@@ -66,6 +66,6 @@ defmodule Carbon.Duration do
     days_description = if days > 0, do: "#{days}d", else: ""
     hours_description = if hours > 0, do: "#{hours}h", else: ""
     minutes_description = if minutes > 0, do: "#{minutes}m", else: ""
-    [ days_description, hours_description, minutes_description ] |> Enum.join(" ")
+    [ days_description, hours_description, minutes_description ] |> Enum.join("")
   end
 end
