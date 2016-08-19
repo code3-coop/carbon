@@ -43,19 +43,29 @@ defmodule Carbon.Duration do
       "30m"
 
       iex> Carbon.Duration.format_minutes(90)
-      "1.5h"
+      "1h 30m"
 
       iex> Carbon.Duration.format_minutes(420)
       "1d"
   """
   def format_minutes(duration_in_minutes) do
-    days = duration_in_minutes / (60 * @work_hours_per_day)
-    hours = duration_in_minutes / 60
+    do_format_minutes(duration_in_minutes, {0, 0})
+  end
 
-    cond do
-      days > 1  -> "#{Float.round(days, 2)}d"
-      hours > 1 -> "#{Float.round(hours, 2)}h"
-      true     -> "#{duration_in_minutes}m"
-    end
+  defp do_format_minutes(minutes, {_days, _hours}) when minutes >= @work_hours_per_day * 60 do
+    days = div(minutes, @work_hours_per_day * 60)
+    hours = rem(minutes, @work_hours_per_day * 60)
+    do_format_minutes(hours, {days, 0})
+  end
+  defp do_format_minutes(minutes, {days, _hours}) when minutes >= 60 do
+    hours = div(minutes, 60)
+    minutes = rem(minutes, 60)
+    do_format_minutes(minutes, {days, hours})
+  end
+  defp do_format_minutes(minutes, {days, hours}) do
+    days_description = if days > 0, do: "#{days}d ", else: ""
+    hours_description = if hours > 0, do: "#{hours}h ", else: ""
+    minutes_description = if minutes > 0, do: "#{minutes}m", else: ""
+    days_description <> hours_description <> minutes_description
   end
 end
