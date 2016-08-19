@@ -13,7 +13,7 @@ defmodule Carbon.TimesheetTest do
         %{duration_in_minutes: 2, billable: false},
       ]
     }
-    assert Timesheet.total_billables_and_non_billables(timesheet) == {21, 42}
+    assert Timesheet.total_billables_and_non_billables(timesheet) == %{billables: 21, non_billables: 24}
   end
 
 end

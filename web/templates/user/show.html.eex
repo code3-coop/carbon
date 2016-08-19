@@ -2,55 +2,91 @@
   Profile
 </h1>
 
-    <div class="ui card">
-      <div class="image">
-        <img src="<%= @user.image_url %>"/>
-      </div>
-      <div class="content">
-        <a class="header">
-          <%= @user.full_name %>
+<div class="ui card">
+  <div class="image">
+    <img src="<%= @user.image_url %>"/>
+  </div>
+  <div class="content">
+    <a class="header">
+      <%= @user.full_name %>
 
-        </a>
-        <div class="meta">
-          <%= @user.title %>
-        </div>
-
-        <div class="description">
-          <div>
-            <i class="icon user"></i>
-            <%= @user.handle %>
-          </div>
-          <div>
-            <i class="icon users"></i>
-            <%= @user.roles |> Enum.map(&(&1.key)) |> Enum.join(", ") %>
-          </div>
-          <%= if @user.email do %>
-            <div>
-              <i class="icon mail"></i>
-              <%= @user.email %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-
-
-      <div class="extra content">
-        <%= link to: user_path(@conn, :edit, @user.id) do %>
-          <i class="icon write"></i>
-          Edit
-        <% end %>
-        <%= link to: user_path(@conn, :edit, @user.id) do %>
-          <i class="icon mail"></i>
-          Change email
-        <% end %>
-        <%= link to: user_path(@conn, :delete, @user.id) do %>
-          <i class="icon ban"></i>
-          Close
-        <% end %>
-      </div>
+    </a>
+    <div class="meta">
+      <%= @user.title %>
     </div>
 
-  <h3 class="ui horizontal divider header">
-    Timesheets
-  </h3>
-</h1>
+    <div class="description">
+      <div>
+        <i class="icon user"></i>
+        <%= @user.handle %>
+      </div>
+      <div>
+        <i class="icon users"></i>
+        <%= @user.roles |> Enum.map(&(&1.key)) |> Enum.join(", ") %>
+      </div>
+      <%= if @user.email do %>
+        <div>
+          <i class="icon mail"></i>
+          <%= @user.email %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="extra content">
+    <%= link to: user_path(@conn, :edit, @user.id) do %>
+      <i class="icon write"></i>
+      Edit
+    <% end %>
+    <%= link to: user_path(@conn, :edit, @user.id) do %>
+      <i class="icon mail"></i>
+      Change email
+    <% end %>
+    <%= link to: user_path(@conn, :delete, @user.id) do %>
+      <i class="icon ban"></i>
+      Close
+    <% end %>
+  </div>
+</div>
+
+<h3 class="ui horizontal divider header">
+  Last timesheets
+</h3>
+<%= if Enum.empty? @timesheets do %>
+  <center>
+    You never input any timesheet, now is the
+    <%= link to: timesheet_path(@conn, :new) do %>
+      time to start
+    <% end %>
+     budy !
+  </center>
+<% else %>
+  <div class="ui cards">
+    <%= for timesheet <- @timesheets do %>
+      <div class="ui card">
+        <div class="content">
+          <div class="ui right ribbon label"><%= timesheet.status.key %></div>
+          <div class="header">
+            <%= timesheet.start_date %>
+          </div>
+          <div class="description">
+            <%= timesheet.notes %>
+          </div>
+        </div>
+        <div class="extra content">
+          <% %{billables: billables, non_billables: non_billables} = Carbon.Timesheet.total_billables_and_non_billables(timesheet)%>
+          <div class="ui left floated">
+            <%= billables %> billables
+          </div>
+          <div class="ui right floated">
+            <%= non_billables %> non billables
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<%= link to: timesheet_path(@conn, :index) do %>
+  <center>
+    See the complete list of timesheets
+  </center>
+<% end %>

@@ -16,16 +16,18 @@ defmodule Carbon.Timesheet do
   end
 
 
+  @doc """
+  Compute total of minutes for billable and non billable time. Returns a map
+  in the following format %{billables: 21, non_billables: 42}
+  """
   def total_billables_and_non_billables(timesheet) do
-    {billables, non_billables} = Enum.partition(timesheet.entries, &(&1.billable))
-    {
-      total_minutes(billables),
-      total_minutes(non_billables),
-    }
+    Enum.reduce(timesheet.entries, %{billables: 0, non_billables: 0}, &entry_totaler/2)
   end
-
-  defp total_minutes(entries) do
-     Enum.reduce(entries, 0, &(&1.duration_in_minutes + &2))
+  defp entry_totaler(%{billable: true, duration_in_minutes: duration_in_minutes}, acc) do
+    %{acc | billables: acc.billables + duration_in_minutes}
+  end
+  defp entry_totaler(%{billable: false, duration_in_minutes: duration_in_minutes}, acc) do
+    %{acc | non_billables: acc.non_billables + duration_in_minutes}
   end
 
   @doc """
