@@ -65,9 +65,10 @@
       <div class="ui card">
         <div class="content">
           <div class="ui right ribbon label"><%= timesheet.status.key %></div>
-          <div class="header">
+          <%= link to: timesheet_path(@conn, :show, timesheet.id), class: "header" do %>
             <%= timesheet.start_date %>
-          </div>
+          <% end %>
+
           <div class="description">
             <%= timesheet.notes %>
           </div>
