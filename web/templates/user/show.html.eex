@@ -92,17 +92,19 @@
       <% end %>
     </div>
   <% end %>
-  <%= link to: timesheet_path(@conn, :index) do %>
-    <center>
+
+  <center style="margin: 1em;">
+    <%= link to: timesheet_path(@conn, :index) do %>
       See the complete list of timesheets
-    </center>
-  <% end %>
+    <% end %>
+  </center>
+
 
   <h3 class="ui horizontal divider header">
     Accounts handled by <%= @current_user.handle %>
   </h3>
   <%= if Enum.empty? @accounts do %>
-    <center>
+    <center style="margin: 1em;">
       <%= @current_user.handle%> doesn't handle any account now
     </center>
   <% else %>
@@ -131,7 +133,7 @@
     </div>
   <% end %>
 
-  <center>
+  <center style="margin: 1em;">
     <%= link to: account_path(@conn, :index) do %>
       See the complete list of accounts
     <% end %>
@@ -141,7 +143,7 @@
     Deal managed by <%= @current_user.handle %>
   </h3>
   <%= if Enum.empty? @deals do %>
-    <center>
+    <center style="margin: 1em;">
       <%= @current_user.handle %> doesn't have any pending deal, for the moment.
     </center>
   <% else %>
