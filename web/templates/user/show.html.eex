@@ -1,0 +1,56 @@
+<h1 class="ui header">
+  Profile
+</h1>
+
+    <div class="ui card">
+      <div class="image">
+        <img src="<%= @user.image_url %>"/>
+      </div>
+      <div class="content">
+        <a class="header">
+          <%= @user.full_name %>
+
+        </a>
+        <div class="meta">
+          <%= @user.title %>
+        </div>
+
+        <div class="description">
+          <div>
+            <i class="icon user"></i>
+            <%= @user.handle %>
+          </div>
+          <div>
+            <i class="icon users"></i>
+            <%= @user.roles |> Enum.map(&(&1.key)) |> Enum.join(", ") %>
+          </div>
+          <%= if @user.email do %>
+            <div>
+              <i class="icon mail"></i>
+              <%= @user.email %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+
+      <div class="extra content">
+        <%= link to: user_path(@conn, :edit, @user.id) do %>
+          <i class="icon write"></i>
+          Edit
+        <% end %>
+        <%= link to: user_path(@conn, :edit, @user.id) do %>
+          <i class="icon mail"></i>
+          Change email
+        <% end %>
+        <%= link to: user_path(@conn, :delete, @user.id) do %>
+          <i class="icon ban"></i>
+          Close
+        <% end %>
+      </div>
+    </div>
+
+  <h3 class="ui horizontal divider header">
+    Timesheets
+  </h3>
+</h1>

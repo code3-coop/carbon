@@ -46,11 +46,12 @@ defmodule Carbon.Router do
         put    "/reminders/:id", ReminderController, :restore
       end
       put "/events/:id/restore", EventController, :restore
-
     end
 
     resources "/tags", TagController, except: [:show]
     put "/tags/:id/restore", TagController, :restore
+
+    resources "/users", UserController
   end
 
   scope "/session", Carbon do

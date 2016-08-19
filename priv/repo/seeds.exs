@@ -23,6 +23,7 @@ alias Carbon.{
   Reminder,
   Repo,
   User,
+  Role,
   Deal,
   DealTag,
   TimesheetStatus,
@@ -44,9 +45,15 @@ paragraph = [
   "Nobis mentitum sadipscing ad per, ne est munere sensibus. Eum inermis honestatis ex. Senserit partiendo definiebas eam id. Ut elit novum veniam per, ad tollit veniam omittam duo."
 ]
 
-joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", image_url: "/images/avatars/male/44.png", email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase) }
-mike = Repo.insert! %User{ handle: "mike", full_name: "Mike", title: "Awesome", image_url: "/images/avatars/male/39.png", email_hash: (:crypto.hash(:sha, "mike@erlang.com") |> Base.encode16 |> String.downcase) }
-robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awesome", image_url: "/images/avatars/male/98.png", email_hash: (:crypto.hash(:sha, "robert@erlang.com") |> Base.encode16 |> String.downcase) }
+problem_solvers = Repo.insert! %Role{ key: "Problem solver", description: "People who take time to think about problems, then produce a pretty good solution."}
+ex_physicist = Repo.insert! %Role{ key: "Ex-Physicist", description: "They did strang things before, now they fill better."}
+cloud_shovelers = Repo.insert! %Role{ key: "Cloud shovelers", description: "I prefer not to talk about this kind of persons."}
+managers  = Repo.insert! %Role{ key: "Managers", description: "they can help"}
+
+joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", image_url: "/images/avatars/male/44.png", email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase), roles: [problem_solvers, ex_physicist] }
+mike = Repo.insert! %User{ handle: "mike", full_name: "Mike", title: "Awesome", image_url: "/images/avatars/male/39.png", email_hash: (:crypto.hash(:sha, "mike@erlang.com") |> Base.encode16 |> String.downcase), roles: [problem_solvers] }
+robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awesome", image_url: "/images/avatars/male/98.png", email_hash: (:crypto.hash(:sha, "robert@erlang.com") |> Base.encode16 |> String.downcase), roles: [problem_solvers] }
+
 
 lead_status = Repo.insert!(%AccountStatus{key: "lead", color: "olive"})
 customer_status = Repo.insert!(%AccountStatus{key: "customer", color: "green"})

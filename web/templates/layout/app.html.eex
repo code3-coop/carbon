@@ -22,8 +22,7 @@
       </div>
       <%= if assigns[:current_user] do %>
         <div class="right item">
-          <%#TODO this path must be user_path :show, @current_user.id once we've got a controller for the users %>
-          <%= link to: "users/#{@current_user.id}/edit" do %>
+          <%= link to: Carbon.Router.Helpers.user_path(@conn, :show, @current_user.id) do %>
             <div class="ui image label">
               <img src="<%=@current_user.image_url%>">
               <%=@current_user.full_name%>
