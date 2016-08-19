@@ -15,6 +15,19 @@ defmodule Carbon.Timesheet do
     timestamps
   end
 
+
+  def total_billables_and_non_billables(timesheet) do
+    {billables, non_billables} = Enum.partition(timesheet.entries, &(&1.billable))
+    {
+      total_minutes(billables),
+      total_minutes(non_billables),
+    }
+  end
+
+  defp total_minutes(entries) do
+     Enum.reduce(entries, 0, &(&1.duration_in_minutes + &2))
+  end
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
