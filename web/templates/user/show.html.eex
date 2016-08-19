@@ -1,131 +1,150 @@
 <h1 class="ui header">
   Profile
 </h1>
-
-<div class="ui card">
-  <div class="image">
-    <img src="<%= @user.image_url %>"/>
-  </div>
-  <div class="content">
-    <a class="header">
-      <%= @user.full_name %>
-
-    </a>
-    <div class="meta">
-      <%= @user.title %>
+<div class="ui two column grid ">
+  <div class="four wide column">
+    <div class="ui card">
+    <div class="image">
+      <img src="<%= @user.image_url %>"/>
     </div>
+    <div class="content">
+      <a class="header">
+        <%= @user.full_name %>
 
-    <div class="description">
-      <div>
-        <i class="icon user"></i>
-        <%= @user.handle %>
+      </a>
+      <div class="meta">
+        <%= @user.title %>
       </div>
-      <div>
-        <i class="icon users"></i>
-        <%= @user.roles |> Enum.map(&(&1.key)) |> Enum.join(", ") %>
-      </div>
-      <%= if @user.email do %>
+
+      <div class="description">
         <div>
-          <i class="icon mail"></i>
-          <%= @user.email %>
+          <i class="icon user"></i>
+          <%= @user.handle %>
         </div>
+        <div>
+          <i class="icon users"></i>
+          <%= @user.roles |> Enum.map(&(&1.key)) |> Enum.join(", ") %>
+        </div>
+        <%= if @user.email do %>
+          <div>
+            <i class="icon mail"></i>
+            <%= @user.email %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="extra content">
+      <%= link to: user_path(@conn, :edit, @user.id) do %>
+        <i class="icon write"></i>
+        Edit
+      <% end %>
+      <%= link to: user_path(@conn, :edit, @user.id) do %>
+        <i class="icon mail"></i>
+        Change email
+      <% end %>
+      <%= link to: user_path(@conn, :delete, @user.id) do %>
+        <i class="icon ban"></i>
+        Close
       <% end %>
     </div>
   </div>
-  <div class="extra content">
-    <%= link to: user_path(@conn, :edit, @user.id) do %>
-      <i class="icon write"></i>
-      Edit
-    <% end %>
-    <%= link to: user_path(@conn, :edit, @user.id) do %>
-      <i class="icon mail"></i>
-      Change email
-    <% end %>
-    <%= link to: user_path(@conn, :delete, @user.id) do %>
-      <i class="icon ban"></i>
-      Close
-    <% end %>
   </div>
-</div>
+  <div class="twelve wide column">
 
-<h3 class="ui horizontal divider header">
-  <%= @current_user.handle %>'s lastest timesheets
-</h3>
-<%= if Enum.empty? @timesheets do %>
-  <center>
-    You never input any timesheet, now is the
-    <%= link to: timesheet_path(@conn, :new) do %>
-      time to start
-    <% end %>
-     budy !
-  </center>
-<% else %>
-  <div class="ui cards">
-    <%= for timesheet <- @timesheets do %>
-      <div class="ui card">
-        <div class="content">
-          <div class="ui right ribbon label"><%= timesheet.status.key %></div>
-          <%= link to: timesheet_path(@conn, :show, timesheet.id), class: "header" do %>
-            <%= timesheet.start_date %>
-          <% end %>
+  <h3 class="ui horizontal divider header">
+    <%= @current_user.handle %>'s lastest timesheets
+  </h3>
 
-          <div class="description">
-            <%= timesheet.notes %>
-          </div>
-        </div>
-        <div class="extra content">
-          <% %{billables: billables, non_billables: non_billables} = Carbon.Timesheet.total_billables_and_non_billables(timesheet)%>
-          <div class="ui left floated">
-            <%= billables %> billables
-          </div>
-          <div class="ui right floated">
-            <%= non_billables %> non billables
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
-<% end %>
-<%= link to: timesheet_path(@conn, :index) do %>
-  <center>
-    See the complete list of timesheets
-  </center>
-<% end %>
+  <%= if Enum.empty? @timesheets do %>
+    <center>
+      You never input any timesheet, now is the
+      <%= link to: timesheet_path(@conn, :new) do %>
+        time to start
+      <% end %>
+       budy !
+    </center>
 
-<h3 class="ui horizontal divider header">
-  Accounts handled by <%= @current_user.handle %>
-</h3>
-<%= if Enum.empty? @accounts do %>
-  <center>
-    <%= @current_user.handle%> doesn't handle any account now
-  </center>
-<% else %>
-  <div class="ui cards">
-    <%= for account <- @accounts do %>
-      <div class="ui card">
+  <% else %>
 
-        <div class="content">
-          <div class="ui right ribbon <%= account.status.color %> label">
-            <%=account.status.key%>
-          </div>
-          <%= link to: account_path(@conn, :show, account.id), class: "header" do %>
-            <%= account.name %>
-          <% end %>
-        </div>
-        <div class="extra content">
-          <%= for tag <- account.tags do %>
-            <div class="ui tiny label <%= tag.color%>">
-              <i class="ui icon tag"></i>
-              <%= tag.description %>
+    <div class="ui cards">
+      <%= for timesheet <- @timesheets do %>
+        <div class="ui card">
+          <div class="content">
+            <div class="ui right ribbon label"><%= timesheet.status.key %></div>
+            <%= link to: timesheet_path(@conn, :show, timesheet.id), class: "header" do %>
+              <%= timesheet.start_date %>
+            <% end %>
+
+            <div class="description">
+              <%= timesheet.notes %>
             </div>
-          <% end %>
+          </div>
+          <div class="extra content">
+            <% %{billables: billables, non_billables: non_billables} = Carbon.Timesheet.total_billables_and_non_billables(timesheet)%>
+            <div class="ui left floated">
+              <%= billables %> billables
+            </div>
+            <div class="ui right floated">
+              <%= non_billables %> non billables
+            </div>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </div>
-<% end %>
-<center>
-  <%= link to: account_path(@conn, :index) do %>
-    See the complete list of accounts
+      <% end %>
+    </div>
   <% end %>
-</center>
+  <%= link to: timesheet_path(@conn, :index) do %>
+    <center>
+      See the complete list of timesheets
+    </center>
+  <% end %>
+
+  <h3 class="ui horizontal divider header">
+    Accounts handled by <%= @current_user.handle %>
+  </h3>
+  <%= if Enum.empty? @accounts do %>
+    <center>
+      <%= @current_user.handle%> doesn't handle any account now
+    </center>
+  <% else %>
+    <div class="ui cards">
+      <%= for account <- @accounts do %>
+        <div class="ui card">
+
+          <div class="content">
+            <div class="ui right ribbon <%= account.status.color %> label">
+              <%=account.status.key%>
+            </div>
+            <%= link to: account_path(@conn, :show, account.id), class: "header" do %>
+              <%= account.name %>
+            <% end %>
+          </div>
+          <div class="extra content">
+            <%= for tag <- account.tags do %>
+              <div class="ui tiny label <%= tag.color%>">
+                <i class="ui icon tag"></i>
+                <%= tag.description %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <center>
+    <%= link to: account_path(@conn, :index) do %>
+      See the complete list of accounts
+    <% end %>
+  </center>
+
+  <h3 class="ui horizontal divider header">
+    Deal managed by <%= @current_user.handle %>
+  </h3>
+  <%= if Enum.empty? @deals do %>
+    <center>
+      <%= @current_user.handle %> doesn't have any pending deal, for the moment.
+    </center>
+  <% else %>
+
+  <% end %>
+</div>

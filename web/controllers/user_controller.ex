@@ -29,6 +29,7 @@ defmodule Carbon.UserController do
     |> assign(:user, user)
     |> assign(:timesheets, timesheets)
     |> assign(:accounts, accounts)
+    |> assign(:deals, [])
     |> render("show.html")
   end
 end
