@@ -14,6 +14,8 @@ defmodule Carbon.UserController do
       where: t.user_id == ^user_id,
       left_join: s in assoc(t, :status),
       left_join: e in assoc(t, :entries),
+      order_by: :updated_at,
+      limit: 5,
       preload: [status: s, entries: e]
     timesheets = Repo.all timesheets_query
 
