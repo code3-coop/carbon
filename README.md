@@ -54,3 +54,6 @@ To start your Carbon:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+## Run the tests
+
+    mix test
