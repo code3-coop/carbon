@@ -107,6 +107,6 @@
 
 
    <%= submit "Update entry", class: "ui submit primary button" %>
-   <%= link "cancel", to: timesheet_path(@conn, :new), class: "ui button" %>
+   <%= link "cancel", to: timesheet_path(@conn, :edit, @timesheet_entry.timesheet_id), class: "ui button" %>
 
 <% end %>

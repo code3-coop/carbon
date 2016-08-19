@@ -55,17 +55,13 @@ defmodule Carbon.TimesheetEntryController do
       left_join: a in assoc(te, :account),
       left_join: ts in assoc(te, :timesheet),
       preload: [ tags: t, project: p, account: a, timesheet: ts]
-
-
     timesheet_entry = Repo.one(timesheet_entry_query)
-    ctx = get_context_from(timesheet_entry_params)
-    # timesheet_entry = %TimesheetEntry{
-    #   timesheet_id: timesheet_id,
-    #   project: ctx.project,
-    #   account: ctx.account,
-    #   duration_in_minutes: Carbon.Duration.parse_minutes(timesheet_entry_params["duration_in_minutes"])
-    # }
+    timesheet_entry_params = %{ timesheet_entry_params |
+      "duration_in_minutes" => Carbon.Duration.parse_minutes(timesheet_entry_params["duration_in_minutes"])
+    }
+
     changeset = TimesheetEntry.update_changeset(timesheet_entry, timesheet_entry_params, tags)
+
     case Repo.update(changeset) do
       {:ok, timesheet_entry} ->
         conn
