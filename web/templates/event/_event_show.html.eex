@@ -5,7 +5,7 @@
   <div class="content">
     <div class="summary">
       <div class="user">
-        <%= @event.user.full_name %>
+        <a href="<%= user_path(@conn, :show, @event.user.id) %>"><%= @event.user.full_name %></a>
       </div>
       <div class="date">
         <%= @event.date |> Ecto.Date.to_iso8601 %>

@@ -98,7 +98,7 @@ defmodule Carbon.AccountController do
       left_join: d in assoc(a, :deals),
       left_join: dt in assoc(d, :tags),
       left_join: du in assoc(d, :owner),
-      left_join: c in assoc(a, :contacts),
+      left_join: c in Carbon.Contact, on: c.account_id == a.id and c.active == true,
       left_join: ct in assoc(c, :tags),
       left_join: t in assoc(a, :tags),
       left_join: p in assoc(a, :projects),

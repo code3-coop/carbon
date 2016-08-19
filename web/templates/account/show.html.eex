@@ -43,11 +43,11 @@
           <%= @account.status.key %>
           <div class="detail">status</div>
         </div>
-        <div class="ui label image">
+        <a class="ui label image" href="<%= user_path(@conn, :show, @account.owner.id) %>">
           <img src="<%=@account.owner.image_url%>">
           <%= @account.owner.full_name %>
           <div class="detail">owner</div>
-        </div>
+        </a>
         <div class="ui label image">
           <i class="ui icon dollar"></i>
           <%= @account.billing_address.street_address %>
@@ -223,12 +223,12 @@
         <div class="content">
           <%= if deal.closed_value do %>
             <div class="summary">
-              <a href=""><%= deal.owner.full_name %></a> closed a <%= humanize(:amount, deal.closed_value) %> deal.
+              <a href="<%= user_path(@conn, :show, deal.owner.id) %>"><%= deal.owner.full_name %></a> closed a <%= humanize(:amount, deal.closed_value) %> deal.
               <div class="date">on <%= deal.closing_date %></div>
             </div>
           <% else %>
             <div class="summary">
-              <a href=""><%= deal.owner.full_name %></a> is working on a <%= humanize(:amount, deal.expected_value) %> deal.
+              <a href="<%= user_path(@conn, :show, deal.owner.id) %>"><%= deal.owner.full_name %></a> is working on a <%= humanize(:amount, deal.expected_value) %> deal.
               <div class="date">since <%= deal.updated_at |> Ecto.DateTime.to_date %></div>
             </div>
           <% end %>
