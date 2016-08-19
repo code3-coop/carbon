@@ -20,7 +20,7 @@
       </div>
       <div class="content">
         <div class="summary">
-          <a class="user"><%= activity.user.full_name %></a>
+          <a class="user" href="<%= user_path(@conn, :show, activity.user.id) %>"><%= activity.user.full_name %></a>
           <%= past_tense activity.action %> <%= singular activity.target_schema %> #<%= activity.target_id %>
           <div class="date">
             <%= activity.inserted_at %> GMT
