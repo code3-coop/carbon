@@ -147,6 +147,55 @@
       <%= @current_user.handle %> doesn't have any pending deal, for the moment.
     </center>
   <% else %>
+    <%= for deal <- @deals do %>
+      <div class="ui card">
+        <div class="content">
+          <%= if deal.closed_value do %>
+            <div class="ui right ribbon green label">
+              Closed
+            </div>
+            <%= link to: account_path(@conn, :show, deal.account_id), class: "header" do %>
+              <%= humanize(:amount, deal.closed_value) %>
+            <% end %>
+            <div class="meta">
+              <span class="date">
+                closed on <%= deal.closing_date %>
+              </span>
+            </div>
+          <% else %>
+            <div class="ui right ribbon yellow label">
+              In progress
+            </div>
+            <div class="header">
+              <%= link to: account_path(@conn, :show, deal.account_id), class: "header" do %>
+                <%= humanize(:amount, deal.expected_value) %>
+              <% end %>
+            </div>
+            <div class="meta">
+              <span class="date">opened since <%= deal.updated_at |> Ecto.DateTime.to_date %></span>
+            </div>
 
+          <% end %>
+          <div class="description">
+            <%= deal.description %>
+          </div>
+        </div>
+        <div class="extra content">
+          <%= if !deal.closing_date and deal.probability do %>
+            <div class="ui <%= probability_color(deal.probability) %> label">
+              <%= deal.probability %>%
+              <div class="detail">probability</div>
+            </div>
+          <% end %>
+          <%= for tag <- deal.tags do %>
+            <div class="ui <%= tag.color%> label">
+              <i class="icon tag"></i>
+              <%= tag.description %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+    <% end %>
   <% end %>
 </div>
