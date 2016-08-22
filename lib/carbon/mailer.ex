@@ -11,4 +11,8 @@ defmodule Carbon.Mailer do
     |> html_body(Phoenix.View.render_to_string(Carbon.EmailView, "login.html", %{token: token, website_entry_point: website_entry_point}))
     |> Carbon.Mailer.deliver_now
   end
+
+  def send_notification(reminders_for_one_user) do
+    :ok
+  end
 end
