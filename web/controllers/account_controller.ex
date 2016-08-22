@@ -93,7 +93,7 @@ defmodule Carbon.AccountController do
       left_join: sa in assoc(a, :shipping_address),
       left_join: e in Carbon.Event, on: e.account_id == a.id and ago(1, "year") <= e.date and e.date <= from_now(1, "year") and e.active == true,
       left_join: eu in assoc(e, :user),
-      left_join: er in Carbon.Reminder, on: er.event_id == e.id and er.user_id == ^current_user.id and er.active == true and  fragment("current_date <= ?", er.date),      
+      left_join: er in Carbon.Reminder, on: er.event_id == e.id and er.user_id == ^current_user.id and er.active == true and fragment("current_date <= ?", er.date),      
       left_join: et in assoc(e, :tags),
       left_join: d in assoc(a, :deals),
       left_join: dt in assoc(d, :tags),
