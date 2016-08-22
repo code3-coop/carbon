@@ -1,4 +1,3 @@
-
 <div class="ui centered card">
   <div class="content">
   <h1>Log in</h1>
@@ -9,9 +8,9 @@
         <label>Email: </label>
         <%= text_input f, :email %>
         <%= submit"Login", class: "ui button primary"%>
-        
+
       </div>
-      
+
     </div>
   <% end %>
   </div>

@@ -1,6 +1,7 @@
 <h1 class="ui header">
   Profile
 </h1>
+
 <div class="ui two column grid ">
   <div class="four wide column">
     <div class="ui card">

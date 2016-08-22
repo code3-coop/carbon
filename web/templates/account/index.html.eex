@@ -4,24 +4,20 @@
       Account deleted
     </div>
     <%account = get_flash(@conn, :deleted_account) %>
-    Account <%=account.name%> successfully deleted. 
+    Account <%=account.name%> successfully deleted.
     <%= link to: account_path(@conn, :restore, account.id), method: :put, form: [class: "inline-form"] do %>
       Get it back.
     <% end %>
   </div>
 <% end %>
-<%= if get_flash(@conn, :info) do %>
-  <div class="ui message">
-    <%= get_flash(@conn, :info) %>
-  </div>
-<% end %>
+
 <div class="ui grid container">
   <div class="sixteen wide column">
     <h2>Accounts</h2>
   </div>
   <div class="sixteen wide column">
     <div class="ui search full-width">
-      <%= form_for @conn, account_path(@conn, :index), [as: :search, method: :get], fn f -> %>      
+      <%= form_for @conn, account_path(@conn, :index), [as: :search, method: :get], fn f -> %>
         <div class="ui icon input full-width">
           <% maybe_query = if assigns[:query] do @query else  "" end %>
           <%= text_input f, :query, value: maybe_query, class: "prompt full-width", placeholder: "Account..." %>
@@ -59,7 +55,7 @@
                 <%= if account.billing_address do account.billing_address.street_address end %>
               </td>
               <%= if assigns[:matches_by_account_id]  do %>
-              
+
                 <% matches = @matches_by_account_id[account.id] %>
                 <td>
                   <%= for match <- matches do %>
@@ -75,7 +71,7 @@
 
                 </td>
               <% end %>
-              
+
             </tr>
           <% end %>
         </tbody>
@@ -87,7 +83,7 @@
     <%= if assigns[:similar] do %>
       <%= form_for @conn, account_path(@conn, :index), [as: :search, method: :get], fn f -> %>
         <%= hidden_input f, :query, value: Enum.at(@similar, 0) %>
-        Did you mean 
+        Did you mean
         <%= content_tag(:a, @similar, [href: "#", data: [submit: "parent"], rel: "nofollow"]) %>
         ?
       <% end %>

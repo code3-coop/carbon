@@ -1,9 +1,3 @@
-<%= if get_flash(@conn, :info) do %>
-  <div class="ui message">
-    <%= get_flash(@conn, :info) %>
-  </div>
-<% end %>
-
 <h2 class="ui header">New account</h2>
 
 <%= form_for @changeset, account_path(@conn, :create), fn f -> %>
@@ -13,7 +7,7 @@
       <p>Something went wrong. Please check the following errors.</p>
     </div>
     <div class="field <%= if f.errors[:name], do: "error" %>">
-      <label>Account name 
+      <label>Account name
         <span class="error">
           <%= if f.errors[:name], do: translate_error f.errors[:name] %>
         </span>
@@ -29,7 +23,7 @@
     </div>
     <%= inputs_for f, :contacts, fn c -> %>
       <div class="field <%= if c.errors[:full_name], do: "error" %>">
-        <label>Contact name 
+        <label>Contact name
           <span class="error">
             <%= if c.errors[:full_name], do: translate_error c.errors[:full_name] %>
           </span>
@@ -68,4 +62,3 @@
     <%= link "cancel", to: account_path(@conn, :index) %>
   </div>
 <% end %>
-

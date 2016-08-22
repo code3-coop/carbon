@@ -1,9 +1,3 @@
-<%= if get_flash(@conn, :info) do %>
-  <div class="ui message">
-    <%= get_flash(@conn, :info) %>
-  </div>
-<% end %>
-
 <h2 class="ui header">New timesheet</h2>
 
 <%= form_for @changeset, timesheet_path(@conn, :create), fn f -> %>

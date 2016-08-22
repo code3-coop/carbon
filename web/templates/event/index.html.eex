@@ -1,15 +1,9 @@
-<%= if get_flash(@conn, :info) do %>
-  <div class="ui message">
-    <%= get_flash(@conn, :info) %>
-  </div>
-<% end %>
-
 <%= if get_flash(@conn, :deleted_reminder) do %>
   <div class="ui message">
     <div class="header">
       Reminder archived
     </div>
-    Reminder archived successfully 
+    Reminder archived successfully
       <% reminder = get_flash(@conn, :deleted_reminder) %>
       <% path_to_restore = account_event_reminder_path(@conn, :restore, @account.id, reminder.event_id, reminder.id) %>
       <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
@@ -33,7 +27,7 @@
 
 <h1 class="ui header">
   <div class="content">
-    Events 
+    Events
     <h2 class="ui sub header">
       <%= @account.name %>
     </h2>

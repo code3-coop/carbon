@@ -1,9 +1,3 @@
-<%= if get_flash(@conn, :info) do %>
-  <div class="ui message">
-    <%= get_flash(@conn, :info) %>
-  </div>
-<% end %>
-
 <h2 class="ui header">New reminder</h2>
 
 <%= form_for @changeset, account_event_reminder_path(@conn, :create, @account_id, @event_id), fn f -> %>
@@ -41,6 +35,6 @@
 
     <%= submit "Create reminder", class: "ui submit button" %>
     <%= link "cancel", to: account_event_path(@conn, :index, @account_id) %>
-    
+
   </div>
 <% end %>

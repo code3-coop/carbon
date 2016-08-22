@@ -1,9 +1,3 @@
-<%= if get_flash(@conn, :info) do %>
-  <div class="ui message">
-    <%= get_flash(@conn, :info) %>
-  </div>
-<% end %>
-
 <h2>Edit account</h2>
 
 <%= form_for @changeset, account_path(@conn, :update, @account), fn f -> %>
@@ -16,7 +10,7 @@
     </div>
 
     <div class="field <%= if f.errors[:name], do: "error" %>">
-      <label>Account name 
+      <label>Account name
         <span class="error">
           <%= if f.errors[:name], do: translate_error f.errors[:name] %>
         </span>
@@ -32,7 +26,7 @@
         <label>Account status</label>
         <%= select f, :status_id, account_status_select, class: "ui dropdown" %>
       </div>
-      
+
       <div class="field">
         <label>Account owner</label>
         <div class="ui dropdown inline">
@@ -136,7 +130,7 @@
         <label>Define a distinct address for shipping</label>
       </div>
     </div>
-    
+
     <%= submit "Update account", class: "ui submit primary button" %>
     <%= link "cancel", to: account_path(@conn, :index), class: "ui button" %>
   </div>

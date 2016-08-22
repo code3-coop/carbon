@@ -32,6 +32,12 @@
       <% end %>
     </div>
     <div class="ui container">
+      <%= if get_flash(@conn, :info) do %>
+        <div class="ui message">
+          <%= get_flash(@conn, :info) %>
+        </div>
+      <% end %>
+
       <%= render @view_module, @view_template, assigns %>
     </div>
     <%= render_existing @view_module, String.replace(@view_template, ".html", ".js.html")%>

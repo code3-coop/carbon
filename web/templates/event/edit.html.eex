@@ -1,9 +1,3 @@
-<%= if get_flash(@conn, :info) do %>
-  <div class="ui message">
-    <%= get_flash(@conn, :info) %>
-  </div>
-<% end %>
-
 <h2>Edit event</h2>
 
 <%= form_for @changeset, account_event_path(@conn, :update, @event.account_id, @event.id), fn f -> %>
@@ -16,7 +10,7 @@
       <div class="header">Ruh roh!</div>
       <p>Something went wrong. Please check the following errors.</p>
     </div>
-    
+
     <div class="field">
       <label>Event tags</label>
       <div class="ui fluid multiple search selection dropdown">
@@ -37,7 +31,7 @@
     </div>
 
     <div class="field <%= if f.errors[:description], do: "error" %>">
-      <label>Description 
+      <label>Description
         <span class="error">
           <%= if f.errors[:description], do: translate_error f.errors[:description] %>
         </span>
@@ -66,5 +60,5 @@
 
     <%= submit "Update event", class: "ui submit primary button" %>
     <%= link "cancel", to: account_event_path(@conn, :index, @event.account_id), class: "ui button" %>
-  
+
 <% end %>

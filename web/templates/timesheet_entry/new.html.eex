@@ -1,11 +1,6 @@
- <% if get_flash(@conn, :info) do %>
-   <div class="ui message">
-     <%= get_flash(@conn, :info) %>
-   </div>
- <% end %>
-
-
-<h2>New timesheet entry</h2>
+<h2 class="ui header">
+  New timesheet entry
+</h2>
 
 <%= form_for @changeset, timesheet_timesheet_entry_path(@conn, :create, @timesheet_id), fn f -> %>
   <div class="ui form <%= if @changeset.action, do: "error" %>">
