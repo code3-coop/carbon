@@ -11,8 +11,8 @@ defmodule Carbon.EmailNotificationSender do
     left_join: et in assoc(e, :tags),
     where: e.active and r.active and u.active and not r.seen and not r.sent_by_email and u.send_email_reminders and ago(1, "hour") <= r.date and r.date < from_now(1, "minute"),
     preload: [
-      event: { e, tags: et },
       user: u,
+      event: { e, tags: et },
     ]
 
   def start_link do
@@ -34,8 +34,7 @@ defmodule Carbon.EmailNotificationSender do
   end
 
   defp do_loop do
-    # Process.send_after(__MODULE__, :check_and_send, @five_minutes_in_millis)
-    Process.send_after(__MODULE__, :check_and_send, 1000)
+    Process.send_after(__MODULE__, :check_and_send, @five_minutes_in_millis)
   end
 
   defp send_and_update(reminders_for_one_user) do
@@ -46,7 +45,7 @@ defmodule Carbon.EmailNotificationSender do
   defp set_all_as_sent(:ok, reminders) do
     ids_to_update = Enum.map(reminders, &(&1.id))
     query = from r in Carbon.Reminder, where: r.id in ^ids_to_update
-    # Carbon.Repo.update_all query, set: [ sent_by_email: true ]
+    Carbon.Repo.update_all query, set: [ sent_by_email: true ]
   end
   defp set_all_as_sent(_, _reminders), do: nil
 

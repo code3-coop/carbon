@@ -1,0 +1,6 @@
+<html>
+  <body>
+    <% reminder_count = length @reminders %>
+    <%= reminder_count %> new notitication<%= if reminder_count > 1, do: "s" %> from Carbon
+  </body>
+</html>
