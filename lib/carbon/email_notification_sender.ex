@@ -5,16 +5,6 @@ defmodule Carbon.EmailNotificationSender do
 
   @five_minutes_in_millis 5 * 60 * 1000
 
-  @query from r in Carbon.Reminder,
-    join: u in assoc(r, :user),
-    join: e in assoc(r, :event),
-    left_join: et in assoc(e, :tags),
-    where: e.active and r.active and u.active and not r.seen and not r.sent_by_email and u.send_email_reminders and ago(1, "hour") <= r.date and r.date < from_now(1, "minute"),
-    preload: [
-      user: u,
-      event: { e, tags: et },
-    ]
-
   def start_link do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
@@ -25,7 +15,17 @@ defmodule Carbon.EmailNotificationSender do
   end
 
   def handle_info(:check_and_send, state) do
-    for {_user_id, reminders} <- Carbon.Repo.all(@query) |> Enum.group_by(&(&1.user_id)) do
+    query = from r in Carbon.Reminder,
+      join: u in assoc(r, :user),
+      join: e in assoc(r, :event),
+      left_join: et in assoc(e, :tags),
+      where: e.active and r.active and u.active and not r.seen and not r.sent_by_email and u.send_email_reminders and ago(1, "hour") <= r.date and r.date < from_now(1, "minute"),
+      preload: [
+        user: u,
+        event: { e, tags: et },
+      ]
+
+    for {_user_id, reminders} <- Carbon.Repo.all(query) |> Enum.group_by(&(&1.user_id)) do
       send_and_update(reminders)
     end
 
