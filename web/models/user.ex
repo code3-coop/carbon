@@ -11,6 +11,7 @@ defmodule Carbon.User do
     field :email, :string, virtual: true
     field :email_hash, :string
     field :image_url, :string
+    field :send_email_reminders, :boolean, default: true
 
     many_to_many :roles, Carbon.Role, join_through: "j_users_roles"
 
