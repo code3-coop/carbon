@@ -50,9 +50,9 @@ ex_physicist = Repo.insert! %Role{ key: "Ex-Physicist", description: "They did s
 cloud_shovelers = Repo.insert! %Role{ key: "Cloud shovelers", description: "I prefer not to talk about this kind of persons."}
 managers  = Repo.insert! %Role{ key: "Managers", description: "they can help"}
 
-joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", image_url: "/images/avatars/male/44.png", email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase), roles: [problem_solvers, ex_physicist] }
-mike = Repo.insert! %User{ handle: "mike", full_name: "Mike", title: "Awesome", image_url: "/images/avatars/male/39.png", email_hash: (:crypto.hash(:sha, "mike@erlang.com") |> Base.encode16 |> String.downcase), roles: [problem_solvers] }
-robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awesome", image_url: "/images/avatars/male/98.png", email_hash: (:crypto.hash(:sha, "robert@erlang.com") |> Base.encode16 |> String.downcase), roles: [problem_solvers] }
+joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", image_url: "/images/avatars/male/44.png", email: "joe@erlang.com", roles: [problem_solvers, ex_physicist] }
+mike = Repo.insert! %User{ handle: "mike", full_name: "Mike", title: "Awesome", image_url: "/images/avatars/male/39.png", email: "mike@erlang.com", roles: [problem_solvers] }
+robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awesome", image_url: "/images/avatars/male/98.png", email: "robert@erlang.com", roles: [problem_solvers] }
 
 
 lead_status = Repo.insert!(%AccountStatus{key: "lead", color: "olive"})
