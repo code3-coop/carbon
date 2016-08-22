@@ -3,7 +3,7 @@ defmodule Carbon.DealTagTest do
 
   alias Carbon.DealTag
 
-  @valid_attrs %{description: "some content"}
+  @valid_attrs %{description: "some content", color: "red"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
