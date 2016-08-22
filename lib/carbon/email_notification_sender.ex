@@ -47,6 +47,6 @@ defmodule Carbon.EmailNotificationSender do
     query = from r in Carbon.Reminder, where: r.id in ^ids_to_update
     Carbon.Repo.update_all query, set: [ sent_by_email: true ]
   end
-  defp set_all_as_sent(_, _reminders), do: nil
+  defp set_all_as_sent(:error, _reminders), do: nil
 
 end
