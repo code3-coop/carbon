@@ -2,8 +2,11 @@ defmodule Carbon.Reminder do
   use Carbon.Web, :model
 
   schema "reminders" do
-    field :date, Ecto.DateTime
     field :active, :boolean, default: true
+
+    field :date, Ecto.DateTime
+    field :seen, :boolean, default: false
+    field :sent_by_email, :boolean, default: false
 
     belongs_to :event, Carbon.Event
     belongs_to :user, Carbon.User

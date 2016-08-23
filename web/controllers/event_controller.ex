@@ -9,7 +9,7 @@ defmodule Carbon.EventController do
     current_user = conn.assigns[:current_user]
     
     events_query = from e in Event,
-      where: e.account_id == ^account_id and e.active == true,
+      where: e.account_id == ^account_id and e.active == true and (not e.private or e.user_id == ^current_user.id),
       left_join: t in assoc(e, :tags),
       left_join: u in assoc(e, :user),
       left_join: er in Reminder, on:
@@ -61,7 +61,10 @@ defmodule Carbon.EventController do
     event = Repo.one(event_query)
     changeset = Event.changeset(event)
 
-    render(conn, "edit.html", event: event, changeset: changeset)
+    conn
+    |> assign(:event, event)
+    |> assign(:changeset, changeset)
+    |> render("edit.html")
   end
 
   def update(conn, %{"account_id" => account_id, "id" => id, "event" => event_params}) do

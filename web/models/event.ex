@@ -4,6 +4,7 @@ defmodule Carbon.Event do
   schema "events" do
     field :description, :string
     field :date, Ecto.Date
+    field :private, :boolean, default: false
     field :active, :boolean, default: true
 
     belongs_to :user, Carbon.User
@@ -19,13 +20,13 @@ defmodule Carbon.Event do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:description, :date])
+    |> cast(params, [:description, :date, :private])
     |> validate_required([:description, :date])
   end
 
   def create_changeset(struct, params \\ %{}, tags) do
     struct
-    |> cast(params, [:description, :date])
+    |> cast(params, [:description, :date, :private])
     |> validate_required([:description, :date])
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
     |> foreign_key_constraint(:user_id)
@@ -40,7 +41,7 @@ defmodule Carbon.Event do
   
   def update_changeset(struct, params, tags) do
     struct
-    |> cast(params, [:description, :date, :user_id])
+    |> cast(params, [:description, :date, :private, :user_id])
     |> validate_required([:description, :date, :user_id])
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
     |> foreign_key_constraint(:user_id)

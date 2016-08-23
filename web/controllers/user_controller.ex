@@ -1,10 +1,7 @@
 defmodule Carbon.UserController do
   use Carbon.Web, :controller
 
-  import Carbon.ControllerUtils
-
-  alias Carbon.{User, Timesheet, Account, Deal}
-
+  alias Carbon.{ User, Timesheet, Account, Deal }
 
   def show(conn, %{"id" => user_id}) do
 

@@ -63,7 +63,7 @@ defmodule Carbon.ContactController do
     contact = Repo.get!(Carbon.Contact, contact_id) |> Ecto.Changeset.change(active: false)
 
     case Repo.update(contact) do
-      {:ok, contact} ->
+      {:ok, _contact} ->
         conn
         |> put_flash(:success, "Contact deleted successfully")
         |> put_flash(:restore_link, account_contact_path(conn, :restore, account_id, contact_id))
@@ -79,7 +79,7 @@ defmodule Carbon.ContactController do
     contact = Repo.get!(Carbon.Contact, contact_id) |> Ecto.Changeset.change(active: true)
 
     case Repo.update(contact) do
-      {:ok, contact} ->
+      {:ok, _contact} ->
         conn
         |> put_flash(:success, "Contact restored successfully")
         |> redirect(to: account_path(conn, :show, account_id))

@@ -9,6 +9,9 @@
       </div>
       <div class="date">
         <%= @event.date |> Ecto.Date.to_iso8601 %>
+        <%= if @event.private do %>
+          <i class="hide icon"></i>
+        <% end %>
       </div>
     </div>
     <div class="extra">

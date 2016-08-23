@@ -4,7 +4,7 @@ defmodule Carbon.AccountControllerTest do
   alias Carbon.{ Account, AccountTag, Address }
 
   setup do
-    joe = Repo.insert! %Carbon.User{handle: "joe", email_hash: "joe"}
+    joe = Repo.insert! %Carbon.User{handle: "joe", email: "joe"}
     customer_status = Repo.insert! %Carbon.AccountStatus{key: "CUST"}
     lead_status = Repo.insert! %Carbon.AccountStatus{key: "LEAD"}
     {:ok, [user: joe, customer_status: customer_status, lead_status: lead_status]}

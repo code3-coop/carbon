@@ -50,9 +50,9 @@ ex_physicist = Repo.insert! %Role{ key: "Ex-Physicist", description: "They did s
 cloud_shovelers = Repo.insert! %Role{ key: "Cloud shovelers", description: "I prefer not to talk about this kind of persons."}
 managers  = Repo.insert! %Role{ key: "Managers", description: "they can help"}
 
-joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", image_url: "/images/avatars/male/44.png", email_hash: (:crypto.hash(:sha, "joe@erlang.com") |> Base.encode16 |> String.downcase), roles: [problem_solvers, ex_physicist] }
-mike = Repo.insert! %User{ handle: "mike", full_name: "Mike", title: "Awesome", image_url: "/images/avatars/male/39.png", email_hash: (:crypto.hash(:sha, "mike@erlang.com") |> Base.encode16 |> String.downcase), roles: [problem_solvers] }
-robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awesome", image_url: "/images/avatars/male/98.png", email_hash: (:crypto.hash(:sha, "robert@erlang.com") |> Base.encode16 |> String.downcase), roles: [problem_solvers] }
+joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", image_url: "/images/avatars/male/44.png", email: "joe@erlang.com", roles: [problem_solvers, ex_physicist] }
+mike = Repo.insert! %User{ handle: "mike", full_name: "Mike", title: "Awesome", image_url: "/images/avatars/male/39.png", email: "mike@erlang.com", roles: [problem_solvers] }
+robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awesome", image_url: "/images/avatars/male/98.png", email: "robert@erlang.com", roles: [problem_solvers] }
 
 
 lead_status = Repo.insert!(%AccountStatus{key: "lead", color: "olive"})
@@ -88,7 +88,7 @@ event_a_1 = Repo.insert! %Event{description: "1st meeting", date: Ecto.Date.from
 
 for n <- -10..10 do
   event_date = :calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(today) + n)
-  Repo.insert! %Event{description: Enum.random(paragraph), date: Ecto.Date.from_erl(event_date), account: account_b, user: Enum.random([joe, mike, robert])}
+  Repo.insert! %Event{description: Enum.random(paragraph), private: Enum.random([true, false]), date: Ecto.Date.from_erl(event_date), account: account_b, user: Enum.random([joe, mike, robert])}
 end
 
 reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local_time), user: joe, event: event_a_1}

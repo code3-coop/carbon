@@ -21,8 +21,7 @@ defmodule Carbon.SessionController do
   registration page passing along the email.
   """
   def create_and_send_session_link(conn, %{"user" => %{"email" => email}}) do
-    email_hash = (:crypto.hash(:sha, email) |> Base.encode16 |> String.downcase)
-    case Repo.get_by(User, email_hash: email_hash) do
+    case Repo.get_by(User, email: email) do
       nil ->
         render(conn, "register_new_user.html", email: email)
       user ->

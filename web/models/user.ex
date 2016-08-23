@@ -8,9 +8,9 @@ defmodule Carbon.User do
     field :handle, :string
     field :full_name, :string
     field :title, :string
-    field :email, :string, virtual: true
-    field :email_hash, :string
+    field :email, :string
     field :image_url, :string
+    field :send_email_reminders, :boolean, default: true
 
     many_to_many :roles, Carbon.Role, join_through: "j_users_roles"
 
