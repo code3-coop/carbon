@@ -1,37 +1,3 @@
-<!-- <html>
-  <head>
-    <link rel="stylesheet" href="<%= Carbon.Endpoint.static_url <> "/vendor/semantic.min.css" %>">
-  </head>
-  <body>
-    <center>
-      <div style="width: 600px">
-        <a href="<%= @website_entry_point %>">
-          <h3 >
-            Carbon
-
-          </h3>
-        </a>
-
-        <p>
-          You request a login on Carbon.
-        </p>
-
-        <p>
-          <a href="<%= Carbon.Endpoint.url() %><>/session/validate/<%= URI.encode_www_form(@token) %>">
-            Click
-          </a> on this link to enter your session.
-        </p>
-
-
-        <p style="font-size: 0.8em">
-          <a href="mailto:report-session-abus@carbon-app.com">I never asked for a login</a>
-        </p>
-
-        </div>
-      </center>
-  </body>
-</html> -->
-
 <% html_style = "
   box-sizing: border-box;
   font-family: sans-serif;
