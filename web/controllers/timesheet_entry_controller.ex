@@ -3,7 +3,7 @@ defmodule Carbon.TimesheetEntryController do
 
   import Carbon.ControllerUtils
 
-  alias Carbon.{ Timesheet, TimesheetEntry, TimesheetEntryTag }
+  alias Carbon.{ TimesheetEntry, TimesheetEntryTag }
 
   def new(conn, %{"timesheet_id" => timesheet_id}) do
     conn
