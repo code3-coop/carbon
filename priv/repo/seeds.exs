@@ -88,7 +88,7 @@ event_a_1 = Repo.insert! %Event{description: "1st meeting", date: Ecto.Date.from
 
 for n <- -10..10 do
   event_date = :calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(today) + n)
-  Repo.insert! %Event{description: Enum.random(paragraph), date: Ecto.Date.from_erl(event_date), account: account_b, user: Enum.random([joe, mike, robert])}
+  Repo.insert! %Event{description: Enum.random(paragraph), private: Enum.random([true, false]), date: Ecto.Date.from_erl(event_date), account: account_b, user: Enum.random([joe, mike, robert])}
 end
 
 reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local_time), user: joe, event: event_a_1}

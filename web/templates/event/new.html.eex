@@ -56,6 +56,12 @@
       </div>
     </div>
 
+    <div class="field">
+      <div class="ui toggle checkbox">
+        <%= checkbox f, :private %>
+        <label>Make this event private</label>
+      </div>
+    </div>
 
     <%= submit "Create event", class: "ui button submit"%>
     <%= link "Cancel", to: account_event_path @conn, :index, @account_id %>
