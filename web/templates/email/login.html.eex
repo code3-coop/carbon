@@ -1,7 +1,80 @@
-<html>
-  <body>
-    <a href="<%= @website_entry_point %>/session/validate/<%= URI.encode_www_form(@token) %>">
-      click here
-    </a>
+<% html_style = "
+  box-sizing: border-box;
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-size: 14px;height: 100%;" %>
+<% body_style = "
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-width: 320px;
+  background: #FFF;
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  font-size: 14px;
+  line-height: 1.4285em;
+  color: rgba(0,0,0,.87);
+  font-smoothing: antialiased;"%>
+<% raised_segment_style = "
+  width: 600px;
+  position: relative;
+  background: #FFF;
+  box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.15);
+  margin: 1rem 0;
+  padding: 1em;
+  border-radius: .28571429rem;
+  border: 1px solid rgba(34,36,38,.15);
+  font-size: 1rem;
+  margin-top: 0;
+  margin-bottom: 0;"%>
+<% app_title_style = "
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;line-height:
+  1.2857em;
+  margin: calc(2rem - .14285em) 0 1rem;
+  font-weight: 700;
+  padding: 0;
+  font-size: 1.28rem;
+  margin-top: -.14285em;
+  margin-bottom: 0;
+  border: none;
+  text-transform: none;
+  color: rgba(0,0,0,.87);"%>
+<% p_style = "
+  margin: 0 0 1em;
+  line-height:
+  1.4285em;" %>
+<% a_style = "
+  background: 0 0;
+  color: #4183C4;
+  text-decoration: none;" %>
+
+<html style="<%= html_style%>">
+  <body style="<%= body_style %>">
+    <center>
+      <div style= "<%= raised_segment_style %>">
+        <a href="<%= Carbon.Endpoint.url() %>" style="<%= a_style %>">
+          <h3 class="ui header" style="<%= app_title_style %>">
+            Carbon
+          </h3>
+        </a>
+
+        <p style="<%= p_style %>">
+          You request a login on Carbon.
+        </p>
+
+        <p style="<%= p_style %>">
+          <a href="<%= Carbon.Endpoint.url() <> "/session/validate/" <> URI.encode_www_form(@token) %>" style="<%= a_style %>">
+            Click
+          </a> on this link to enter your session.
+        </p>
+
+
+        <p style="<% p_style %>">
+          <a href="mailto:report-session-abus@carbon-app.com" style="<%= a_style %>">I never asked for a login</a>
+        </p>
+
+        </div>
+      </center>
   </body>
 </html>

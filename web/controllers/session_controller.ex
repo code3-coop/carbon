@@ -74,5 +74,5 @@ defmodule Carbon.SessionController do
     |> configure_session(drop: true)
     |> redirect(to: Carbon.Router.Helpers.session_path(conn, :index))
   end
-end
 
+end
