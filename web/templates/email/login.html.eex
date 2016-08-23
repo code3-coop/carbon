@@ -1,3 +1,37 @@
+<!-- <html>
+  <head>
+    <link rel="stylesheet" href="<%= Carbon.Endpoint.static_url <> "/vendor/semantic.min.css" %>">
+  </head>
+  <body>
+    <center>
+      <div style="width: 600px">
+        <a href="<%= @website_entry_point %>">
+          <h3 >
+            Carbon
+
+          </h3>
+        </a>
+
+        <p>
+          You request a login on Carbon.
+        </p>
+
+        <p>
+          <a href="<%= Carbon.Endpoint.url() %><>/session/validate/<%= URI.encode_www_form(@token) %>">
+            Click
+          </a> on this link to enter your session.
+        </p>
+
+
+        <p style="font-size: 0.8em">
+          <a href="mailto:report-session-abus@carbon-app.com">I never asked for a login</a>
+        </p>
+
+        </div>
+      </center>
+  </body>
+</html> -->
+
 <% html_style = "
   box-sizing: border-box;
   font-family: sans-serif;
@@ -48,12 +82,13 @@
   background: 0 0;
   color: #4183C4;
   text-decoration: none;" %>
+<% tiny_text = "font-size: 0.8em" %>
 
 <html style="<%= html_style%>">
   <body style="<%= body_style %>">
     <center>
       <div style= "<%= raised_segment_style %>">
-        <a href="<%= Carbon.Endpoint.url() %>" style="<%= a_style %>">
+        <a href="<%= @website_entry_point %>" style="background: 0 0;color: #4183C4;text-decoration: none;">
           <h3 class="ui header" style="<%= app_title_style %>">
             Carbon
           </h3>
@@ -64,13 +99,13 @@
         </p>
 
         <p style="<%= p_style %>">
-          <a href="<%= Carbon.Endpoint.url() <> "/session/validate/" <> URI.encode_www_form(@token) %>" style="<%= a_style %>">
+          <a href="<%= Carbon.Endpoint.url() %> <> /session/validate/<%= URI.encode_www_form(@token) %>" style="<%= a_style %>">
             Click
           </a> on this link to enter your session.
         </p>
 
 
-        <p style="<% p_style %>">
+        <p style="<%= p_style <> tiny_text  %>">
           <a href="mailto:report-session-abus@carbon-app.com" style="<%= a_style %>">I never asked for a login</a>
         </p>
 
