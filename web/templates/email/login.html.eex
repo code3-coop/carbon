@@ -61,21 +61,18 @@
         </a>
 
         <p style="<%= p_style %>">
-          You request a login on Carbon.
+          You requested a login link.
         </p>
 
         <p style="<%= p_style %>">
-          <a href="<%= Carbon.Endpoint.url() %> <> /session/validate/<%= URI.encode_www_form(@token) %>" style="<%= a_style %>">
-            Click
-          </a> on this link to enter your session.
+          <a href="<%= Carbon.Endpoint.url() %>/session/validate/<%= URI.encode_www_form(@token) %>" style="<%= a_style %>">Click here to log into Carbon.</a>
         </p>
-
 
         <p style="<%= p_style <> tiny_text  %>">
-          <a href="mailto:report-session-abus@carbon-app.com" style="<%= a_style %>">I never asked for a login</a>
+          <a href="mailto:report-abuse@carbon-app.com" style="<%= a_style %>">Never asked for this? Report abuse.</a>
         </p>
 
-        </div>
-      </center>
+      </div>
+    </center>
   </body>
 </html>
