@@ -21,6 +21,8 @@ defmodule Carbon.User do
     user
     |> cast(params, [:full_name, :handle, :title, :email, :image_url])
     |> validate_required([:full_name, :handle])
+    |> unique_constraint(:handle)
+    |> unique_constraint(:email)
   end
 
   def login_changeset(struct, params \\ %{}) do
