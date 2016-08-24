@@ -19,7 +19,7 @@ defmodule Carbon.User do
 
   def changeset(user, params \\ %{}) do
     user
-    |> cast(params, [:full_name, :handle, :title, :email])
+    |> cast(params, [:full_name, :handle, :title, :email, :image_url])
     |> validate_required([:full_name, :handle])
   end
 

@@ -35,4 +35,31 @@ defmodule Carbon.UserController do
     |> assign(:deals, deals)
     |> render("show.html")
   end
+
+  def edit(conn, %{"id" => user_id}) do
+    user = Repo.get(User, String.to_integer(user_id))
+    changeset = User.changeset(user)
+    conn
+    |> assign(:changeset, changeset)
+    |> assign(:user, user)
+    |> render("edit.html")
+  end
+
+  def update(conn, %{"id" => user_id, "user" => user_params}) do
+    user = Repo.get(User, user_id)
+    changeset = User.changeset(user, user_params)
+    case Repo.update(changeset) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "Successfully update user")
+        |> redirect to: user_path(conn, :show, user_id)
+      {:error, changeset} ->
+        conn
+        |> put_flash(:info, "Failed to update user")
+        |> assign(:user, user)
+        |> assign(:changeset, changeset)
+        |> render("edit.html")
+    end
+
+  end
 end
