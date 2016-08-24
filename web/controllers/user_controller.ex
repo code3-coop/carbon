@@ -49,10 +49,10 @@ defmodule Carbon.UserController do
     user = Repo.get(User, user_id)
     changeset = User.changeset(user, user_params)
     case Repo.update(changeset) do
-      {:ok, user} ->
+      {:ok, _user} ->
         conn
         |> put_flash(:info, "Successfully update user")
-        |> redirect to: user_path(conn, :show, user_id)
+        |> redirect(to: user_path(conn, :show, user_id))
       {:error, changeset} ->
         conn
         |> put_flash(:info, "Failed to update user")
