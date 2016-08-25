@@ -21,13 +21,18 @@
         <%= link to: "/" do %><i class="ui big share alternate icon"></i><% end %>
       </div>
       <%= if assigns[:current_user] do %>
-        <div class="right item">
-          <%= link to: Carbon.Router.Helpers.user_path(@conn, :show, @current_user.id) do %>
-            <div class="ui image label">
-              <img src="<%=@current_user.image_url%>">
-              <%= @current_user.handle %>
-            </div>
-          <% end %>
+        <div class="right menu">
+          <div class="item">
+            <%= link to: Carbon.Router.Helpers.user_path(@conn, :show, @current_user.id) do %>
+              <div class="ui image label">
+                <img src="<%=@current_user.image_url%>">
+                <%= @current_user.handle %>
+              </div>
+            <% end %>
+          </div>
+          <div class="item">
+            <%= link "Log out", to: session_path(@conn, :logout) %>
+          </div>
         </div>
       <% end %>
     </div>
