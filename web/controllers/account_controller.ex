@@ -47,7 +47,7 @@ defmodule Carbon.AccountController do
   
   def index(conn, params) do
     query = from a in Account,
-      left_join: c in assoc(a, :contacts),
+      left_join: c in Carbon.Contact, on: c.account_id == a.id and c.active == true,
       left_join: b in assoc(a, :billing_address),
       where: a.active == true,
       order_by: a.name,
@@ -95,13 +95,13 @@ defmodule Carbon.AccountController do
       left_join: eu in assoc(e, :user),
       left_join: er in Carbon.Reminder, on: er.event_id == e.id and er.user_id == ^current_user.id and er.active == true and fragment("current_date <= ?", er.date),      
       left_join: et in assoc(e, :tags),
-      left_join: d in assoc(a, :deals),
+      left_join: d in Carbon.Deal, on: d.account_id == a.id and d.active == true,
       left_join: dt in assoc(d, :tags),
       left_join: du in assoc(d, :owner),
       left_join: c in Carbon.Contact, on: c.account_id == a.id and c.active == true,
       left_join: ct in assoc(c, :tags),
       left_join: t in assoc(a, :tags),
-      left_join: p in assoc(a, :projects),
+      left_join: p in Carbon.Project, on: p.account_id == a.id and p.active == true,
       left_join: pt in assoc(p, :tags),
       preload: [
         status: s,
@@ -223,7 +223,7 @@ defmodule Carbon.AccountController do
 
   defp select_matching_accounts(account_ids, params) do
     query = from a in Account,
-      left_join: c in assoc(a, :contacts),
+      left_join: c in Carbon.Contact, on: c.account_id == a.id and c.active == true,
       left_join: b in assoc(a, :billing_address),
       where: a.id in ^account_ids and a.active == true,
       order_by: a.name,
