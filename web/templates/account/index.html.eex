@@ -31,7 +31,6 @@
           <tr>
             <th>Account</th>
             <th>Contacts</th>
-            <%#<th>Deals</th>%>
             <th>Address</th>
             <%= if assigns[:matches_by_account_id] do %> <th>Matched on</th> <%end%>
           </tr>
@@ -45,12 +44,6 @@
               <td>
                 <%= account.contacts |> Enum.map(& &1.full_name) |> Enum.join(", ") %>
               </td>
-              <%#<td>%>
-                <%# Deals are not loaded%>
-                <%#= for deal <- account.deals do %>
-                  <%#= deal.description %>
-                <%# end %>
-              <%#</td>%>
               <td>
                 <%= if account.billing_address do account.billing_address.street_address end %>
               </td>
