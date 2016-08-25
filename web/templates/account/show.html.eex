@@ -47,11 +47,13 @@
           <%= @account.billing_address.street_address %>
           <div class="detail"><%= @account.billing_address.locality %>, <%= @account.billing_address.region %></div>
         </div>
-        <div class="ui label image">
-          <i class="ui icon truck"></i>
-          <%= @account.shipping_address.street_address %>
-          <div class="detail"><%= @account.shipping_address.locality %>, <%= @account.shipping_address.region %></div>
-        </div>
+        <%= if @account.use_distinct_address_for_shipping do %>
+          <div class="ui label image">
+            <i class="ui icon truck"></i>
+            <%= @account.shipping_address.street_address %>
+            <div class="detail"><%= @account.shipping_address.locality %>, <%= @account.shipping_address.region %></div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

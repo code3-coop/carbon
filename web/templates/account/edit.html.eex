@@ -94,7 +94,7 @@
           </div>
         <% end %>
       </div>
-      <div class="column" id="shipping-address-container">
+      <div class="column" id="shipping-address-container" style="display: <%= if @account.use_distinct_address_for_shipping do 'block' else 'none' end %>">
         <%= inputs_for f, :shipping_address, fn sa -> %>
           <div class="ui dividing header">Shipping address</div>
           <div class="field">
@@ -126,12 +126,12 @@
     </div>
     <div class="ui form" style="padding-bottom: 15px">
       <div class="ui toggle checkbox">
-        <input type="checkbox" id="shipping-address-swtich" name="public">
+        <%= checkbox f, :use_distinct_address_for_shipping, class: "ui checkbox" %>
         <label>Define a distinct address for shipping</label>
       </div>
     </div>
 
     <%= submit "Update account", class: "ui submit primary button" %>
-    <%= link "cancel", to: account_path(@conn, :index), class: "ui button" %>
+    <%= link "cancel", to: account_path(@conn, :show, @account.id), class: "ui button" %>
   </div>
 <% end %>

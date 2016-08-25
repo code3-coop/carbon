@@ -5,6 +5,7 @@ defmodule Carbon.Account do
     field :lock_version, :integer, default: 1
     field :name, :string
     field :active, :boolean, default: true
+    field :use_distinct_address_for_shipping, :boolean, default: false
 
     belongs_to :owner, Carbon.User
     belongs_to :status, Carbon.AccountStatus
@@ -38,7 +39,7 @@ defmodule Carbon.Account do
 
   def update_changeset(account, params, tags) do
     account
-    |> cast(params, [:name, :status_id, :owner_id])
+    |> cast(params, [:name, :status_id, :owner_id, :use_distinct_address_for_shipping])
     |> validate_required([:name, :status_id, :owner_id])
     |> cast_assoc(:billing_address, required: true)
     |> cast_assoc(:shipping_address, required: true)
@@ -53,7 +54,7 @@ defmodule Carbon.Account do
     |> cast(params, [:name])
     |> validate_required([:name])
   end
-  
+
   def delete_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:active])
