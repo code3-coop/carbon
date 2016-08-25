@@ -30,7 +30,9 @@ defmodule Carbon.Deal do
   def create_changeset(struct, params \\ %{}, tags) do
     struct
     |> cast(params, [:description, :probability, :expected_value])
-    |> validate_required([:description, :probability])
+    |> validate_required([:description, :expected_value, :probability])
+    |> validate_inclusion(:probability, 0..100, message: "must be between 0 and 100")
+    |> validate_number(:expected_value, greater_than: 0, message: "must be greater than 0")
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
     |> foreign_key_constraint(:owner_id)
   end
@@ -39,11 +41,14 @@ defmodule Carbon.Deal do
     struct
     |> cast(params, [:active])
   end
-  
+
   def update_changeset(struct, params \\ %{}, tags) do
     struct
     |> cast(params, [:description, :expected_value, :probability, :closing_date, :closed_value])
     |> validate_required([:description, :probability])
+    |> validate_inclusion(:probability, 0..100, message: "must be between 0 and 100")
+    |> validate_number(:expected_value, greater_than: 0, message: "must be greater than 0")
+    |> validate_number(:closed_value, greater_than: 0, message: "must be greater than 0")
     |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
     |> foreign_key_constraint(:owner_id)
   end

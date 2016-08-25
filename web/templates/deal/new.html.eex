@@ -8,9 +8,7 @@
     </div>
     <div class="field <%= if f.errors[:description], do: "error" %>">
       <label>Deal description
-        <span class="error">
-          <%= if f.errors[:description], do: translate_error f.errors[:description] %>
-        </span>
+        <%= error_tag f, :description %>
       </label>
       <div class="ui left corner labeled input">
         <%= textarea f, :description %>
@@ -19,22 +17,20 @@
     </div>
     <div class="field <%= if f.errors[:expected_value], do: "error" %>">
       <label>Deal expected value
-        <span class="error">
-          <%= if f.errors[:expected_value], do: translate_error f.errors[:expected_value] %>
-        </span>
+        <%= error_tag f, :expected_value %>
       </label>
       <div class="ui left corner labeled input">
-        <%= number_input f, :expected_value, min: 0, step: 1 %>
+        <%= number_input f, :expected_value, step: "any" %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>
     <div class="field <%= if f.errors[:probability], do: "error" %>">
-      <label>Deal probabaility
-        <span class="error">
-          <%= if f.errors[:probability], do: translate_error f.errors[:probability] %>
-        </span>
+      <label>Deal probability
+        <%= error_tag f, :probability%>
       </label>
       <div class="ui left corner labeled input">
-        <%= number_input f, :probability, min: 0, max: 100, step: 1 %>
+        <%= number_input f, :probability, step: "any" %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>
 

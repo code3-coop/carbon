@@ -9,9 +9,7 @@
 
     <div class="field <%= if f.errors[:description], do: "error" %>">
       <label>Description
-        <span class="error">
-          <%= if f.errors[:description], do: translate_error f.errors[:description] %>
-        </span>
+        <%= error_tag f, :description %>
       </label>
       <div class="ui left corner labeled input">
         <%= textarea f, :description %>
@@ -21,23 +19,21 @@
 
     <div class="field <%= if f.errors[:expected_value], do: "error" %>">
       <label>Expected value
-        <span class="error">
-          <%= if f.errors[:expected_value], do: translate_error f.errors[:expected_value] %>
-        </span>
+        <%= error_tag f, :expected_value %>
       </label>
       <div class="ui left corner labeled input">
-        <%= number_input f, :expected_value, min: 0, step: 1, value: @deal.expected_value %>
+        <%= number_input f, :expected_value, step: "any" %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>
 
     <div class="field <%= if f.errors[:probability], do: "error" %>">
       <label>Probabaility
-        <span class="error">
-          <%= if f.errors[:probability], do: translate_error f.errors[:probability] %>
-        </span>
+        <%= error_tag f, :probability %>
       </label>
       <div class="ui left corner labeled input">
-        <%= number_input f, :probability, min: 0, max: 100, step: 1 %>
+        <%= number_input f, :probability, step: "any" %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>
 
@@ -63,20 +59,17 @@
 
     <div class="field <%= if f.errors[:closed_value], do: "error" %>">
       <label>Closed value
-        <span class="error">
-          <%= if f.errors[:closed_value], do: translate_error f.errors[:closed_value] %>
-        </span>
+        <%= error_tag f, :closed_value %>
       </label>
       <div class="ui left corner labeled input">
-        <%= number_input f, :closed_value, min: 0, step: 1, value: @deal.closed_value %>
+        <%= number_input f, :closed_value, step: "any" %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
       </div>
     </div>
 
     <div class="field <%= if f.errors[:closing_date], do: "error" %>">
       <label>Closing date
-        <span class="error">
-          <%= if f.errors[:closed_value], do: translate_error f.errors[:closing_date] %>
-        </span>
+        <%= error_tag f, :closing_date %>
       </label>
       <div class="ui left corner labeled input">
         <input name="deal[closing_date]" type="date"/>

@@ -10,13 +10,16 @@ defmodule Carbon.ErrorHelpers do
   """
   def error_tag(form, field) do
     if error = form.errors[field] do
-      content_tag :span, translate_error(error), class: "help-block"
+      content_tag :span, translate_error(error)
     end
   end
 
   @doc """
   Translates an error message using gettext.
   """
+  def translate_error({"is invalid", [type: :integer]}) do
+    Gettext.dgettext(Carbon.Gettext, "errors", "must be an integer")
+  end
   def translate_error({msg, opts}) do
     # Because error messages were defined within Ecto, we must
     # call the Gettext module passing our Gettext backend. We
@@ -37,4 +40,5 @@ defmodule Carbon.ErrorHelpers do
       Gettext.dgettext(Carbon.Gettext, "errors", msg, opts)
     end
   end
+
 end
