@@ -1,0 +1,24 @@
+defmodule Carbon.Workflow.Instance do
+  use Carbon.Web, :model
+
+  schema "workflow_instances" do
+    field :lock_version, :integer, default: 1
+
+    belongs_to :workflow, Carbon.Workflow
+    belongs_to :state, Carbon.Workflow.State
+
+    has_many :values, Carbon.Workflow.Value
+
+    timestamps
+  end
+
+  @doc """
+  Builds a changeset based on the `struct` and `params`.
+  """
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:lock_version])
+    |> validate_required([:lock_version])
+    |> optimistic_lock(:lock_version)
+  end
+end
