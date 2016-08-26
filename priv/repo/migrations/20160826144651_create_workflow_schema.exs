@@ -38,7 +38,6 @@ defmodule Carbon.Repo.Migrations.CreateWorkflowSchema do
       add :lock_version, :integer, default: 1, null: false
       add :workflow_id, references(:workflows)
       add :state_id, references(:workflow_states)
-      add :creator_id, references(:users)
       timestamps
     end
     create table :workflow_field_values do
