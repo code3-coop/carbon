@@ -7,6 +7,7 @@ defmodule Carbon.Workflow.Section do
     field :presentation_order_index, :integer, default: 0
 
     has_many :fields, Carbon.Workflow.Field
+    belongs_to :workflow, Carbon.Workflow
   end
 
   @doc """

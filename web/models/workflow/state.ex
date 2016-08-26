@@ -6,6 +6,8 @@ defmodule Carbon.Workflow.State do
     field :icon_name, :string
     field :color, :string
     field :presentation_order_index, :integer, default: 0
+    
+    belongs_to :workflow, Carbon.Workflow
   end
 
   @doc """

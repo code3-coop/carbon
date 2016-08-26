@@ -4,6 +4,8 @@ defmodule Carbon.Workflow.Enum do
   schema "workflow_field_enums" do
     field :name, :string
     field :presentation_order_index, :integer, default: 0
+
+    belongs_to :field, Carbon.Workflow.Field
   end
 
   @doc """
