@@ -134,12 +134,14 @@ main_section = Repo.insert! %Section{name: "Submit", description: "...", workflo
 date_field = Repo.insert! %Field{name: "Accepted on", description: "...", type: "date", section: main_section, presentation_order_index: 0}
 comment_field = Repo.insert! %Field{name: "Comments", description: "...", type: "long_text", section: main_section, presentation_order_index: 1}
 reference_field = Repo.insert! %Field{name: "timesheet", description: "...", type: "reference", entity_reference_name: "Carbon.Timesheet", section: main_section, presentation_order_index: 2}
+user_reference_field = Repo.insert! %Field{name: "owner", description: "...", type: "reference", entity_reference_name: "Carbon.User", section: main_section, presentation_order_index: 3}
 
 timesheet_workflow_instance = Repo.insert! %Instance{workflow: timesheet_workflow, state: submitted}
 
 date_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: date_field, date_value: Ecto.Date.from_erl(today)}
 comment_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: comment_field, string_value: "..."}
 reference_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: reference_field, integer_value: joes_awesome_timesheet.id}
+user_reference_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: user_reference_field, integer_value: joe.id}
 
 #
 # Full-text search materialized views and indexes
