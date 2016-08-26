@@ -28,8 +28,11 @@ alias Carbon.{
   DealTag,
   TimesheetStatus,
   Timesheet,
-  TimesheetEntryTag
+  TimesheetEntryTag,
+  Workflow
 }
+
+alias Carbon.Workflow.{Field, Section, Instance, State, Value}
 
 #
 # Sample data
@@ -111,10 +114,33 @@ candidate_status =Repo.insert! %TimesheetStatus{key: "Candidate", active: true, 
 approved_status = Repo.insert! %TimesheetStatus{key: "Approved", active: true, presentation_order: 3, editable_by_owner?: false, editable_by_manager?: false}
 
 
-Repo.insert! %Timesheet{status: draft_status, user: joe, start_date: Ecto.Date.from_erl(today), notes: "abc" }
+joes_awesome_timesheet = Repo.insert! %Timesheet{status: draft_status, user: joe, start_date: Ecto.Date.from_erl(today), notes: "My Awesome timesheet" }
 
 Repo.insert! %TimesheetEntryTag{description: "Suspect", color: "red"}
 Repo.insert! %TimesheetEntryTag{description: "Not billable, yet", color: "yellow"}
+
+#
+# Workflow
+#
+
+timesheet_workflow = Repo.insert! %Workflow{name: "Timesheet submission", description: "..."}
+
+submitted = Repo.insert! %State{name: "Submitted", icon_name: "", color: "red", presentation_order_index: 0, workflow: timesheet_workflow}
+approved = Repo.insert! %State{name: "Approved", icon_name: "", color: "red", presentation_order_index: 1, workflow: timesheet_workflow}
+rejected = Repo.insert! %State{name: "Rejected", icon_name: "", color: "red", presentation_order_index: 2, workflow: timesheet_workflow}
+
+main_section = Repo.insert! %Section{name: "Submit", description: "...", workflow: timesheet_workflow}
+
+date_field = Repo.insert! %Field{name: "Accepted on", description: "...", type: "date", section: main_section, presentation_order_index: 0}
+comment_field = Repo.insert! %Field{name: "Comments", description: "...", type: "long_text", section: main_section, presentation_order_index: 1}
+reference_field = Repo.insert! %Field{name: "timesheet", description: "...", type: "reference", entity_reference_name: "Carbon.Timesheet", section: main_section, presentation_order_index: 2}
+
+timesheet_workflow_instance = Repo.insert! %Instance{workflow: timesheet_workflow, state: submitted}
+
+date_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: date_field, date_value: Ecto.Date.from_erl(today)}
+comment_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: comment_field, string_value: "..."}
+reference_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: reference_field, integer_value: joes_awesome_timesheet.id}
+
 #
 # Full-text search materialized views and indexes
 #

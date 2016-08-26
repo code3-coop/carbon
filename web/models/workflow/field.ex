@@ -9,6 +9,7 @@ defmodule Carbon.Workflow.Field do
     field :entity_reference_name, :string
 
     has_many :enums, Carbon.Workflow.Enum
+    belongs_to :section, Carbon.Workflow.Section
   end
 
   @doc """

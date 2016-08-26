@@ -3,6 +3,7 @@ defmodule Carbon.Workflow.Value do
 
   schema "workflow_field_values" do
     field :lock_version, :integer, default: 1
+
     field :string_value, :string
     field :integer_value, :integer
     field :float_value, :float
