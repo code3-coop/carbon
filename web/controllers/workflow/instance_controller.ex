@@ -5,19 +5,14 @@ defmodule Carbon.Workflow.InstanceController do
   alias Carbon.Workflow.{ Instance, Value, Field }
 
   def index(conn, _params) do
-    query = from i in Instance,
-      preload: [
-        :workflow,
-        :state,
-        [values: :field]
-      ]
+    query = from i in Instance, preload: [ :workflow, :state, [ values: :field ] ]
     instances = Repo.all(query)
     
     references = instances
     |> Enum.flat_map(&(&1.values))
     |> Enum.reduce(%{}, &accumulate_ids/2)
 
-    [ { _, { :ok, accounts } }, { _, { :ok, users } } ] = Task.yield_many [
+    [ { _pid1, { :ok, accounts } }, { _pid2, { :ok, users } } ] = Task.yield_many [
       create_fetch_task(Account, Map.get(references, :account_ids)),
       create_fetch_task(User, Map.get(references, :user_ids))
     ]
