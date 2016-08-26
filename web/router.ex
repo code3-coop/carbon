@@ -52,6 +52,8 @@ defmodule Carbon.Router do
     put "/tags/:id/restore", TagController, :restore
 
     resources "/users", UserController
+
+    get "/workflows/instances", Workflow.InstanceController, :index
   end
 
   scope "/session", Carbon do
