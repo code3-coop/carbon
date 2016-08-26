@@ -5,6 +5,8 @@ defmodule Carbon.Workflow.InstanceController do
   alias Carbon.Workflow.{ Instance, Value, Field }
 
   def index(conn, _params) do
+    fetch_workflows = Task.async Repo, :all, [(from w in Workflow, preload: :states)]
+
     query = from i in Instance, preload: [ :workflow, :state, [ values: :field ] ]
     instances = Repo.all(query)
     
@@ -17,10 +19,8 @@ defmodule Carbon.Workflow.InstanceController do
       create_fetch_task(User, Map.get(references, :user_ids))
     ]
 
-    workflows = Repo.all(from w in Workflow, preload: :states)
-
     conn
-    |> assign(:workflows, workflows)
+    |> assign(:workflows, Task.await(fetch_workflows))
     |> assign(:instances, instances)
     |> assign(:accounts, accounts)
     |> assign(:users, users)
@@ -28,10 +28,10 @@ defmodule Carbon.Workflow.InstanceController do
   end
 
   defp accumulate_ids(%Value{ integer_value: v, field: %Field{ type: "reference", entity_reference_name: "Carbon.Account" } }, acc) do
-    Map.update(acc, :account_ids, [v], &([ &1 | v ]))
+    Map.update(acc, :account_ids, [v], &([ v | &1 ]))
   end
   defp accumulate_ids(%Value{ integer_value: v, field: %Field{ type: "reference", entity_reference_name: "Carbon.User" } }, acc) do
-    Map.update(acc, :user_ids, [v], &([ &1 | v ]))
+    Map.update(acc, :user_ids, [v], &([ v | &1 ]))
   end
   defp accumulate_ids(_value, acc), do: acc
 
@@ -39,6 +39,6 @@ defmodule Carbon.Workflow.InstanceController do
     Task.async(fn -> [] end)
   end
   defp create_fetch_task(module, ids) do
-    Task.async(Repo, :all, [(from i in module, where: i.id in ^ids)])
+    Task.async(Repo, :all, [(from i in module, where: i.id in ^(ids |> MapSet.new |> MapSet.to_list))])
   end
 end
