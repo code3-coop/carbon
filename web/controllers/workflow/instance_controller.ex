@@ -20,8 +20,8 @@ defmodule Carbon.Workflow.InstanceController do
 
     conn
     |> assign(:instances, instances)
-    |> assign(:accounts, accounts)
-    |> assign(:users, users)
+    |> assign(:accounts, Enum.reduce(accounts, %{}, &Map.put(&2, &1.id, &1)))
+    |> assign(:users, Enum.reduce(users, %{}, &Map.put(&2, &1.id, &1)))
     |> assign(:workflows, Task.await(fetch_workflows))
     |> render("index.html")
   end
