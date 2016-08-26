@@ -1,2 +1,11 @@
-Hi!
+<h1>Workflows</h1>
 <%= inspect @workflows %>
+
+<h1>Instances</h1>
+<%= inspect @instances %>
+
+<h1>Accounts</h1>
+<%= inspect @accounts %>
+
+<h1>Users</h1>
+<%= inspect @users %>
