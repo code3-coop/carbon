@@ -11,6 +11,7 @@ defmodule Carbon.Timesheet do
     belongs_to :status, Carbon.TimesheetStatus
     belongs_to :user, Carbon.User
     has_many :entries, Carbon.TimesheetEntry
+    has_many :attachments, Carbon.Attachment
 
     timestamps
   end
