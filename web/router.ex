@@ -54,6 +54,7 @@ defmodule Carbon.Router do
     resources "/users", UserController
 
     get "/workflows/instances", Workflow.InstanceController, :index
+    get "/workflows/instances/:id", Workflow.InstanceController, :show
   end
 
   scope "/session", Carbon do

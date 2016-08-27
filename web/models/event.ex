@@ -10,6 +10,7 @@ defmodule Carbon.Event do
     belongs_to :user, Carbon.User
     belongs_to :account, Carbon.Account
     has_many :reminders, Carbon.Reminder
+    has_many :attachments, Carbon.Attachment
     many_to_many :tags, Carbon.EventTag, join_through: "j_events_tags", on_replace: :delete
 
     timestamps

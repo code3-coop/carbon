@@ -9,6 +9,7 @@ defmodule Carbon.Project do
     field :active, :boolean, default: true
 
     belongs_to :account, Carbon.Account
+    has_many :attachments, Carbon.Attachment
     many_to_many :tags, Carbon.ProjectTag, join_through: "j_projects_tags"
 
     timestamps

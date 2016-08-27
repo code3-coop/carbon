@@ -13,6 +13,7 @@ defmodule Carbon.Deal do
 
     belongs_to :account, Carbon.Account
     belongs_to :owner, Carbon.User
+    has_many :attachments, Carbon.Attachment
     many_to_many :tags, Carbon.DealTag, join_through: "j_deals_tags", on_replace: :delete
 
     timestamps

@@ -12,9 +12,7 @@ defmodule Carbon.Workflow.InstanceController do
     { accounts, users } = instances
     |> Enum.flat_map(&(&1.values))
     |> Enum.reduce(%{}, &accumulate_ids/2)
-    |> create_fetch_tasks
-    |> Task.yield_many
-    |> extract_references
+    |> fetch_entities_by_id
 
     conn
     |> assign(:instances, instances)
@@ -32,10 +30,14 @@ defmodule Carbon.Workflow.InstanceController do
   end
   defp accumulate_ids(_value, acc), do: acc
 
-  defp create_fetch_tasks(references) do
-    [ create_fetch_task(Account, Map.get(references, :account_ids)),
+  @spec fetch_entities_by_id(%{optional(:account_ids) => list(integer), optional(:user_ids) => list(integer)}) :: { list(%Account{}), list(%User{}) }
+  defp fetch_entities_by_id(references) do
+    [
+      create_fetch_task(Account, Map.get(references, :account_ids)),
       create_fetch_task(User, Map.get(references, :user_ids))
     ]
+    |> Task.yield_many
+    |> extract_references
   end
 
   defp create_fetch_task(_, nil) do
@@ -49,4 +51,11 @@ defmodule Carbon.Workflow.InstanceController do
   defp extract_references([ { _, { :error, _ } }    , { _, { :ok, users } } ]), do: { [], users }
   defp extract_references([ { _, { :ok, accounts } }, { _, { :error, _ } } ]) , do: { accounts, [] }
   defp extract_references([ { _, { :error, _ } }    , { _, { :error, _ } } ]) , do: { [], [] }
+
+  def show(conn, %{ "id" => instance_id }) do
+    instance = Repo.one from i in Instance, where: i.id == ^instance_id, preload: [:values, [workflow: [:states, [sections: [fields: [:enums]]]]]]
+    conn
+    |> assign(:instance, instance)
+    |> render("show.html")
+  end
 end
