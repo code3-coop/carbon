@@ -1,1 +1,11 @@
-Hi!
+<h1>Workflows</h1>
+<pre><%= inspect @workflows, pretty: true %></pre>
+
+<h1>Instances</h1>
+<pre><%= inspect @instances, pretty: true %></pre>
+
+<h1>Accounts</h1>
+<pre><%= inspect @accounts, pretty: true %></pre>
+
+<h1>Users</h1>
+<pre><%= inspect @users, pretty: true %></pre>
