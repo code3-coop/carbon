@@ -4,6 +4,9 @@ defmodule Carbon.Mixfile do
   def project do
     [app: :carbon,
      version: "0.0.1",
+     name: "Carbon",
+     source_url: "https://github.com/code3-coop/carbon",
+     homepage_url: "https://carbon.code3.ca/",
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
@@ -49,7 +52,8 @@ defmodule Carbon.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:bamboo, "~> 0.7"},
-     {:number, "~> 0.4.2"}]
+     {:number, "~> 0.4.2"},
+     {:ex_doc, "~> 0.12", only: :dev}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
