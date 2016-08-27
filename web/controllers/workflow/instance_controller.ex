@@ -30,6 +30,7 @@ defmodule Carbon.Workflow.InstanceController do
   end
   defp accumulate_ids(_value, acc), do: acc
 
+  @spec fetch_entities_by_id(%{optional(:account_ids) => list(integer), optional(:user_ids) => list(integer)}) :: { list(%Account{}), list(%User{}) }
   defp fetch_entities_by_id(references) do
     [
       create_fetch_task(Account, Map.get(references, :account_ids)),
@@ -38,6 +39,7 @@ defmodule Carbon.Workflow.InstanceController do
     |> Task.yield_many
     |> extract_references
   end
+
   defp create_fetch_task(_, nil) do
     Task.async(fn -> [] end)
   end
