@@ -4,8 +4,6 @@
 
 <%= form_for @conn, instance_path(@conn, :index), [as: :query], fn f ->  %>
 
-  <% status_for_select = Enum.reduce @workflows, %{}, &( Map.put(&2, &1.name, &1.id) )%>
-
   <div class="ui selection dropdown">
     <%= hidden_input f, :workflow %>
     <div class="default text">Worflow</div>
