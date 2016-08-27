@@ -1,11 +1,114 @@
-<h1>Workflows</h1>
-<pre><%= inspect @workflows, pretty: true %></pre>
+<h3>
+  Workflows
+</h3>
 
-<h1>Instances</h1>
-<pre><%= inspect @instances, pretty: true %></pre>
+<%= form_for @conn, instance_path(@conn, :index), [as: :query], fn f ->  %>
 
-<h1>Accounts</h1>
-<pre><%= inspect @accounts, pretty: true %></pre>
+  <% status_for_select = Enum.reduce @workflows, %{}, &( Map.put(&2, &1.name, &1.id) )%>
 
-<h1>Users</h1>
-<pre><%= inspect @users, pretty: true %></pre>
+  <div class="ui selection dropdown">
+    <%= hidden_input f, :workflow %>
+    <div class="default text">Worflow</div>
+    <i class="dropdown icon"></i>
+    <div class="menu">
+      <%= for workflow <- @workflows do %>
+        <div class="item" data-value="<%workflow.id%>"><%= workflow.name %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="ui selection dropdown">
+    <%= hidden_input f, :status %>
+    <div class="default text">Status</div>
+    <i class="dropdown icon"></i>
+    <div class="menu">
+      <%= for workflow <- @workflows do %>
+        <%= for state <- workflow.states do %>
+          <div class="item" data-value="<%state.id%>" data-worflow="<%= workflow.id %>">
+          <%= state.name %>
+        </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <a id="select-all" class="ui button">Select all</a>
+  <a id="unselect-all" class="ui button">UnSelect all</a>
+
+  <a class="ui button">
+    <i class="ui icon cogs"></i>
+    Begin process
+  </a>
+  <a class="ui button">
+    <i class="ui icon refresh"></i>
+    Refresh
+  </a>
+<% end %>
+
+<table class="ui table">
+  <%= for instance <- @instances  do %>
+    <tr>
+      <td>
+        <div class="ui checkbox">
+          <input type="checkbox" class=" ui checkbox">
+        </div>
+      </td>
+      <td>
+        <div class="ui grid">
+          <div class="row">
+            <div class="ten wide column">
+              <h5>
+                <a href=""><%= instance.workflow.name %></a>
+                <div class="ui label <%=instance.state.color%>">
+                  <i class="ui icon <%=instance.state.icon_name %>"></i>
+                  <%= instance.state.name %>
+                </div>
+              </h5>
+            </div>
+          <div class="six wide column">
+            <div class="ui meta right floated">
+              Updated at: <%= instance.updated_at %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="sixteen wide column">
+            <div class="ui labels">
+              <% user_value = Enum.find instance.values, &(Field.reference_user &1.field) %>
+              <%= if user_value != nil do %>
+                <% user = @users[user_value.integer_value] %>
+                <div class="ui image label">
+                  <img src="<%= user.image_url%>">
+                  <%= user.handle %>
+                </div>
+              <% end %>
+              <% account_value = Enum.find instance.values, &(Field.reference_account &1.field) %>
+              <%= if account_value != nil do %>
+                <% account = @accounts[account_value.integer_value] %>
+                <div class="ui label">
+                  Account
+                  <div class="detail"><%= account.name %></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<style>
+  .meta {
+    color: grey;
+  }
+  .right.floated {
+    float: right;
+  }
+</style>
+<script>
+  $('.ui.dropdown').dropdown()
+  $('.ui.checkbox').checkbox()
+  // $('#workflow').on('change', fucntion(){
+  //   var current_workflow = $("#worflow").val();
+  //   $("#state").disable()
+  // })
+</script>

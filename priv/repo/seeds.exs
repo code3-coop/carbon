@@ -125,16 +125,24 @@ Repo.insert! %TimesheetEntryTag{description: "Not billable, yet", color: "yellow
 
 timesheet_workflow = Repo.insert! %Workflow{name: "Timesheet submission", description: "..."}
 
-submitted = Repo.insert! %State{name: "Submitted", icon_name: "", color: "red", presentation_order_index: 0, workflow: timesheet_workflow}
-approved = Repo.insert! %State{name: "Approved", icon_name: "", color: "red", presentation_order_index: 1, workflow: timesheet_workflow}
-rejected = Repo.insert! %State{name: "Rejected", icon_name: "", color: "red", presentation_order_index: 2, workflow: timesheet_workflow}
+contract_workflow = Repo.insert! %Workflow{name: "Contract signature", description: "..."}
+
+submitted = Repo.insert! %State{name: "Submitted", icon_name: "send", color: "blue", presentation_order_index: 0, workflow: timesheet_workflow}
+approved = Repo.insert! %State{name: "Approved", icon_name: "mail forward", color: "green", presentation_order_index: 1, workflow: timesheet_workflow}
+rejected = Repo.insert! %State{name: "Rejected", icon_name: "reply", color: "red", presentation_order_index: 2, workflow: timesheet_workflow}
+
+discussion = Repo.insert! %State{name: "Discussion", icon_name: "talk", color: "blue", presentation_order_index: 0, workflow: contract_workflow}
+informal_offer = Repo.insert! %State{name: "Informal offer", icon_name: "file text", color: "purple", presentation_order_index: 1, workflow: contract_workflow}
+contract_sended = Repo.insert! %State{name: "Contract sened", icon_name: "write", color: "orange", presentation_order_index: 2, workflow: contract_workflow}
+contract_signed = Repo.insert! %State{name: "Contract signed", icon_name: "dollar", color: "green", presentation_order_index: 3, workflow: contract_workflow}
 
 main_section = Repo.insert! %Section{name: "Submit", description: "...", workflow: timesheet_workflow}
 
 date_field = Repo.insert! %Field{name: "Accepted on", description: "...", type: "date", section: main_section, presentation_order_index: 0}
 comment_field = Repo.insert! %Field{name: "Comments", description: "...", type: "long_text", section: main_section, presentation_order_index: 1}
 reference_field = Repo.insert! %Field{name: "timesheet", description: "...", type: "reference", entity_reference_name: "Carbon.Timesheet", section: main_section, presentation_order_index: 2}
-user_reference_field = Repo.insert! %Field{name: "owner", description: "...", type: "reference", entity_reference_name: "Carbon.User", section: main_section, presentation_order_index: 3}
+user_reference_field = Repo.insert! %Field{name: "Owner", description: "...", type: "reference", entity_reference_name: "Carbon.User", section: main_section, presentation_order_index: 3}
+account_reference_field = Repo.insert! %Field{name: "Account", description: "...", type: "reference", entity_reference_name: "Carbon.Account", section: main_section, presentation_order_index: 4}
 
 timesheet_workflow_instance = Repo.insert! %Instance{workflow: timesheet_workflow, state: submitted}
 
@@ -142,6 +150,7 @@ date_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, fi
 comment_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: comment_field, string_value: "..."}
 reference_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: reference_field, integer_value: joes_awesome_timesheet.id}
 user_reference_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: user_reference_field, integer_value: joe.id}
+account_reference_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: account_reference_field, integer_value: account_a.id}
 
 #
 # Full-text search materialized views and indexes

@@ -18,14 +18,14 @@
       </h1>
     </div>
     <div class="right aligned eight wide column">
-    <%= link to: account_path(@conn, :edit, @account.id), class: "ui button" do %>
-      <i class="ui icon write"></i>
-      Edit
-    <% end %>
-    <%= link to: account_path(@conn, :delete, @account.id), method: :delete, form: [class: "ui red button"] do %>
-      <i class="ui icon trash"></i>
-      Delete
-    <% end %>
+      <%= link to: account_path(@conn, :edit, @account.id), class: "ui button" do %>
+        <i class="ui icon write"></i>
+        Edit
+      <% end %>
+      <%= link to: account_path(@conn, :delete, @account.id), method: :delete, form: [class: "ui red button"] do %>
+        <i class="ui icon trash"></i>
+        Delete
+      <% end %>
     </div>
   </div>
 

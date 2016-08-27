@@ -12,6 +12,14 @@ defmodule Carbon.Workflow.Field do
     belongs_to :section, Carbon.Workflow.Section
   end
 
+  def reference_user(field) do
+    field.type == "reference" && field.entity_reference_name == "Carbon.User"
+  end
+
+  def reference_account(field) do
+    field.type == "reference" && field.entity_reference_name == "Carbon.Account"
+  end
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
