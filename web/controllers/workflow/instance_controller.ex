@@ -51,4 +51,11 @@ defmodule Carbon.Workflow.InstanceController do
   defp extract_references([ { _, { :error, _ } }    , { _, { :ok, users } } ]), do: { [], users }
   defp extract_references([ { _, { :ok, accounts } }, { _, { :error, _ } } ]) , do: { accounts, [] }
   defp extract_references([ { _, { :error, _ } }    , { _, { :error, _ } } ]) , do: { [], [] }
+
+  def show(conn, %{ "id" => instance_id }) do
+    instance = Repo.one from i in Instance, where: i.id == ^instance_id, preload: [:values, [workflow: [:states, [sections: [fields: [:enums]]]]]]
+    conn
+    |> assign(:instance, instance)
+    |> render("show.html")
+  end
 end

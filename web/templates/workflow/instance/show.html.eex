@@ -1,0 +1,4 @@
+<h1>Instance</h1>
+<pre>
+<%= inspect @instance, pretty: true %>
+</pre>
