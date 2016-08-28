@@ -277,7 +277,7 @@
     <%= for attachment <- @account.attachments do %>
       <div class="<%= icon_color_by_mimetype(attachment.mimetype) %> card">
         <div class="content">
-          <i class="right floated circular inverted <%= icon_color_by_mimetype(attachment.mimetype) %> <%= icon_name_by_mimetype(attachment.mimetype) %> icon"></i>
+          <div class="ui <%= icon_color_by_mimetype(attachment.mimetype) %> right ribbon label"><i class="<%= icon_name_by_mimetype(attachment.mimetype) %> icon"></i></div>
           <div class="header" style="width:85%; color:#4183C4; overflow:hidden; text-overflow:ellipsis;"><%= link attachment.name, to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: "false"] %></div>
           <div class="meta"><%= attachment.inserted_at %></div>
           <div class="description"><p><%= attachment.description %></p></div>
