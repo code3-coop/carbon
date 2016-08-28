@@ -114,7 +114,11 @@ defmodule Carbon.AccountController do
         tags: t,
         projects: {p, tags: pt},
       ]
-    account = Repo.one(query) |> Repo.preload(attachments: from(a in Carbon.Attachment, select: [:name, :description, :mimetype, :inserted_at, :user_id], preload: :user))
+    attachment_query = from a in Carbon.Attachment,
+      where: not a.private or a.user_id == ^current_user.id,
+      select: [ :name, :description, :private, :mimetype, :inserted_at, :user_id ],
+      preload: :user
+    account = Repo.one(query) |> Repo.preload(attachments: attachment_query)
     render(conn, "show.html", account: account)
   end
 

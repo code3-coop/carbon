@@ -4,6 +4,7 @@ defmodule Carbon.Attachment do
   schema "attachments" do
     field :name, :string
     field :description, :string
+    field :private, :boolean, default: false
     field :mimetype, :string
     field :base64_content, :string
 

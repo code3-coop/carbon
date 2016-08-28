@@ -275,7 +275,7 @@
 <% else %>
   <div class="ui four cards">
     <%= for attachment <- @account.attachments do %>
-      <div class="card <%= icon_color_by_mimetype(attachment.mimetype) %>">
+      <div class="<%= icon_color_by_mimetype(attachment.mimetype) %> card">
         <div class="content">
           <i class="right floated circular inverted <%= icon_color_by_mimetype(attachment.mimetype) %> <%= icon_name_by_mimetype(attachment.mimetype) %> icon"></i>
           <div class="header" style="width:85%; color:#4183C4; overflow:hidden; text-overflow:ellipsis;"><a href=""><%= attachment.name %></a></div>
@@ -285,6 +285,9 @@
         <div class="extra content">
           <div class="left floated author">
             <img class="ui avatar mini image" src="<%= attachment.user.image_url %>"> <%= attachment.user.handle %>
+            <%= if attachment.private do %>
+              <i class="hide icon"></i>
+            <% end %>
           </div>
           <%= link method: "delete", to: "" do %>
             <span class="right floated"><i class="trash icon"></i> Remove</span>
