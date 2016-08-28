@@ -279,7 +279,7 @@
         <div class="content">
           <div class="ui <%= icon_color_by_mimetype(attachment.mimetype) %> right ribbon label"><i class="<%= icon_name_by_mimetype(attachment.mimetype) %> icon"></i></div>
           <div class="header" style="width:85%; color:#4183C4; overflow:hidden; text-overflow:ellipsis;"><%= link attachment.name, to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: "false"] %></div>
-          <div class="meta"><%= attachment.inserted_at %></div>
+          <div class="meta"><%= attachment.inserted_at |> Ecto.DateTime.to_date %></div>
           <div class="description"><p><%= attachment.description %></p></div>
         </div>
         <div class="extra content">
