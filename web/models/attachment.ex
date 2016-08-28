@@ -7,6 +7,7 @@ defmodule Carbon.Attachment do
     field :mimetype, :string
     field :base64_content, :string
 
+    belongs_to :user, Carbon.User
     belongs_to :account, Carbon.Account
     belongs_to :event, Carbon.Event
     belongs_to :contact, Carbon.Contact
