@@ -17,7 +17,7 @@ defmodule Carbon.AttachmentController do
     query = from a in Carbon.Attachment,
       where: field(a, ^owner) == ^owner_id and (not a.private or a.user_id == ^current_user.id),
       select: [ :id, :name, :description, :private, :mimetype, :inserted_at, :user_id ],
-      order_by: [ desc: :inserted_at ],
+      order_by: [ asc: :name ],
       preload: :user
     conn
     |> assign(:attachments, Repo.all(query))

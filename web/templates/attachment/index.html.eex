@@ -1,3 +1,33 @@
-<%= for attachment <- @attachments do %>
-  <pre><%= inspect attachment, pretty: true %></pre>
-<% end %>
+<h1 class="ui header">
+  <div class="content">Attachments
+    <h2 class="ui sub header"></h2>
+  </div>
+  <%= link to: "" do %>
+    <div class="ui right floated button"><i class="plus icon"></i> Add attachment</div>
+  <% end %>
+</h1>
+
+<div class="ui feed">
+  <%= for attachment <- @attachments do %>
+    <div class="event">
+      <div class="label">
+        <%= link to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: false] do %><i class="<%= icon_color_by_mimetype(attachment.mimetype) %> inverted circular <%= icon_name_by_mimetype(attachment.mimetype) %> icon"></i><% end %>
+      </div>
+      <div class="content">
+        <div class="summary">
+          <%= link to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: false] do %><%= attachment.name %><% end %>
+          <div class="date">
+            <%= attachment.inserted_at |> Ecto.DateTime.to_date %>
+            <%= if attachment.private do %><i class="hide icon"></i><% end %>
+          </div>
+        </div>
+        <div class="extra text"><%= attachment.description %></div>
+        <div class="meta">
+          <%= link to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: false] do %><i class="cloud download icon"></i> Download<% end %>
+          <%= link to: "" do %><i class="write icon"></i> Edit<% end %>
+          <%= link to: "" do %><i class="trash icon"></i> Remove<% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
