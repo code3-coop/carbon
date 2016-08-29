@@ -117,6 +117,8 @@ defmodule Carbon.AccountController do
     attachment_query = from a in Carbon.Attachment,
       where: not a.private or a.user_id == ^current_user.id,
       select: [ :id, :name, :description, :private, :mimetype, :inserted_at, :user_id ],
+      limit: 5,
+      order_by: [desc: :inserted_at],
       preload: :user
     account = Repo.one(query) |> Repo.preload(attachments: attachment_query)
     render(conn, "show.html", account: account)

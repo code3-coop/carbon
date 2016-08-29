@@ -305,6 +305,16 @@
       </div>
     <% end %>
   </div>
+
+  <div class="ui grid">
+    <div class="row">
+      <div class="sixteen wide column">
+        <div style="text-align: center;">
+          <%= link "See the complete list of attachments for this account...", to: "" %>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
 
 <div class="ui section divider"></div>
