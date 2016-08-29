@@ -272,40 +272,8 @@
   </center>
 <% else %>
   <div class="ui four cards">
-    <%= for attachment <- @account.attachments do %>
-      <div class="<%= icon_color_by_mimetype(attachment.mimetype) %> card">
-        <div class="content">
-          <div class="ui <%= icon_color_by_mimetype(attachment.mimetype) %> floating large right ribbon label" style="top:1em; left:calc(100% + 1rem + 1.7em);"><i class="<%= icon_name_by_mimetype(attachment.mimetype) %> icon"></i></div>
-          <div class="header" style="width:83%; color:#4183C4; overflow:hidden; text-overflow:ellipsis;"><%= link attachment.name, to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: "false"] %></div>
-          <div class="meta"><%= attachment.inserted_at |> Ecto.DateTime.to_date %></div>
-          <div class="description"><p><%= attachment.description %></p></div>
-        </div>
-        <div class="extra content">
-          <div class="left floated author">
-            <img class="ui avatar mini image" src="<%= attachment.user.image_url %>"> <%= attachment.user.handle %>
-            <%= if attachment.private do %>
-              <i class="hide icon"></i>
-            <% end %>
-          </div>
-          <%= link method: "delete", to: "" do %>
-            <span class="right floated"><i class="trash icon"></i> Remove</span>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-    <%= link to: "", class: "ui card" do %>
-      <div class="content">
-        <div class="ui floating large right ribbon label" style="top:1em; left:calc(100% + 1rem + 1.7em);"><i class="attach icon"></i></div>
-        <div class="header" style="color:rgba(0,0,0,.4)">add new&hellip;</div>
-        <div class="meta"><%= :calendar.local_time |> elem(0) |> Date.from_erl! |> Date.to_iso8601 %></div>
-        <div class="description"><p style="color:rgba(0,0,0,.4)">Attach a new private or public file to this account.</p></div>
-      </div>
-      <div class="extra content">
-        <div class="left floated"><i class="add icon"></i> Add&hellip;</div>
-      </div>
-    <% end %>
+    <%= render Carbon.AttachmentView, "as_card_list.html", conn: @conn, attachments: @account.attachments %>
   </div>
-
   <div class="ui grid">
     <div class="row">
       <div class="sixteen wide column">
