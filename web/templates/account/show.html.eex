@@ -278,7 +278,7 @@
     <div class="row">
       <div class="sixteen wide column">
         <div style="text-align: center;">
-          <%= link "See the complete list of attachments for this account...", to: "" %>
+          <%= link "See the complete list of attachments for this account...", to: account_attachment_path(@conn, :index, @account.id) %>
         </div>
       </div>
     </div>
