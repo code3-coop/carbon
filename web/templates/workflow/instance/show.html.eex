@@ -1,4 +1,77 @@
-<h1>Instance</h1>
-<pre>
-<%= inspect @instance, pretty: true %>
-</pre>
+<%  state = Enum.find @instance.workflow.states, &( &1.id == @instance.state_id) %>
+
+<h1 class="ui header">
+    <div class="content">
+      Worflow
+      <h2 class="ui sub header">
+        <%= @instance.workflow.name %>
+        <div class="ui <%= state.color %> label">
+          <i class="ui icon <%= state.icon_name %>"></i>
+          <%= state.name %>
+        </div>
+      </h2>
+    </div>
+    <div class="ui right floated buttons">
+      <%= link to: "", class: "ui primary button" do %>
+        <i class="icon write"></i>
+          Edit
+      <% end %>
+      <%= link to: "", class: "ui red button" do %>
+        <i class="icon trash"></i>
+        Delete
+      <% end %>
+    </div>
+</h1>
+
+
+
+<% ordered_sections = Enum.sort_by @instance.workflow.sections, &(&1.presentation_order_index) %>
+<%= for section <-  ordered_sections do %>
+  <% ordered_fields = Enum.sort_by section.fields, &(&1.presentation_order_index) %>
+  <h3 class="ui block header">
+    <%= section.name %>
+  </h3>
+  <div style="padding: 1rem;">
+    <div class="ui grid">
+      <%= for field <- ordered_fields do %>
+        <div class="row">
+          <div class="three wide column">
+            <label style="font-weight: bold;">
+              <%= humanize field.name %>
+            </label>
+          </div>
+          <div class="thirteen wide column">
+            <% value = Enum.find @instance.values, &(&1.id == field.id) %>
+            <%= cond do %>
+              <%= field.type == "boolean" ->  %>
+                <%= value.boolean_value %>
+              <%= field.type == "integer" ->  %>
+                <%= value.integer_value %>
+              <%= field.type == "text" ->  %>
+                <%= value.string_value %>
+              <%= field.type == "long_text" ->  %>
+                <%= value.string_value %>
+              <%= field.type == "date" ->  %>
+                <%= value.date_value %>
+              <%= Field.reference_user field -> %>
+                <%= link to: user_path(@conn, :show, value.integer_value) do %>
+                  <%= value.integer_value %>
+                <% end %>
+              <%= Field.reference_account field -> %>
+                <%= link to: account_path(@conn, :show, value.integer_value) do %>
+                  <%= value.integer_value %>
+                <% end %>
+              <%= Field.reference_timesheet field -> %>
+                <%= link to: timesheet_path(@conn, :show, value.integer_value) do %>
+                  <%= value.integer_value %>
+                <% end %>
+              <%= field.type == "reference" -> %>
+                <%= value.integer_value %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+</div>

@@ -12,12 +12,12 @@ defmodule Carbon.Workflow.Field do
     belongs_to :section, Carbon.Workflow.Section
   end
 
-  def reference_user(field) do
-    field.type == "reference" && field.entity_reference_name == "Carbon.User"
-  end
+  def reference_user(field), do: reference_type field, "Carbon.User"
+  def reference_account(field), do: reference_type field, "Carbon.Account"
+  def reference_timesheet(field), do: reference_type field, "Carbon.Timesheet"
 
-  def reference_account(field) do
-    field.type == "reference" && field.entity_reference_name == "Carbon.Account"
+  defp reference_type(field, type) do
+    field.type == "reference" && field.entity_reference_name == type
   end
 
   @doc """

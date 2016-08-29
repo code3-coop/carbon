@@ -8,7 +8,7 @@ defmodule Carbon.Workflow.InstanceController do
     fetch_workflows = Task.async Repo, :all, [(from w in Workflow, preload: :states)]
 
     instances = Repo.all from i in Instance, preload: [ :workflow, :state, [ values: :field ] ]
-    
+
     { accounts, users } = instances
     |> Enum.flat_map(&(&1.values))
     |> Enum.reduce(%{}, &accumulate_ids/2)
@@ -53,7 +53,7 @@ defmodule Carbon.Workflow.InstanceController do
   defp extract_references([ { _, { :error, _ } }    , { _, { :error, _ } } ]) , do: { [], [] }
 
   def show(conn, %{ "id" => instance_id }) do
-    instance = Repo.one from i in Instance, where: i.id == ^instance_id, preload: [:values, [workflow: [:states, [sections: [fields: [:enums]]]]]]
+    instance = Repo.one from i in Instance, where: i.id == ^instance_id, preload: [:values, workflow: [:states, sections: [fields: [:enums]]]]
     conn
     |> assign(:instance, instance)
     |> render("show.html")
