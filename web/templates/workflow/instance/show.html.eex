@@ -12,11 +12,11 @@
       </h2>
     </div>
     <div class="ui right floated buttons">
-      <%= link to: "", class: "ui primary button" do %>
+      <%= link to: instance_path(@conn, :edit, @instance.id), class: "ui primary button" do %>
         <i class="icon write"></i>
           Edit
       <% end %>
-      <%= link to: "", class: "ui red button" do %>
+      <%= link to: instance_path(@conn, :delete, @instance.id), method: :delete, style: "color: white;", form: [class: "ui red button"] do %>
         <i class="icon trash"></i>
         Delete
       <% end %>
