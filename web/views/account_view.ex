@@ -30,7 +30,7 @@ defmodule Carbon.AccountView do
   def icon_color_by_mimetype("application/vnd.ms-powerpoint"), do: "orange"
   def icon_color_by_mimetype("application/vnd.openxmlformats-officedocument.presentationml.presentation"), do: "orange"
   def icon_color_by_mimetype("application/pdf"), do: "red"
-  def icon_color_by_mimetype(_), do: "grey"
+  def icon_color_by_mimetype(_), do: "teal"
 
   def events_summary(all_events, reference_date \\ :calendar.local_time |> elem(0) |> Ecto.Date.from_erl) do
     prev_events = all_events

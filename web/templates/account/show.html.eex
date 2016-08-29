@@ -295,6 +295,17 @@
         </div>
       </div>
     <% end %>
+    <%= link to: "", class: "ui card" do %>
+      <div class="content">
+        <div class="ui floating large right ribbon label" style="top:1em; left:calc(100% + 1rem + 1.7em);"><i class="attach icon"></i></div>
+        <div class="header" style="color:rgba(0,0,0,.4)">add new&hellip;</div>
+        <div class="meta"><%= :calendar.local_time |> elem(0) |> Date.from_erl! |> Date.to_iso8601 %></div>
+        <div class="description"><p style="color:rgba(0,0,0,.4)">Attach a new private or public file to this account.</p></div>
+      </div>
+      <div class="extra content">
+        <div class="left floated"><i class="add icon"></i> Add&hellip;</div>
+      </div>
+    <% end %>
   </div>
 <% end %>
 
