@@ -11,16 +11,29 @@ defmodule Carbon.AttachmentController do
     |> send_resp(200, Base.decode64!(attachment.base64_content))
   end
 
-  def index(conn, %{"owner_id" => owner_id}) do
+  def index(conn, params) do
     current_user = conn.assigns[:current_user]
     owner = conn.assigns[:foreign_key]
+    owner_id = params[conn.assigns[:foreign_key] |> Atom.to_string]
     query = from a in Carbon.Attachment,
       where: field(a, ^owner) == ^owner_id and (not a.private or a.user_id == ^current_user.id),
       select: [ :id, :name, :description, :private, :mimetype, :inserted_at, :user_id ],
       order_by: [ asc: :name ],
       preload: :user
+
     conn
     |> assign(:attachments, Repo.all(query))
     |> render("index.html")
+  end
+
+  def new(conn, params) do
+    conn
+    |> assign(:changeset, Carbon.Attachment.changeset(%Carbon.Attachment{}))
+    |> render("new.html")
+  end
+
+  def create(conn, params) do
+    IO.inspect params
+    conn
   end
 end

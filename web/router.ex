@@ -29,7 +29,6 @@ defmodule Carbon.Router do
     end
 
     put "/accounts/:id/restore", AccountController, :restore
-    get "/accounts/:owner_id/attachments", AttachmentController, :index, assigns: %{foreign_key: :account_id}, as: :account_attachment
 
     resources "/accounts", AccountController do
       resources "/contacts", ContactController, except: [:index, :show]
@@ -47,6 +46,12 @@ defmodule Carbon.Router do
         put    "/reminders/:id", ReminderController, :restore
       end
       put "/events/:id/restore", EventController, :restore
+
+      scope "/attachments", assigns: %{foreign_key: :account_id} do
+        get "/", AttachmentController, :index
+        get "/new", AttachmentController, :new
+        post "/new", AttachmentController, :create
+      end
     end
 
     resources "/tags", TagController, except: [:show]
