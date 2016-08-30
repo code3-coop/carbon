@@ -29,6 +29,7 @@ defmodule Carbon.Router do
     end
 
     put "/accounts/:id/restore", AccountController, :restore
+    get "/accounts/:owner_id/attachments", AttachmentController, :index, assigns: %{foreign_key: :account_id}, as: :account_attachment
 
     resources "/accounts", AccountController do
       resources "/contacts", ContactController, except: [:index, :show]
@@ -57,6 +58,11 @@ defmodule Carbon.Router do
     get "/workflows/instances/:id", Workflow.InstanceController, :show
     get "/workflows/instances/:id/edit", Workflow.InstanceController, :edit
     delete "/workflows/instances/:id", Workflow.InstanceController, :delete
+
+    scope "/attachments" do
+      get "/:id", AttachmentController, :show
+    end
+
   end
 
   scope "/session", Carbon do

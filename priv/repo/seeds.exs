@@ -81,10 +81,11 @@ billing_address_b = Repo.insert! %Address{street_address: "1 Billing Street", lo
 shipping_address_a = Repo.insert! %Address{street_address: "1 Shipping Street", locality: "City A", region: "RA", country_name: "CA"}
 shipping_address_b = Repo.insert! %Address{street_address: "1 Shipping Street", locality: "City B", region: "RB", country_name: "CB"}
 
-account_attachment = Repo.insert! %Attachment{name: "loremipsum.txt", description: "Lorem ipsum", mimetype: "text/plain", base64_content: Base.encode64(Enum.join(paragraph, "\n"))}
+account_attachment = Repo.insert! %Attachment{user: joe, name: "loremipsum.txt", description: "A few paragraphs of the Lorem ipsum...", mimetype: "text/plain", base64_content: Base.encode64(Enum.join(paragraph, "\n"))}
+joes_spreadsheet = Repo.insert! %Attachment{user: joe, private: true, name: "joes_spreadsheet.xls", description: "This is Joe's awesome spreasheet. It's not an actual file so don't try downloading it :)", mimetype: "application/vnd.ms-excel", base64_content: Base.encode64(Enum.join(paragraph, "\n"))}
 
 account_a = Repo.insert!(%Account{name: "Account A", owner: joe, status: customer_status, billing_address: billing_address_a, shipping_address: shipping_address_a, tags: [noisy_office_tag, good_coffee_tag]})
-account_b = Repo.insert!(%Account{name: "Account B", owner: mike, status: customer_status, billing_address: billing_address_b, shipping_address: shipping_address_b, tags: [good_coffee_tag], attachments: [ account_attachment ]})
+account_b = Repo.insert!(%Account{name: "Account B", owner: mike, status: customer_status, billing_address: billing_address_b, shipping_address: shipping_address_b, tags: [good_coffee_tag], attachments: [ joes_spreadsheet, account_attachment ]})
 
 contact_a = Repo.insert!(%Contact{full_name: "Contact A", title: "CEO", email: "contact.a@company.a.com", tel: "+1 123-123-1234", image_url: "/images/avatars/female/5.png", account: account_a})
 contact_b = Repo.insert!(%Contact{full_name: "Contact B", title: "CEO", email: "contact.b@company.b.com", tel: "+1 123-123-1234", image_url: "/images/avatars/female/15.png", account: account_b})
@@ -120,7 +121,7 @@ draft_status = Repo.insert! %TimesheetStatus{key: "Draft", active: true, present
 candidate_status =Repo.insert! %TimesheetStatus{key: "Candidate", active: true, presentation_order: 2, editable_by_owner?: false, editable_by_manager?: false}
 approved_status = Repo.insert! %TimesheetStatus{key: "Approved", active: true, presentation_order: 3, editable_by_owner?: false, editable_by_manager?: false}
 
-timesheet_attachment = Repo.insert! %Attachment{name: "loremipsum.txt", description: "Lorem ipsum", mimetype: "text/plain", base64_content: Base.encode64(Enum.join(paragraph, "\n"))}
+timesheet_attachment = Repo.insert! %Attachment{user: joe, name: "loremipsum.txt", description: "Lorem ipsum", mimetype: "text/plain", base64_content: Base.encode64(Enum.join(paragraph, "\n"))}
 
 joes_awesome_timesheet = Repo.insert! %Timesheet{status: draft_status, user: joe, start_date: Ecto.Date.from_erl(today), notes: "My Awesome timesheet", attachments: [ timesheet_attachment ] }
 
