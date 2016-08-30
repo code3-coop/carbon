@@ -12,7 +12,6 @@ defmodule Carbon.Contact do
     field :active, :boolean, default: true
 
     belongs_to :account, Carbon.Account
-    has_many :attachments, Carbon.Attachment
     many_to_many :tags, Carbon.ContactTag, join_through: "j_contacts_tags", on_replace: :delete
 
     timestamps
