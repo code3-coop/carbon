@@ -61,10 +61,13 @@ defmodule Carbon.Router do
 
     get "/workflows/instances", Workflow.InstanceController, :index
     get "/workflows/instances/:id", Workflow.InstanceController, :show
+    get "/workflows/instances/:id/edit", Workflow.InstanceController, :edit
+    delete "/workflows/instances/:id", Workflow.InstanceController, :delete
 
     scope "/attachments" do
       get "/:id", AttachmentController, :show
     end
+
   end
 
   scope "/session", Carbon do
