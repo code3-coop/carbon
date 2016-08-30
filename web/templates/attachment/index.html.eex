@@ -1,8 +1,12 @@
+<style>
+  form {display: inline}
+</style>
+
 <h1 class="ui header">
   <div class="content">Attachments
-    <h2 class="ui sub header"></h2>
+    <h2 class="ui sub header"><%= @account.name %></h2>
   </div>
-  <%= link to: @add_new_path do %>
+  <%= link to: account_attachment_path(@conn, :new, @account.id) do %>
     <div class="ui right floated button"><i class="plus icon"></i> Add attachment</div>
   <% end %>
 </h1>
@@ -11,13 +15,13 @@
   <%= for attachment <- @attachments do %>
     <div class="event">
       <div class="label">
-        <%= link to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: false] do %>
+        <%= link to: account_attachment_path(@conn, :show, @account.id, attachment.id), data: [turbolinks: false] do %>
           <i class="<%= icon_color_by_mimetype(attachment.mimetype) %> inverted circular <%= icon_name_by_mimetype(attachment.mimetype) %> icon"></i>
         <% end %>
       </div>
       <div class="content">
         <div class="summary">
-          <%= link to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: false] do %><%= attachment.name %><% end %>
+          <%= link to: account_attachment_path(@conn, :show, @account.id, attachment.id), data: [turbolinks: false] do %><%= attachment.name %><% end %>
           <div class="date">
             <%= attachment.inserted_at |> Ecto.DateTime.to_date %>
             <%= if attachment.private do %><i class="hide icon"></i><% end %>
@@ -25,9 +29,9 @@
         </div>
         <div class="extra text"><%= attachment.description %></div>
         <div class="meta">
-          <%= link to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: false] do %><i class="cloud download icon"></i> Download<% end %>
-          <%= link to: "" do %><i class="write icon"></i> Edit<% end %>
-          <%= link to: "" do %><i class="trash icon"></i> Remove<% end %>
+          <%= link to: account_attachment_path(@conn, :show, @account.id, attachment.id), data: [turbolinks: false] do %><i class="cloud download icon"></i> Download<% end %>
+          <%= link to: account_attachment_path(@conn, :edit, @account.id, attachment.id) do %><i class="write icon"></i> Edit<% end %>
+          <%= link method: "delete", to: account_attachment_path(@conn, :delete, @account.id, attachment.id) do %><i class="trash icon"></i> Remove<% end %>
         </div>
       </div>
     </div>
