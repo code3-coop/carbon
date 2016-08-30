@@ -12,7 +12,7 @@ defmodule Carbon.Repo.Migrations.CreateProject.Phase do
     end
 
     alter table :projects do
-      add :project_phase_id, references(:project_phases)
+      add :phase_id, references(:project_phases)
     end
   end
 end
