@@ -9,6 +9,8 @@ defmodule Carbon.Project do
     field :estimate_unit, :string, default: "CAD"
     field :estimate_min, :float
     field :estimate_max, :float
+    field :start_date, Ecto.Date
+    field :end_date, Ecto.Date
 
     field :active, :boolean, default: true
 
@@ -23,7 +25,7 @@ defmodule Carbon.Project do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:code, :description, :active, :estimate_unit, :estimate_min, :estimate_max])
+    |> cast(params, [:code, :description, :active, :estimate_unit, :estimate_min, :estimate_max, :start_date, :end_date])
     |> validate_required([:code])
     |> validate_inclusion(:estimate_unit, ~w(hours CAD))
     |> optimistic_lock(:lock_version)
