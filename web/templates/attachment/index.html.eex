@@ -11,7 +11,9 @@
   <%= for attachment <- @attachments do %>
     <div class="event">
       <div class="label">
-        <%= link to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: false] do %><i class="<%= icon_color_by_mimetype(attachment.mimetype) %> inverted circular <%= icon_name_by_mimetype(attachment.mimetype) %> icon"></i><% end %>
+        <%= link to: attachment_path(@conn, :show, attachment.id), data: [turbolinks: false] do %>
+          <i class="<%= icon_color_by_mimetype(attachment.mimetype) %> inverted circular <%= icon_name_by_mimetype(attachment.mimetype) %> icon"></i>
+        <% end %>
       </div>
       <div class="content">
         <div class="summary">

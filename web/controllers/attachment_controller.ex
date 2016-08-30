@@ -61,6 +61,10 @@ defmodule Carbon.AttachmentController do
     end
   end
 
+  def delete(conn, %{"id" => id}) do
+    { 1, _returning } = from(a in Carbon.Attachment, where: a.id == ^id) |> Repo.delete_all
+  end
+
   defp path(conn, action, :account_id, account_id) do
     account_attachment_path(conn, action, account_id)
   end

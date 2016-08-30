@@ -66,8 +66,8 @@ defmodule Carbon.Router do
 
     scope "/attachments" do
       get "/:id", AttachmentController, :show
+      delete "/:id", AttachmentController, :delete
     end
-
   end
 
   scope "/session", Carbon do
