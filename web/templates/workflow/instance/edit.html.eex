@@ -1,0 +1,117 @@
+<%= form_for @changeset, instance_path(@conn, :update, @instance.id), fn f -> %>
+  <div class="ui form">
+
+
+    <div class="ui field">
+      <label>Worflow</label>
+      <%= @instance.workflow.name %>
+    </div>
+
+    <div class="ui field">
+      <label>Status</label>
+      <div class="ui selection dropdown">
+        <input type="hidden" id="state" name="instance[state]" value="<%= @instance.state.id %>" %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Status</div>
+        <div class="menu">
+          <%  sorted_states = Enum.sort_by @instance.workflow.states, &(&1.presentation_order_index) %>
+          <%= for state <- sorted_states do %>
+            <div class="item" data-value="<%= state.id %>">
+              <%= state.name %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <% sorted_sections = Enum.sort_by @instance.workflow.sections, &(&1.presentation_order_index) %>
+    <%= for section <- sorted_sections do %>
+      <% sorted_fields = Enum.sort_by section.fields, &(&1.presentation_order_index) %>
+      <%= for field <- sorted_fields do %>
+        <div class="ui field">
+          <label><%= humanize field.name %></label>
+          <% value = Enum.find @instance.values, &(&1.field_id == field.id)%>
+          <%= cond do %>
+            <% field.type == "date" -> %>
+              <input type="date" name="instance[<%= field.id %>]" value="<%= value.date_value %>">
+            <% field.type == "text" -> %>
+              <input name="instance[<%= field.id %>]" value="<%= value.string_value %>">
+            <% field.type == "long_text" -> %>
+              <textarea name="instance[<%= field.id %>]">
+                <%= value.string_value %>
+              </textarea>
+            <% field.type == "reference" and field.entity_reference_name == "Carbon.User" -> %>
+              <div class="ui selection dropdown">
+                <input type="hidden" name="instance[<%= field.id %>]" value="<%= value.integer_value %>" %>
+                <i class="dropdown icon"></i>
+                <div class="default text">Status</div>
+                <div class="menu">
+                  <div class="ui icon search input" style="width: initial;"">
+                    <i class="search icon"></i>
+                    <input type="text" placeholder="Search timesheet">
+                  </div>
+                  <%= for user <- user_select do %>
+                    <div class="item" data-value="<%= user.id %>">
+                      <%= user.full_name %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% field.type == "reference" and field.entity_reference_name == "Carbon.Timesheet" -> %>
+              <div class="ui selection dropdown">
+                <input type="hidden" name="instance[<%= field.id %>]" value="<%= value.integer_value %>" %>
+                <i class="dropdown icon"></i>
+                <div class="default text">Timesheet</div>
+                <div class="menu">
+                  <div class="ui icon search input" style="width: initial;">
+                    <i class="search icon"></i>
+                    <input type="text" placeholder="Search timesheet">
+                  </div>
+
+                  <%= for timesheet <- timesheet_select do %>
+                    <div class="item" data-value="<%= timesheet.id %>">
+                      <div class="ui label"><%= timesheet.status.key %></div>
+                      <b>By:</b> <%= timesheet.user.full_name%>
+                      <b>For:</b> <%= timesheet.start_date %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% field.type == "reference" and field.entity_reference_name == "Carbon.Account" -> %>
+              <div class="ui selection dropdown">
+                <input type="hidden" name="instance[<%= field.id %>]" value="<%= value.integer_value %>" %>
+                <i class="dropdown icon"></i>
+
+                <div class="default text">Account</div>
+                <div class="menu">
+                  <div class="ui icon search input" style="width: initial;"">
+                    <i class="search icon"></i>
+                    <input type="text" placeholder="Search accounts">
+                  </div>
+                  <%= for account <- account_select do %>
+                    <div class="item" data-value="<%= account.id %>">
+                      <%= account.name %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% true -> %>
+              too bad
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <%= submit "Submit", class: "ui primary button" %>
+    <%= reset "Cancel", class: "ui button" %>
+  </div>
+<% end %>
+<script>
+  $('.ui.dropdown').dropdown()
+  $('.reference').change(function(event){
+    var elm = event.target;
+    $(elm).parent().children("a").attr("href", $(elm).val());
+  })
+</script>
+<style>
+
+</style>

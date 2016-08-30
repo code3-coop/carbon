@@ -58,4 +58,14 @@ defmodule Carbon.Workflow.InstanceController do
     |> assign(:instance, instance)
     |> render("show.html")
   end
+
+  def edit(conn, %{"id" => instance_id}) do
+    instance = Repo.get(Instance, instance_id) |> Repo.preload([:values, :state, workflow: [:states, sections: [ :fields ]]])
+    changeset = Instance.changeset(instance, %{})
+
+    conn
+    |> assign(:instance, instance)
+    |> assign(:changeset, changeset)
+    |> render("edit.html")
+  end
 end
