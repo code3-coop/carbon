@@ -7,11 +7,13 @@
       <div class="description"><p><%= attachment.description %></p></div>
     </div>
     <div class="extra content">
-      <div class="left floated author">
+      <%= if attachment.private do %>
+        <div class="left floated">
+          <i class="hide icon popup-tag" data-content="This file is private" data-position="bottom center" data-variation="inverted"></i>
+        </div>
+      <% end %>
+      <div class="right floated author">
         <img class="ui avatar mini image" src="<%= attachment.user.image_url %>"> <%= attachment.user.handle %>
-        <%= if attachment.private do %>
-          <i class="hide icon"></i>
-        <% end %>
       </div>
     </div>
   </div>

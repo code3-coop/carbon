@@ -6,6 +6,10 @@ defmodule Carbon.Project do
 
     field :code, :string
     field :description, :string
+    field :estimate_unit, :string, default: "CAD"
+    field :estimate_min, :float
+    field :estimate_max, :float
+
     field :active, :boolean, default: true
 
     belongs_to :account, Carbon.Account
@@ -19,8 +23,9 @@ defmodule Carbon.Project do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:code, :description, :active])
+    |> cast(params, [:code, :description, :active, :estimate_unit, :estimate_min, :estimate_max])
     |> validate_required([:code])
-    |> foreign_key_constraint(:account_id)
+    |> validate_inclusion(:estimate_unit, ~w(hours CAD))
+    |> optimistic_lock(:lock_version)
   end
 end
