@@ -25,6 +25,13 @@
       </div>
     </div>
 
+    <div class="field">
+      <div class="ui toggle checkbox">
+        <%= checkbox f, :private %>
+        <label>Make this file private</label>
+      </div>
+    </div>
+
     <br/>
     <%= submit "Upload", class: "ui submit primary button" %>
     <%= link "cancel", to: "", class: "ui button" %>

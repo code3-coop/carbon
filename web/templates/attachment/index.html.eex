@@ -2,7 +2,7 @@
   <div class="content">Attachments
     <h2 class="ui sub header"></h2>
   </div>
-  <%= link to: "" do %>
+  <%= link to: @add_new_path do %>
     <div class="ui right floated button"><i class="plus icon"></i> Add attachment</div>
   <% end %>
 </h1>

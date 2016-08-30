@@ -23,6 +23,9 @@ defmodule Carbon.AttachmentView do
   def icon_color_by_mimetype("application/vnd.ms-powerpoint"),                                             do: "orange"
   def icon_color_by_mimetype("application/vnd.openxmlformats-officedocument.presentationml.presentation"), do: "orange"
   def icon_color_by_mimetype("application/pdf"),                                                           do: "red"
+  def icon_color_by_mimetype("audio/" <> _),                                                               do: "purple"
+  def icon_color_by_mimetype("image/" <> _),                                                               do: "purple"
+  def icon_color_by_mimetype("video/" <> _),                                                               do: "purple"
   def icon_color_by_mimetype(_),                                                                           do: "teal"
 
 end

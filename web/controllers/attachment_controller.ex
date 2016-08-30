@@ -14,7 +14,7 @@ defmodule Carbon.AttachmentController do
   def index(conn, params) do
     current_user = conn.assigns[:current_user]
     owner = conn.assigns[:foreign_key]
-    owner_id = params[conn.assigns[:foreign_key] |> Atom.to_string]
+    owner_id = params[owner |> Atom.to_string]
     query = from a in Carbon.Attachment,
       where: field(a, ^owner) == ^owner_id and (not a.private or a.user_id == ^current_user.id),
       select: [ :id, :name, :description, :private, :mimetype, :inserted_at, :user_id ],
@@ -23,6 +23,7 @@ defmodule Carbon.AttachmentController do
 
     conn
     |> assign(:attachments, Repo.all(query))
+    |> assign(:add_new_path, path(conn, :new, owner, owner_id))
     |> render("index.html")
   end
 
@@ -33,7 +34,34 @@ defmodule Carbon.AttachmentController do
   end
 
   def create(conn, params) do
-    IO.inspect params
-    conn
+    current_user = conn.assigns[:current_user]
+    owner = conn.assigns[:foreign_key]
+    owner_id = params[owner |> Atom.to_string]
+    %Plug.Upload{path: path, content_type: mimetype, filename: name} = get_in(params, ["attachment", "file"])
+
+    attachment_params = %{}
+    |> Map.put(:mimetype, mimetype)
+    |> Map.put(:name, name)
+    |> Map.put(:private, get_in(params, ["attachment", "private"]))
+    |> Map.put(:description, get_in(params, ["attachment", "description"]))
+    |> Map.put(:base64_content, path |> File.read! |> Base.encode64)
+    |> Map.put(owner, owner_id)
+
+    changeset = %Carbon.Attachment{user: current_user} |> Carbon.Attachment.changeset(attachment_params)
+
+    case Repo.insert(changeset) do
+      {:ok, _attachment} ->
+        conn
+        |> put_flash(:info, "Attachment added successfully.")
+        |> redirect(to: path(conn, :index, owner, owner_id))
+      {:error, changeset} ->
+        conn
+        |> assign(:changeset, changeset)
+        |> render("new.html")
+    end
+  end
+
+  defp path(conn, action, :account_id, account_id) do
+    account_attachment_path(conn, action, account_id)
   end
 end

@@ -272,7 +272,7 @@
   </center>
 <% else %>
   <div class="ui four cards">
-    <%= render Carbon.AttachmentView, "as_card_list.html", conn: @conn, attachments: @account.attachments %>
+    <%= render Carbon.AttachmentView, "as_card_list.html", conn: @conn, attachments: @account.attachments, add_new_path: account_attachment_path(@conn, :new, @account.id) %>
   </div>
   <div class="ui grid">
     <div class="row">
