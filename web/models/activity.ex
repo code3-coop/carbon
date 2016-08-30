@@ -34,6 +34,21 @@ defmodule Carbon.Activity do
     end
   end
 
+  defp do_new(account_id, user_id, :remove, target_schema, target_id, nil) do
+    if target_schema in [:accounts, :contacts] do
+      Carbon.SearchIndex.refresh()
+    end
+    activity = %__MODULE__{
+      :action => "remove",
+      :target_schema => Atom.to_string(target_schema),
+      :target_id => target_id,
+      :target_value => "",
+      :user_id => user_id,
+      :account_id => (if is_bitstring(account_id), do: String.to_integer(account_id), else: account_id) }
+     IO.inspect "HERE"
+    spawn __MODULE__, :do_insert, [activity]
+  end
+
   defp do_new(account_id, user_id, action, target_schema, target_id, %Ecto.Changeset{changes: changes}) do
     if target_schema in [:accounts, :contacts] do
       Carbon.SearchIndex.refresh()

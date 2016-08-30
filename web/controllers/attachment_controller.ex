@@ -45,7 +45,8 @@ defmodule Carbon.AttachmentController do
     changeset = Carbon.Attachment.changeset(attachment, attachment_params)
 
     case Repo.insert(changeset) do
-      {:ok, _attachment} ->
+      {:ok, attachment} ->
+        Carbon.Activity.new(account_id, current_user.id, :create, :attachments, attachment.id, changeset)
         conn
         |> put_flash(:info, "Attachment added successfully.")
         |> redirect(to: account_attachment_path(conn, :index, account_id))
@@ -72,7 +73,8 @@ defmodule Carbon.AttachmentController do
     attachment = Repo.one from(a in Attachment, where: a.id == ^id and (not a.private or a.user_id == ^current_user.id), select: [ :id, :description, :private ])
     changeset = Attachment.update_changeset attachment, attachment_params
     case Repo.update(changeset) do
-      {:ok, _attachment} ->
+      {:ok, attachment} ->
+        Carbon.Activity.new(account_id, current_user.id, :update, :attachments, attachment.id, changeset)
         conn
         |> put_flash(:info, "Attachment updated successfully.")
         |> redirect(to: account_attachment_path(conn, :index, account_id))
@@ -86,8 +88,10 @@ defmodule Carbon.AttachmentController do
   end
 
   def delete(conn, %{"account_id" => account_id, "id" => id}) do
+    current_user = conn.assigns[:current_user]
     case Repo.delete_all(where(Attachment, id: ^id)) do
       { 1, _ } ->
+        Carbon.Activity.new(account_id, current_user.id, :remove, :attachments, String.to_integer(id), nil)
         conn
         |> put_flash(:info, "Attachment removed successfully.")
         |> redirect(to: account_attachment_path(conn, :index, account_id))
