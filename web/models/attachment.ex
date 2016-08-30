@@ -25,7 +25,7 @@ defmodule Carbon.Attachment do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :description, :private, :mimetype, :base64_content, :account_id])
+    |> cast(params, [:name, :description, :private, :mimetype, :base64_content, :account_id, :event_id, :contact_id, :deal_id, :project_id, :timesheet_id, :workflow_instance_id])
     |> validate_required([:name, :mimetype, :base64_content])
   end
 end
