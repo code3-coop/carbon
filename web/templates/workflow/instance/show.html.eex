@@ -55,15 +55,26 @@
                 <%= value.date_value %>
               <%= Field.reference_user field -> %>
                 <%= link to: user_path(@conn, :show, value.integer_value) do %>
-                  <%= value.integer_value %>
+                  <% user = user_by_id value.integer_value %>
+                  <div class="ui image label">
+                    <img src="<%= user.image_url %>"/>
+                    <%= user.full_name %>
+                  </div>
                 <% end %>
               <%= Field.reference_account field -> %>
                 <%= link to: account_path(@conn, :show, value.integer_value) do %>
-                  <%= value.integer_value %>
+                <% account = account_by_id value.integer_value %>
+                <%= account.name %>
                 <% end %>
               <%= Field.reference_timesheet field -> %>
                 <%= link to: timesheet_path(@conn, :show, value.integer_value) do %>
-                  <%= value.integer_value %>
+                  <% timesheet = timesheet_by_id value.integer_value %>
+                  <%= timesheet.start_date %>
+                  <div class="ui label">
+                    <%= timesheet.status.key %>
+                  </div>
+                  <b>By:</b> <%= timesheet.user.full_name %>
+
                 <% end %>
               <%= field.type == "reference" -> %>
                 <%= value.integer_value %>
