@@ -2,7 +2,7 @@
 
 <h1 class="ui header">
     <div class="content">
-      Worflow
+      Workflow
       <h2 class="ui sub header">
         <%= @instance.workflow.name %>
         <div class="ui <%= state.color %> label">
