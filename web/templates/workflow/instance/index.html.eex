@@ -43,9 +43,9 @@
     </a>
   </div>
   <%= if Enum.empty? @instances do %>
-    <center style="padding :10rem;">
+    <div class="emtpy-list-message meta">
       No workflow match the current search criteria
-    </center>
+    </div>
   <% else %>
     <table class="ui table">
     <%= for instance <- @instances  do %>
@@ -103,6 +103,10 @@
   <% end %>
 <% end %>
 <style>
+  .emtpy-list-message {
+    padding :10rem;
+    text-align: center;
+  }
   .meta {
     color: grey;
   }
