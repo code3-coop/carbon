@@ -26,6 +26,9 @@
     <% sorted_sections = Enum.sort_by @instance.workflow.sections, &(&1.presentation_order_index) %>
     <%= for section <- sorted_sections do %>
       <% sorted_fields = Enum.sort_by section.fields, &(&1.presentation_order_index) %>
+      <h3 class="ui horizontal divider header">
+        <%= section.name %>
+      </h3>
       <%= for field <- sorted_fields do %>
         <div class="ui field">
           <label><%= humanize field.name %></label>
