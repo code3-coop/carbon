@@ -1,4 +1,4 @@
-<%= form_for @changeset, instance_path(@conn, :update, @instance.id), fn f -> %>
+<%= form_for @changeset, instance_path(@conn, :update, @instance.id), fn _f -> %>
   <div class="ui form">
 
 
