@@ -42,7 +42,12 @@
       Refresh
     </a>
   </div>
-  <table class="ui table">
+  <%= if Enum.empty? @instances do %>
+    <center style="padding :10rem;">
+      No workflow match the current search criteria
+    </center>
+  <% else %>
+    <table class="ui table">
     <%= for instance <- @instances  do %>
       <tr>
         <td>
@@ -95,6 +100,7 @@
       </tr>
     <% end %>
   </table>
+  <% end %>
 <% end %>
 <style>
   .meta {
