@@ -2,6 +2,23 @@
   Workflows
 </h3>
 
+<%= if get_flash(@conn, :archived_workflow_instance_id) do %>
+
+  <% worflow_instance_id = get_flash(@conn, :archived_workflow_instance_id) %>
+  <% path_to_restore = instance_path(@conn,:restore, worflow_instance_id) %>
+
+  <div class="ui message">
+    <div class="header">
+      Workflow instance archived
+    </div>
+    Workflow instance arhived with success.
+
+    <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
+      Get it back
+    <% end %>
+  </div>
+<% end %>
+
 <%= form_for @conn, instance_path(@conn, :index), [as: :query], fn f ->  %>
 
   <div class="ui selection dropdown">
@@ -92,10 +109,12 @@
                   <div class="ui label">
                     Account
                     <div class="detail"><%= account.name %></div>
+                  </div>
                 <% end %>
               </div>
             </div>
           </div>
+
         </td>
       </tr>
     <% end %>
