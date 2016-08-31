@@ -20,7 +20,6 @@
 <% end %>
 
 <%= form_for @conn, instance_path(@conn, :index), [as: :query], fn f ->  %>
-
   <div class="ui selection dropdown">
     <%= hidden_input f, :workflow %>
     <div class="default text">Worflow</div>
