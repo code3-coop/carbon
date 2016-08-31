@@ -1,6 +1,7 @@
 defmodule Carbon.Workflow.InstanceController do
   use Carbon.Web, :controller
 
+  alias Ecto.Multi
   alias Carbon.{ Account, User, Workflow }
   alias Carbon.Workflow.{ Instance, Value, Field }
 
@@ -68,4 +69,48 @@ defmodule Carbon.Workflow.InstanceController do
     |> assign(:changeset, changeset)
     |> render("edit.html")
   end
+
+  def update(conn, %{"id" => instance_id, "instance" => instance_params}) do
+    instance = Repo.get(Instance, instance_id) |> Repo.preload([:state, values: [:field]])
+    changeset = Instance.changeset(instance, instance_params)
+
+    values_changesets = Enum.map instance.values, fn old_value ->
+      new_value_as_string = instance_params[to_string(old_value.field_id)]
+      type = old_value.field.type
+      cond do
+        Enum.member? ["text", "long_text"], type ->
+          {old_value, Value.changeset(old_value, %{string_value: new_value_as_string})}
+        type == "integer" or type == "reference" or type == "currency" ->
+          {old_value, Value.changeset(old_value, %{integer_value: String.to_integer(new_value_as_string)})}
+        type == "date" ->
+          {old_value, Value.changeset(old_value, %{date_value: new_value_as_string})}
+        type == "boolean" ->
+          {old_value, Value.changeset(old_value, %{boolean_value: new_value_as_string == "true"})}
+      end
+    end
+
+    multi = Multi.new
+    |> Multi.update(:instance, changeset)
+    |> apply_multiple_changeset_to_multi(values_changesets)
+
+    case Repo.transaction(multi) do
+      {:ok, instance} ->
+        conn
+        |> put_flash(:info, "Workflow instance updated with success")
+        |> redirect(to: instance_path(conn, :index))
+      {:error, changeset} ->
+        conn
+        |> put_flash(:info, "Failed to update workflow instance")
+        |> assign(:changeset, changeset)
+        |> assign(:instance, instance)
+        |> render("edit.html")
+    end
+  end
+
+  defp apply_multiple_changeset_to_multi(multi, changesets) do
+    Enum.reduce changesets, multi, fn({old_value, changeset}, multi) ->
+      Multi.update(multi, old_value.field_id, changeset)
+    end
+  end
+
 end

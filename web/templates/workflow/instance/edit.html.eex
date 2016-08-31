@@ -10,7 +10,7 @@
     <div class="ui field">
       <label>Status</label>
       <div class="ui selection dropdown">
-        <input type="hidden" id="state" name="instance[state]" value="<%= @instance.state.id %>" %>
+        <input type="hidden" id="state" name="instance[state_id]" value="<%= @instance.state.id %>" %>
         <i class="dropdown icon"></i>
         <div class="default text">Status</div>
         <div class="menu">
