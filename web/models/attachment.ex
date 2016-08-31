@@ -10,12 +10,6 @@ defmodule Carbon.Attachment do
 
     belongs_to :user, Carbon.User
     belongs_to :account, Carbon.Account
-    belongs_to :event, Carbon.Event
-    belongs_to :contact, Carbon.Contact
-    belongs_to :deal, Carbon.Deal
-    belongs_to :project, Carbon.Project
-    belongs_to :timesheet, Carbon.Timesheet
-    belongs_to :workflow_instance, Carbon.Workflow.Instance
 
     timestamps
   end
@@ -25,7 +19,11 @@ defmodule Carbon.Attachment do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :description, :private, :mimetype, :base64_content, :account_id, :event_id, :contact_id, :deal_id, :project_id, :timesheet_id, :workflow_instance_id])
+    |> cast(params, [:name, :description, :private, :mimetype, :base64_content])
     |> validate_required([:name, :mimetype, :base64_content])
+  end
+  def update_changeset(attachment, params) do
+    attachment
+    |> cast(params, [:description, :private])
   end
 end

@@ -1,16 +1,8 @@
-<%= form_for @changeset, account_attachment_path(@conn, :create, @account_id), [ multipart: true ], fn f -> %>
+<%= form_for @changeset, account_attachment_path(@conn, :update, @account_id, @id), fn f -> %>
   <div class="ui form <%= if @changeset.action, do: "error" %>">
     <div class="ui error message">
       <div class="header">Ruh roh!</div>
       <p>Something went wrong. Please check the following errors.</p>
-    </div>
-
-    <div class="field">
-      <label>File</label>
-      <div class="ui left corner labeled input">
-        <%= file_input f, :file %>
-        <div class="ui left corner label"><i class="asterisk icon"></i></div>
-      </div>
     </div>
 
     <div class="field <%= if f.errors[:description], do: "error" %>">
@@ -33,7 +25,7 @@
     </div>
 
     <br/>
-    <%= submit "Upload", class: "ui submit primary button" %>
+    <%= submit "Update", class: "ui submit primary button" %>
     <%= link "cancel", to: "", class: "ui button" %>
   </div>
 <% end %>

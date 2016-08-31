@@ -47,11 +47,7 @@ defmodule Carbon.Router do
       end
       put "/events/:id/restore", EventController, :restore
 
-      scope "/attachments", assigns: %{foreign_key: :account_id} do
-        get "/", AttachmentController, :index
-        get "/new", AttachmentController, :new
-        post "/new", AttachmentController, :create
-      end
+      resources "/attachments", AttachmentController
     end
 
     resources "/tags", TagController, except: [:show]
@@ -64,11 +60,6 @@ defmodule Carbon.Router do
     get "/workflows/instances/:id/edit", Workflow.InstanceController, :edit
     put "/workflows/instances/:id", Workflow.InstanceController, :update
     delete "/workflows/instances/:id", Workflow.InstanceController, :delete
-
-    scope "/attachments" do
-      get "/:id", AttachmentController, :show
-    end
-
   end
 
   scope "/session", Carbon do

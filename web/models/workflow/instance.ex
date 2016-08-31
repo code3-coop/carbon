@@ -8,7 +8,6 @@ defmodule Carbon.Workflow.Instance do
     belongs_to :state, Carbon.Workflow.State
 
     has_many :values, Carbon.Workflow.Value
-    has_many :attachments, Carbon.Attachment
 
     timestamps
   end
