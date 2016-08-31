@@ -3,6 +3,7 @@ defmodule Carbon.Workflow.Instance do
 
   schema "workflow_instances" do
     field :lock_version, :integer, default: 1
+    field :active, :boolean, default: true
 
     belongs_to :workflow, Carbon.Workflow
     belongs_to :state, Carbon.Workflow.State

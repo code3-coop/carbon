@@ -8,7 +8,7 @@ defmodule Carbon.Workflow.InstanceController do
   def index(conn, _params) do
     fetch_workflows = Task.async Repo, :all, [(from w in Workflow, preload: :states)]
 
-    instances = Repo.all from i in Instance, preload: [ :workflow, :state, [ values: :field ] ]
+    instances = Repo.all from i in Instance, where: i.active, preload: [ :workflow, :state, [ values: :field ] ]
 
     { accounts, users } = instances
     |> Enum.flat_map(&(&1.values))
@@ -111,6 +111,22 @@ defmodule Carbon.Workflow.InstanceController do
     Enum.reduce changesets, multi, fn({old_value, changeset}, multi) ->
       Multi.update(multi, old_value.field_id, changeset)
     end
+  end
+
+  def delete(conn, %{"id" => instance_id})do
+    query = from i in Instance, where: i.id == ^instance_id
+    case Repo.update_all(query, set: [active: false]) do
+      {1, nil} ->
+        conn
+        |> put_flash(:info, "Workflow instance archived with success")
+        |> assign(:instance_id, instance_id)
+        |> redirect(to: instance_path(conn, :index))
+      true ->
+        conn
+        |> put_flash(:info, "Failed to archive workflow instace")
+        |> render("show.html")
+    end
+
   end
 
 end
