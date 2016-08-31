@@ -58,6 +58,7 @@ defmodule Carbon.Router do
     get "/workflows/instances", Workflow.InstanceController, :index
     get "/workflows/instances/:id", Workflow.InstanceController, :show
     get "/workflows/instances/:id/edit", Workflow.InstanceController, :edit
+    put "/workflows/instances/:id/restore", Workflow.InstanceController, :restore
     put "/workflows/instances/:id", Workflow.InstanceController, :update
     delete "/workflows/instances/:id", Workflow.InstanceController, :delete
   end

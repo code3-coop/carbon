@@ -94,7 +94,7 @@ defmodule Carbon.Workflow.InstanceController do
     |> apply_multiple_changeset_to_multi(values_changesets)
 
     case Repo.transaction(multi) do
-      {:ok, instance} ->
+      {:ok, _} ->
         conn
         |> put_flash(:info, "Workflow instance updated with success")
         |> redirect(to: instance_path(conn, :index))
@@ -118,15 +118,27 @@ defmodule Carbon.Workflow.InstanceController do
     case Repo.update_all(query, set: [active: false]) do
       {1, nil} ->
         conn
-        |> put_flash(:info, "Workflow instance archived with success")
-        |> assign(:instance_id, instance_id)
+        |> put_flash(:archived_workflow_instance_id, instance_id)
         |> redirect(to: instance_path(conn, :index))
       true ->
         conn
         |> put_flash(:info, "Failed to archive workflow instace")
         |> render("show.html")
     end
+  end
 
+  def restore(conn, %{"id" => instance_id})do
+    query = from i in Instance, where: i.id == ^instance_id
+    case Repo.update_all(query, set: [active: true]) do
+      {1, nil} ->
+        conn
+        |> put_flash(:info, "Workflow instance restored successfully")
+        |> redirect(to: instance_path(conn, :index))
+      true ->
+        conn
+        |> put_flash(:info, "Failed to archive workflow instace")
+        |> render("show.html")
+    end
   end
 
 end
