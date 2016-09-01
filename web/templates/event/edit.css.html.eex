@@ -1,7 +1,0 @@
-<style>
-  #event_description {
-    padding-top: 20px;
-  }
-  ::-webkit-inner-spin-button { display: none; }
-  
-</style>

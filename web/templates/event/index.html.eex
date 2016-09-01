@@ -1,3 +1,27 @@
+<style>
+  .empty-list-message {
+    text-align: center;
+    color: rgba(0,0,0,0.5);
+  }
+  form.item a {
+    color: rgba(0,0,0,.87);
+  }
+  .underlined {
+    text-decoration: underline;
+  }
+  .ui.feed>.event>.content>.meta .links {
+    padding-top: 10px;
+  }
+  .ui.feed>.event>.content>.meta .link {
+    display: inline;
+    padding-right: 5px;
+  }
+  .ui.message .inline-form {
+    display: inline-block;
+  }
+</style>
+
+
 <%= if get_flash(@conn, :deleted_reminder) do %>
   <div class="ui message">
     <div class="header">
@@ -67,3 +91,8 @@
       </div>
     <% end %>
   <% end %>
+</div>
+
+<script>
+  $(".dropdown").dropdown();
+</script>

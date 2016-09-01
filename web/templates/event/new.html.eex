@@ -1,3 +1,7 @@
+<style>
+  ::-webkit-inner-spin-button { display: none; }
+</style>
+
 <h2 class="ui header">New event</h2>
 
 <%= form_for @changeset, account_event_path(@conn, :create, @account_id), fn f-> %>
@@ -67,3 +71,7 @@
     <%= link "Cancel", to: account_event_path @conn, :index, @account_id %>
   </div>
 <% end %>
+
+<script>
+  $('.dropdown').dropdown();
+</script>

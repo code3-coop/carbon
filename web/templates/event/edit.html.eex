@@ -1,3 +1,11 @@
+<style>
+  #event_description {
+    padding-top: 20px;
+  }
+  ::-webkit-inner-spin-button { display: none; }
+
+</style>
+
 <h2>Edit event</h2>
 
 <%= form_for @changeset, account_event_path(@conn, :update, @event.account_id, @event.id), fn f -> %>
@@ -71,3 +79,7 @@
     <%= link "cancel", to: account_event_path(@conn, :index, @event.account_id), class: "ui button" %>
 
 <% end %>
+
+<script>
+  $('.dropdown').dropdown();
+</script>
