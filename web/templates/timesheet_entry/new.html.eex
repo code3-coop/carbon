@@ -1,3 +1,10 @@
+<style>
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+     display: none;
+  }
+</style>
+
 <h2 class="ui header">
   New timesheet entry
 </h2>
@@ -109,3 +116,8 @@
     <%= link "cancel", to: timesheet_path(@conn, :new), class: "ui button" %>
 
 <% end %>
+
+<script>
+  $('.ui.dropdown').dropdown();
+  $('.ui.checkbox').checkbox();
+</script>

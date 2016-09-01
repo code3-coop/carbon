@@ -105,3 +105,7 @@
    <%= link "cancel", to: timesheet_path(@conn, :edit, @timesheet_entry.timesheet_id), class: "ui button" %>
 
 <% end %>
+
+<script>
+  $('.dropdown').dropdown();
+</script>
