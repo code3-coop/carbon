@@ -1,3 +1,12 @@
+<style>
+.ui.feed>.event>.content .meta>.icon:hover {
+  cursor: inherit;
+}
+.ui.feed>.event>.content .meta>.icon:hover {
+  color: inherit;
+}
+</style>
+
 <h1 class="ui header">
   <div class="content">
     Activity
