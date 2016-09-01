@@ -1,3 +1,20 @@
+<style>
+  .tiny {
+    font-size: 13px;
+  }
+  .ui.feed>.event>.content>.meta .links {
+    padding-top: 10px;
+  }
+  .ui.feed>.event>.content>.meta .link {
+    display: inline;
+    padding-right: 5px;
+  }
+  .ui.red.button a {
+    color: #FFF;
+  }
+
+</style>
+
 <%= if success_message = get_flash(@conn, :success) do %>
 <div class="ui message">
   <i class="close icon"></i>
@@ -297,4 +314,8 @@
   $('.message .close').on('click', function() {
     $(this).closest('.message').transition('fade');
   });
+
+  $('.menu .item').tab();
+  $('.ui.progress').progress();
+
 </script>

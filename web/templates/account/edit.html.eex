@@ -135,3 +135,15 @@
     <%= link "cancel", to: account_path(@conn, :show, @account.id), class: "ui button" %>
   </div>
 <% end %>
+
+
+<script type="text/javascript">
+  var toggleShippingAddressContainer = function(){
+    $("#shipping-address-container").toggle(100);
+  }
+  $('.ui.checkbox').checkbox();
+  $('.ui.dropdown').dropdown();
+
+  $('[name="account[use_distinct_address_for_shipping]"]').on('change', toggleShippingAddressContainer);
+
+</script>

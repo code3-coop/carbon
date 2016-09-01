@@ -1,3 +1,13 @@
+<style>
+  .full-width {
+    width: 100%;
+  }
+  .ui.message .inline-form {
+    display: inline-block;
+  }
+</style>
+
+
 <%= if get_flash(@conn, :deleted_account) do %>
   <div class="ui message">
     <div class="header">

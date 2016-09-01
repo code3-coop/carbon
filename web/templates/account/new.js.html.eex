@@ -1,3 +1,0 @@
-<script type="text/javascript">
-  $('.ui.dropdown').dropdown();
-</script>

@@ -62,3 +62,7 @@
     <%= link "cancel", to: account_path(@conn, :index) %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $('.ui.dropdown').dropdown();
+</script>
