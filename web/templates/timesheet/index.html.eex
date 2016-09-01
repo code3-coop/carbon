@@ -61,3 +61,7 @@
     <% end %>
   </div>
 <% end %>
+
+<script>
+  $('.ui.dropdown').dropdown();
+</script>

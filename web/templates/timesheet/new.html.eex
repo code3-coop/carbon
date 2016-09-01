@@ -61,3 +61,7 @@
 
   </div>
 <% end %>
+
+<script>
+  $('.dropdown').dropdown();
+</script>

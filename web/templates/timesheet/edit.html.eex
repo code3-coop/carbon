@@ -1,3 +1,15 @@
+<style>
+  form.inline-link {
+    display: inline;
+  }
+  .inline-link a{
+    color: grey;
+  }
+  .inline-link:hover a{
+    color: black;
+}
+</style>
+
 <%= if get_flash(@conn, :deleted_timesheet_entry) do %>
   <div class="ui message">
     <div class="header">
@@ -126,3 +138,7 @@
     </div>
   </div>
 <% end %>
+
+<script>
+  $('.dropdown').dropdown();
+</script>

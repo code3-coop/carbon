@@ -1,3 +1,15 @@
+<style>
+  .meta {
+    display: inline;
+  }
+  .meta a {
+    color: grey;
+  }
+  .meta a:hover {
+    color; black;
+}
+</style>
+
 <h1 class="ui header">
   <div class="content">
     Timehseet
