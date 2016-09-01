@@ -18,7 +18,19 @@
   <body>
     <div class="ui menu">
       <div class="item">
-        <%= link to: "/" do %><i class="ui big share alternate icon"></i><% end %>
+        <%= link to: "/" do %>
+          <i class="ui big share alternate icon"></i>
+        <% end %>
+      </div>
+      <div class="item">
+        <%= link to: account_path(@conn, :index) do %>
+          Accounts
+        <% end %>
+      </div>
+      <div class="item">
+        <%= link to: instance_path(@conn, :index) do %>
+          Workflows
+        <% end %>
       </div>
       <%= if assigns[:current_user] do %>
         <div class="right menu">
