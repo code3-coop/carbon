@@ -3,7 +3,7 @@
 
 
     <div class="ui field">
-      <label>Worflow</label>
+      <label>Workflow</label>
       <%= @instance.workflow.name %>
     </div>
 
@@ -35,16 +35,16 @@
           <% value = Enum.find @instance.values, &(&1.field_id == field.id)%>
           <%= cond do %>
             <% field.type == "date" -> %>
-              <input type="date" name="instance[<%= field.id %>]" value="<%= value.date_value %>">
+              <input type="date" name="instance[<%= field.id %>]" value="<%= if value, do: value.date_value %>">
             <% field.type == "text" -> %>
-              <input name="instance[<%= field.id %>]" value="<%= value.string_value %>">
+              <input name="instance[<%= field.id %>]" value="<%= if value, do: value.string_value %>">
             <% field.type == "long_text" -> %>
               <textarea name="instance[<%= field.id %>]">
-                <%= value.string_value %>
+                <%= if value, do: value.string_value %>
               </textarea>
             <% field.type == "reference" and field.entity_reference_name == "Carbon.User" -> %>
               <div class="ui selection dropdown">
-                <input type="hidden" name="instance[<%= field.id %>]" value="<%= value.integer_value %>" %>
+                <input type="hidden" name="instance[<%= field.id %>]" value="<%= if value, do: value.integer_value %>" %>
                 <i class="dropdown icon"></i>
                 <div class="default text">Status</div>
                 <div class="menu">
@@ -54,14 +54,18 @@
                   </div>
                   <%= for user <- user_select do %>
                     <div class="item" data-value="<%= user.id %>">
-                      <%= user.full_name %>
+                      <div class="ui image label">
+                        <img src="<%= user.image_url %>"/>
+                        <%= user.full_name %>
+                      </div>
+
                     </div>
                   <% end %>
                 </div>
               </div>
             <% field.type == "reference" and field.entity_reference_name == "Carbon.Timesheet" -> %>
               <div class="ui selection dropdown">
-                <input type="hidden" name="instance[<%= field.id %>]" value="<%= value.integer_value %>" %>
+                <input type="hidden" name="instance[<%= field.id %>]" value="<%= if value, do: value.integer_value %>" %>
                 <i class="dropdown icon"></i>
                 <div class="default text">Timesheet</div>
                 <div class="menu">
@@ -81,19 +85,22 @@
               </div>
             <% field.type == "reference" and field.entity_reference_name == "Carbon.Account" -> %>
               <div class="ui selection dropdown">
-                <input type="hidden" name="instance[<%= field.id %>]" value="<%= value.integer_value %>" %>
+                <input type="hidden" name="instance[<%= field.id %>]" value="<%= if value, do: value.integer_value %>" %>
                 <i class="dropdown icon"></i>
 
                 <div class="default text">Account</div>
                 <div class="menu">
-                  <div class="ui icon search input" style="width: initial;"">
+                  <div class="ui icon search input" style="width: initial;">
                     <i class="search icon"></i>
                     <input type="text" placeholder="Search accounts">
                   </div>
                   <%= for account <- account_select do %>
                     <div class="item" data-value="<%= account.id %>">
                       <%= account.name %>
-                    </div>
+                      <div class="ui <%= account.status.color %> label">
+                        <%= account.status.key %>
+                      </div>
+                  </div>
                   <% end %>
                 </div>
               </div>
@@ -105,7 +112,10 @@
     <% end %>
 
     <%= submit "Submit", class: "ui primary button" %>
-    <%= reset "Cancel", class: "ui button" %>
+    <%= link to: instance_path(@conn, :show, @instance.id), class: "ui button" do %>
+      Cancel
+    <% end %>
+
   </div>
 <% end %>
 <script>

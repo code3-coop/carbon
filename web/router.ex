@@ -55,12 +55,10 @@ defmodule Carbon.Router do
 
     resources "/users", UserController
 
-    get "/workflows/instances", Workflow.InstanceController, :index
-    get "/workflows/instances/:id", Workflow.InstanceController, :show
-    get "/workflows/instances/:id/edit", Workflow.InstanceController, :edit
+
+    resources "/workflows/instances", Workflow.InstanceController
     put "/workflows/instances/:id/restore", Workflow.InstanceController, :restore
-    put "/workflows/instances/:id", Workflow.InstanceController, :update
-    delete "/workflows/instances/:id", Workflow.InstanceController, :delete
+
   end
 
   scope "/session", Carbon do

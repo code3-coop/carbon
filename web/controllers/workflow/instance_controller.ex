@@ -3,7 +3,42 @@ defmodule Carbon.Workflow.InstanceController do
 
   alias Ecto.Multi
   alias Carbon.{ Account, User, Workflow }
-  alias Carbon.Workflow.{ Instance, Value, Field }
+  alias Carbon.Workflow.{ Instance, Value, Field, State }
+
+  def new(conn, _params) do
+    instance = %Instance{}
+    changeset = Instance.changeset(instance)
+    conn
+    |> assign(:changeset, changeset)
+    # |> assign(:instance, instance)
+    |> render("new.html")
+  end
+
+  def create(conn, %{"instance" => instance_params}) do
+    instance = %Instance{values: []}
+
+
+    query = from f in Field,
+      join: s in assoc(f, :section),
+      where: s.workflow_id == ^instance_params["workflow_id"]
+    fields = Repo.all(query)
+    values = Enum.reduce(fields, [], &([%Value{field: &1} |&2]))
+    changeset = Instance.create_changeset(instance, instance_params, values)
+
+    case Repo.insert(changeset) do
+      {:ok, instance } ->
+        conn
+        |> put_flash(:info, "Workflow instance created with success")
+        |> redirect(to: instance_path(conn, :show, instance.id))
+      {:error, changeset} ->
+        IO.inspect changeset
+        conn
+        |> assign(:changeset, changeset)
+        |> render("new.html")
+    end
+
+
+  end
 
   def index(conn, _params) do
     fetch_workflows = Task.async Repo, :all, [(from w in Workflow, preload: :states)]
@@ -78,6 +113,8 @@ defmodule Carbon.Workflow.InstanceController do
       new_value_as_string = instance_params[to_string(old_value.field_id)]
       type = old_value.field.type
       cond do
+        new_value_as_string == "" ->
+          {old_value, Value.changeset(old_value, %{})}
         Enum.member? ["text", "long_text"], type ->
           {old_value, Value.changeset(old_value, %{string_value: new_value_as_string})}
         type == "integer" or type == "reference" or type == "currency" ->

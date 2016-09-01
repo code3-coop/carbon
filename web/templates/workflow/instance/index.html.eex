@@ -95,7 +95,7 @@
             <div class="sixteen wide column">
               <div class="ui labels">
                 <% user_value = Enum.find instance.values, &(Field.reference_user &1.field) %>
-                <%= if user_value != nil do %>
+                <%= if user_value != nil and user_value.integer_value != nil do %>
                   <% user = @users[user_value.integer_value] %>
                   <div class="ui image label">
                     <img src="<%= user.image_url%>">
@@ -103,7 +103,7 @@
                   </div>
                 <% end %>
                 <% account_value = Enum.find instance.values, &(Field.reference_account &1.field) %>
-                <%= if account_value != nil do %>
+                <%= if account_value != nil and account_value.integer_value != nil do %>
                   <% account = @accounts[account_value.integer_value] %>
                   <div class="ui label">
                     Account
@@ -119,6 +119,12 @@
     <% end %>
   </table>
   <% end %>
+  <center>
+    Don't find the process you were looking for ?
+    <%= link to: instance_path(@conn, :new) do %>
+      Create it now !
+    <% end %>
+  </center>
 <% end %>
 <style>
   .emtpy-list-message {

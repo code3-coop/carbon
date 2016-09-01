@@ -3,13 +3,13 @@ defmodule Carbon.Workflow.InstanceView do
   import Ecto.Query, only: [from: 2]
   alias Carbon.{ Repo }
 
-  alias Carbon.Workflow.{ Field }
-  alias Carbon.{Account, User, Timesheet}
+  alias Carbon.Workflow.{ Field, State }
+  alias Carbon.{Account, User, Timesheet, Workflow}
 
   def user_select() do
     query = from u in User,
       where: u.active,
-      select: %{id: u.id, full_name: u.full_name}
+      select: %{id: u.id, full_name: u.full_name, image_url: u.image_url}
     Repo.all(query)
   end
 
@@ -20,9 +20,20 @@ defmodule Carbon.Workflow.InstanceView do
     Repo.all(query)
   end
 
+  def workflow_select() do
+    # query = from w in Workflow
+    Repo.all(Workflow)
+  end
+
+  def workflow_states_select() do
+    # query = from w in Workflow
+    Repo.all(State)
+  end
+
   def account_select() do
     query = from a in Account,
-      where: a.active
+      where: a.active,
+      preload: [:status]
     Repo.all(query)
   end
 

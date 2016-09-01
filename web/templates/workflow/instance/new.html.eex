@@ -1,0 +1,81 @@
+<%= form_for @changeset, instance_path(@conn, :create), fn f -> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+
+
+    <div class="ui field">
+      <label>Workflow</label>
+    </div>
+
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+
+    <div class="ui field <%= if f.errors[:workflow], do: "error" %>">
+      <label>
+        Workflow
+        <%= error_tag f, :workflow %>
+        <span class="error">
+          <%= if f.errors[:workflow], do: translate_error f.errors[:workflow] %>
+        </span>
+      </label>
+      <div class="ui selection dropdown">
+        <% workflow_for_select = workflow_select %>
+        <% default_workflow_id = hd(workflow_for_select).id %>
+        <input type="hidden" id="workflow" name="instance[workflow_id]"  value="<%= default_workflow_id %>"%>
+        <i class="dropdown icon"></i>
+        <div class="default text">Workflow</div>
+        <div class="menu">
+          <%= for workflow <- workflow_for_select do %>
+            <div class="item" data-value="<%= workflow.id %>">
+              <%= workflow.name %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui field">
+      <label>
+        Status
+        <%IO.inspect f%>
+        <%IO.inspect @changeset%>
+        <%= error_tag @changeset, :status %>
+      </label>
+      <div class="ui selection dropdown">
+        <% states = workflow_states_select%>
+        <% default_state = Enum.find states, &(&1.workflow_id == default_workflow_id )%>
+        <input type="hidden" id="state" name="instance[state_id]" value="<%= default_state.id %>"%>
+        <i class="dropdown icon"></i>
+        <div class="default text">Status</div>
+        <div class="menu">
+          <%= for state <- states do %>
+            <div class="item" data-value="<%= state.id %>" data-workflow="<%= state.workflow_id %>">
+              <%= state.name %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+
+    <%= submit "Submit", class: "ui primary button" %>
+    <%= reset "Cancel", class: "ui button" %>
+  </div>
+<% end %>
+<script>
+  var filter_state_by_workflow = function(_event){
+    var new_workflow_id = $("#workflow").val();
+    $('.menu:nth(3) .item').each(function(_index, elm){
+      if($(elm).attr("data-workflow") == new_workflow_id){
+        $(elm).show();
+      }else{
+        $(elm).hide();
+      }
+    })
+  }
+  $('.ui.dropdown').dropdown();
+  $("#workflow").change(filter_state_by_workflow);
+  filter_state_by_workflow();
+
+</script>

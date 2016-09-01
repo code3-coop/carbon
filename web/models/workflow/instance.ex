@@ -18,9 +18,21 @@ defmodule Carbon.Workflow.Instance do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:lock_version, :state_id])
-    |> validate_required([:lock_version,:state])
+    |> cast(params, [:lock_version, :state_id, :workflow_id])
+    |> validate_required([:lock_version])
     |> foreign_key_constraint(:state_id)
+    |> foreign_key_constraint(:workflow_id)
     |> optimistic_lock(:lock_version)
   end
+
+  def create_changeset(struct, params \\ %{}, values) do
+    struct
+    |> cast(params, [:lock_version, :state_id, :workflow_id])
+    |> validate_required([:lock_version])
+    |> foreign_key_constraint(:state_id)
+    |> foreign_key_constraint(:workflow_id)
+    |> put_assoc(:values, Enum.map(values, &Ecto.Changeset.change/1))
+    |> optimistic_lock(:lock_version)
+  end
+
 end
