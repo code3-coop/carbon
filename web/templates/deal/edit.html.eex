@@ -1,3 +1,7 @@
+<style>
+  ::-webkit-inner-spin-button { display: none; }
+</style>
+
 <h2 class="ui header">Edit deal</h2>
 
 <%= form_for @changeset, account_deal_path(@conn, :update, @deal.account_id, @deal.id), fn f -> %>
@@ -80,3 +84,7 @@
     <%= link "cancel", to: account_deal_path(@conn, :index, @conn.params["account_id"]) %>
   </div>
 <% end %>
+
+<script>
+  $(".ui.dropdown").dropdown();
+</script>

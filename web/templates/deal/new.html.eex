@@ -1,3 +1,15 @@
+<style>
+  .ui.form textarea {
+    padding: 15px;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+</style>
+
+
 <h2 class="ui header">New deal</h2>
 
 <%= form_for @changeset, account_deal_path(@conn, :create, @conn.params["account_id"]), fn f -> %>
@@ -57,3 +69,8 @@
     <%= link "cancel", to: account_deal_path(@conn, :index, @conn.params["account_id"]) %>
   </div>
 <% end %>
+
+
+<script>
+  $('.dropdown').dropdown()
+</script>

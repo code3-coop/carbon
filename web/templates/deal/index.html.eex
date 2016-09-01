@@ -1,9 +1,15 @@
+<style>
+.event>.content>.meta>.links>form {
+  display: inline;
+}
+</style>
+
 <%= if get_flash(@conn, :deleted_deal) do %>
   <div class="ui message">
     <div class="header">
       Deal archived
     </div>
-    Deal archived successfully 
+    Deal archived successfully
       <% deal = get_flash(@conn, :deleted_deal) %>
       <% path_to_restore = account_deal_path(@conn, :restore, @conn.params["account_id"], deal.id) %>
       <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
@@ -14,7 +20,7 @@
 
 <h1 class="ui header">
   <div class="content">
-    Deals 
+    Deals
     <h2 class="ui sub header">
       <%= @account.name %>
     </h2>

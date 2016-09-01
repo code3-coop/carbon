@@ -1,5 +1,0 @@
-<style>
-.event>.content>.meta>.links>form {
-  display: inline;
-}
-</style>
