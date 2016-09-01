@@ -76,7 +76,7 @@
             <div class="row">
               <div class="ten wide column">
                 <h5>
-                  <%= link to: instance_path(@conn, :show, instance.id) do %>
+                  <%= link to: instance_path(@conn, :edit, instance.id) do %>
                     <%= instance.workflow.name %>
                   <%end%>
                   <div class="ui label <%=instance.state.color%>">
