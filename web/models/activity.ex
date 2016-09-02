@@ -35,9 +35,6 @@ defmodule Carbon.Activity do
   end
 
   defp do_new(account_id, user_id, :remove, target_schema, target_id, nil) do
-    if target_schema in [:accounts, :contacts] do
-      Carbon.SearchIndex.refresh()
-    end
     activity = %__MODULE__{
       :action => "remove",
       :target_schema => Atom.to_string(target_schema),
@@ -45,15 +42,10 @@ defmodule Carbon.Activity do
       :target_value => "",
       :user_id => user_id,
       :account_id => (if is_bitstring(account_id), do: String.to_integer(account_id), else: account_id) }
-     IO.inspect "HERE"
     spawn __MODULE__, :do_insert, [activity]
   end
 
   defp do_new(account_id, user_id, action, target_schema, target_id, %Ecto.Changeset{changes: changes}) do
-    if target_schema in [:accounts, :contacts] do
-      Carbon.SearchIndex.refresh()
-    end
-
     string_changes = changes
     |> Map.to_list
     |> Stream.filter(fn {_key, value} -> value != [] end)
@@ -70,10 +62,14 @@ defmodule Carbon.Activity do
       :target_value => string_changes,
       :user_id => user_id,
       :account_id => (if is_bitstring(account_id), do: String.to_integer(account_id), else: account_id) }
-    spawn __MODULE__, :do_insert, [activity]
+    spawn __MODULE__, :do_insert, [activity, changes]
   end
 
-  def do_insert(struct) do
-    Carbon.Repo.insert!(changeset(struct))
+  def do_insert(activity, changes \\ []) do
+    if activity.target_schema in ~w(account contact) do
+      Carbon.SearchIndex.refresh()
+    end
+    Carbon.Trigger.start(activity, changes)
+    Carbon.Repo.insert!(changeset(activity))
   end
 end
