@@ -57,7 +57,7 @@ managers  = Repo.insert! %Role{ key: "Managers", description: "they can help"}
 joe = Repo.insert! %User{ handle: "joe", full_name: "Joe", title: "Awesome", image_url: "/images/avatars/male/44.png", email: "joe@erlang.com", roles: [problem_solvers, ex_physicist] }
 mike = Repo.insert! %User{ handle: "mike", full_name: "Mike", title: "Awesome", image_url: "/images/avatars/male/39.png", email: "mike@erlang.com", roles: [problem_solvers] }
 robert = Repo.insert! %User{ handle: "robert", full_name: "Robert", title: "Awesome", image_url: "/images/avatars/male/98.png", email: "robert@erlang.com", roles: [problem_solvers] }
-
+system = Repo.insert! %User{ handle: "clint", full_name: "System", title: "Root", image_url: "/images/avatars/male/16.png", email: "clint@carbon-app.com", roles: [] }
 
 lead_status = Repo.insert!(%AccountStatus{key: "lead", color: "olive"})
 customer_status = Repo.insert!(%AccountStatus{key: "customer", color: "green"})
@@ -172,9 +172,9 @@ account_reference_field_value = Repo.insert! %Value{instance: timesheet_workflow
 # Triggers
 #
 
-timesheet_trigger = Repo.insert! %Carbon.TriggerRule{name: "on timesheet candidate", description: "Trigger new timesheet workflow when a timesheet becomes 'candidate'", action: "update", entity: "timesheet", field: "status_id", value: candidate_status.id, user: joe, workflow: timesheet_workflow}
+Repo.insert! %Carbon.Rule{name: "on timesheet candidate", description: "Trigger new timesheet workflow when a timesheet becomes 'candidate'", action: "update", entity: "timesheet", field: "status_id", value: candidate_status.id, user: joe, workflow: timesheet_workflow}
 
-account_trigger = Repo.insert! %Carbon.TriggerRule{name: "on account customer", description: "...", action: "update", entity: "account", field: "status_id", value: customer_status.id, user: joe, workflow: timesheet_workflow}
+Repo.insert! %Carbon.Rule{name: "on account customer", description: "...", action: "update", entity: "account", field: "status_id", value: customer_status.id, user: joe, workflow: timesheet_workflow}
 
 #
 # Full-text search materialized views and indexes

@@ -1,5 +1,5 @@
 defmodule Carbon.Trigger do
-  alias Carbon.{ Repo, Activity, TriggerRule }
+  alias Carbon.{ Activity, Repo, Rule }
   alias Carbon.Workflow.{ Instance, Value, Field }
   import Ecto.Query, only: [from: 2]
 
@@ -19,7 +19,7 @@ defmodule Carbon.Trigger do
   end
 
   defp only_allowed_fields(entity, {field, _value}) do
-    TriggerRule.allowed_entities
+    Rule.allowed_entities
     |> Map.get(entity, [])
     |> Enum.member?(to_string(field))
   end
@@ -33,7 +33,7 @@ defmodule Carbon.Trigger do
     base_query(activity)
   end
   defp base_query(activity) do
-    from r in TriggerRule,
+    from r in Rule,
       where: r.action == ^activity.action,
       where: r.entity == ^activity.target_schema,
       where: r.active,

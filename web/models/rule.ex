@@ -1,4 +1,4 @@
-defmodule Carbon.TriggerRule do
+defmodule Carbon.Rule do
   use Carbon.Web, :model
 
   @allowed_entities %{
@@ -8,7 +8,7 @@ defmodule Carbon.TriggerRule do
 
   def allowed_entities, do: @allowed_entities
 
-  schema "trigger_rules" do
+  schema "rules" do
     field :name, :string
     field :description, :string
     field :action, :string
