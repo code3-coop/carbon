@@ -112,7 +112,7 @@
     <% end %>
 
     <%= submit "Submit", class: "ui primary button" %>
-    <%= link to: instance_path(@conn, :show, @instance.id), class: "ui button" do %>
+    <%= link to: instance_path(@conn, :index), class: "ui button" do %>
       Cancel
     <% end %>
 
