@@ -15,9 +15,6 @@
       <label>
         Workflow
         <%= error_tag f, :workflow %>
-        <span class="error">
-          <%= if f.errors[:workflow], do: translate_error f.errors[:workflow] %>
-        </span>
       </label>
       <div class="ui selection dropdown">
         <% workflow_for_select = workflow_select %>
@@ -38,9 +35,6 @@
     <div class="ui field">
       <label>
         Status
-        <%IO.inspect f%>
-        <%IO.inspect @changeset%>
-        <%= error_tag @changeset, :status %>
       </label>
       <div class="ui selection dropdown">
         <% states = workflow_states_select%>
@@ -66,6 +60,8 @@
 <script>
   var filter_state_by_workflow = function(_event){
     var new_workflow_id = $("#workflow").val();
+    var first_valid_state = $('.menu:nth(3) .item[data-workflow="'+ new_workflow_id +'"]:first');
+    $(".dropdown:nth(2)").dropdown("set selected", $(first_valid_state).attr("data-value"))
     $('.menu:nth(3) .item').each(function(_index, elm){
       if($(elm).attr("data-workflow") == new_workflow_id){
         $(elm).show();
@@ -76,6 +72,7 @@
   }
   $('.ui.dropdown').dropdown();
   $("#workflow").change(filter_state_by_workflow);
+
   filter_state_by_workflow();
 
 </script>
