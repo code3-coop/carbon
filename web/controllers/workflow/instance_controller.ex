@@ -103,7 +103,7 @@ defmodule Carbon.Workflow.InstanceController do
     changeset = Instance.changeset(instance, instance_params)
 
     values_changesets = Enum.map instance.values, fn old_value ->
-      new_value_as_string = instance_params[to_string(old_value.field_id)]
+      new_value_as_string = instance_params[to_string(old_value.id)]
       type = old_value.field.type
       cond do
         new_value_as_string == "" ->
@@ -111,7 +111,7 @@ defmodule Carbon.Workflow.InstanceController do
         Enum.member? ["text", "long_text"], type ->
           {old_value, Value.changeset(old_value, %{string_value: new_value_as_string})}
         type == "integer" or type == "reference" or type == "currency" ->
-          {old_value, Value.changeset(old_value, %{integer_value: String.to_integer(new_value_as_string)})}
+          {old_value, Value.changeset(old_value, %{integer_value: new_value_as_string})}
         type == "date" ->
           {old_value, Value.changeset(old_value, %{date_value: new_value_as_string})}
         type == "boolean" ->

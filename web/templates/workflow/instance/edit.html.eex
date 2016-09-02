@@ -35,16 +35,14 @@
           <% value = Enum.find @instance.values, &(&1.field_id == field.id)%>
           <%= cond do %>
             <% field.type == "date" -> %>
-              <input type="date" name="instance[<%= field.id %>]" value="<%= if value, do: value.date_value %>">
+              <input type="date" name="instance[<%= value.id %>]" value="<%= if value, do: value.date_value %>">
             <% field.type == "text" -> %>
-              <input name="instance[<%= field.id %>]" value="<%= if value, do: value.string_value %>">
+              <input name="instance[<%= value.id %>]" value="<%= if value, do: value.string_value %>">
             <% field.type == "long_text" -> %>
-              <textarea name="instance[<%= field.id %>]">
-                <%= if value, do: value.string_value %>
-              </textarea>
+              <textarea name="instance[<%= value.id %>]"><%= if value, do: value.string_value %></textarea>
             <% field.type == "reference" and field.entity_reference_name == "Carbon.User" -> %>
               <div class="ui selection dropdown">
-                <input type="hidden" name="instance[<%= field.id %>]" value="<%= if value, do: value.integer_value %>" %>
+                <input type="hidden" name="instance[<%= value.id %>]" value="<%= if value, do: value.integer_value %>" %>
                 <i class="dropdown icon"></i>
                 <div class="default text">Status</div>
                 <div class="menu">
@@ -65,7 +63,7 @@
               </div>
             <% field.type == "reference" and field.entity_reference_name == "Carbon.Timesheet" -> %>
               <div class="ui selection dropdown">
-                <input type="hidden" name="instance[<%= field.id %>]" value="<%= if value, do: value.integer_value %>" %>
+                <input type="hidden" name="instance[<%= value.id %>]" value="<%= if value, do: value.integer_value %>" %>
                 <i class="dropdown icon"></i>
                 <div class="default text">Timesheet</div>
                 <div class="menu">
@@ -85,7 +83,7 @@
               </div>
             <% field.type == "reference" and field.entity_reference_name == "Carbon.Account" -> %>
               <div class="ui selection dropdown">
-                <input type="hidden" name="instance[<%= field.id %>]" value="<%= if value, do: value.integer_value %>" %>
+                <input type="hidden" name="instance[<%= value.id %>]" value="<%= if value, do: value.integer_value %>" %>
                 <i class="dropdown icon"></i>
 
                 <div class="default text">Account</div>
