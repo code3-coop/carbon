@@ -49,13 +49,9 @@
   <a id="unselect-all" class="ui button" style="display: none;">UnSelect all</a>
 
   <div class="ui right floated">
-    <a class="ui button">
+    <a class="ui primary button">
       <i class="ui icon cogs"></i>
       Begin process
-    </a>
-    <a class="ui button">
-      <i class="ui icon refresh"></i>
-      Refresh
     </a>
   </div>
   <%= if Enum.empty? @instances do %>
