@@ -32,7 +32,7 @@
   </div>
 
   <div class="ui selection dropdown">
-    <%= hidden_input f, :status %>
+    <%= hidden_input f, :state %>
     <div class="default text">Status</div>
     <i class="dropdown icon"></i>
     <div class="menu">
@@ -65,7 +65,7 @@
   <% else %>
     <table class="ui table">
     <%= for instance <- @instances  do %>
-      <tr>
+      <tr data-worflow="<%= instance.workflow_id %>" data-state="<%= instance.state_id%>">
         <td>
           <div class="ui checkbox">
             <input type="checkbox" class=" ui checkbox">
@@ -139,9 +139,7 @@
   }
 </style>
 <script>
-  $('.ui.dropdown').dropdown()
-  $('.ui.checkbox').checkbox()
-  $('#query_workflow').on('change', function(event){
+  var filter_possible_state = function(event){
     $('.ui.dropdown:nth(1)').dropdown('clear')
     var current_workflow = $(event.target).val();
     $('.dropdown:nth(2) .menu .item').each(function(index, status){
@@ -151,7 +149,7 @@
           $(status).hide()
         }
     });
-  });
+  };
   var toggleSelectAll = function(){
     $('#select-all').toggle();
     $('#unselect-all').toggle();
@@ -163,7 +161,25 @@
   var unselectAll = function(){
     toggleSelectAll();
     $(".ui.checkbox").checkbox("uncheck")
+  };
+  var filter_instances_on_workflow_and_state = function(){
+    var workflow_id = $('#query_workflow').val();
+    var state_id = $('#query_state').val();
+
+    $('tr').each(function(index, tr){
+      if($(tr).attr('data-worflow') == workflow_id && (!state_id || $(tr).attr('data-state') == state_id )){
+        $(tr).show();
+      }else{
+        $(tr).hide();
+      }
+    });
   }
+
+  $('.ui.dropdown').dropdown();
+  $('.ui.checkbox').checkbox();
+  $('#query_workflow').change(filter_possible_state);
+  $('#query_workflow').change(filter_instances_on_workflow_and_state);
+  $('#query_state').change(filter_instances_on_workflow_and_state);
   $('#select-all').click(selectAll);
   $('#unselect-all').click(unselectAll);
 </script>
