@@ -169,6 +169,14 @@ user_reference_field_value = Repo.insert! %Value{instance: timesheet_workflow_in
 account_reference_field_value = Repo.insert! %Value{instance: timesheet_workflow_instance, field: account_reference_field, integer_value: account_a.id}
 
 #
+# Triggers
+#
+
+timesheet_trigger = Repo.insert! %Carbon.TriggerRule{name: "on timesheet candidate", description: "Trigger new timesheet workflow when a timesheet becomes 'candidate'", action: "update", entity: "timesheet", field: "status_id", value: candidate_status.id, user: joe, workflow: timesheet_workflow}
+
+account_trigger = Repo.insert! %Carbon.TriggerRule{name: "on account customer", description: "...", action: "update", entity: "account", field: "status_id", value: customer_status.id, user: joe, workflow: timesheet_workflow}
+
+#
 # Full-text search materialized views and indexes
 #
 
