@@ -45,9 +45,6 @@
       <% end %>
     </div>
   </div>
-  <a id="select-all" class="ui button" >Select all</a>
-  <a id="unselect-all" class="ui button" style="display: none;">UnSelect all</a>
-
   <div class="ui right floated">
     <a class="ui primary button">
       <i class="ui icon cogs"></i>
@@ -63,49 +60,43 @@
     <%= for instance <- @instances  do %>
       <tr data-worflow="<%= instance.workflow_id %>" data-state="<%= instance.state_id%>">
         <td>
-          <div class="ui checkbox">
-            <input type="checkbox" class=" ui checkbox">
-          </div>
-        </td>
-        <td>
           <div class="ui grid">
             <div class="row">
               <div class="ten wide column">
-                <h5>
-                  <%= link to: instance_path(@conn, :edit, instance.id) do %>
-                    <%= instance.workflow.name %>
-                  <%end%>
+
+                <%= link to: instance_path(@conn, :edit, instance.id) do %>
+                  <%= instance.workflow.name %>
+                <%end%>
+
+
                   <div class="ui label <%=instance.state.color%>">
                     <i class="ui icon <%=instance.state.icon_name %>"></i>
                     <%= instance.state.name %>
                   </div>
-                </h5>
+
+                  <% user_value = Enum.find instance.values, &(Field.reference_user &1.field) %>
+                  <%= if user_value != nil and user_value.integer_value != nil do %>
+                    <% user = @users[user_value.integer_value] %>
+                    <div class="ui image label">
+                      <img src="<%= user.image_url%>">
+                      <%= user.handle %>
+                    </div>
+                  <% end %>
+
+                  <% account_value = Enum.find instance.values, &(Field.reference_account &1.field) %>
+                  <%= if account_value != nil and account_value.integer_value != nil do %>
+                    <% account = @accounts[account_value.integer_value] %>
+                    <div class="ui label">
+                      Account
+                      <div class="detail"><%= account.name %></div>
+                    </div>
+                  <% end %>
+
+
               </div>
             <div class="six wide column">
               <div class="ui meta right floated">
                 Updated at: <%= instance.updated_at %>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="sixteen wide column">
-              <div class="ui labels">
-                <% user_value = Enum.find instance.values, &(Field.reference_user &1.field) %>
-                <%= if user_value != nil and user_value.integer_value != nil do %>
-                  <% user = @users[user_value.integer_value] %>
-                  <div class="ui image label">
-                    <img src="<%= user.image_url%>">
-                    <%= user.handle %>
-                  </div>
-                <% end %>
-                <% account_value = Enum.find instance.values, &(Field.reference_account &1.field) %>
-                <%= if account_value != nil and account_value.integer_value != nil do %>
-                  <% account = @accounts[account_value.integer_value] %>
-                  <div class="ui label">
-                    Account
-                    <div class="detail"><%= account.name %></div>
-                  </div>
-                <% end %>
               </div>
             </div>
           </div>
@@ -149,14 +140,6 @@
   var toggleSelectAll = function(){
     $('#select-all').toggle();
     $('#unselect-all').toggle();
-  }
-  var selectAll = function(){
-    toggleSelectAll();
-    $(".ui.checkbox").checkbox("check")
-  }
-  var unselectAll = function(){
-    toggleSelectAll();
-    $(".ui.checkbox").checkbox("uncheck")
   };
   var filter_instances_on_workflow_and_state = function(){
     var workflow_id = $('#query_workflow').val();
