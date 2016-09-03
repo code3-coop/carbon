@@ -49,5 +49,12 @@ defmodule Carbon.Workflow.InstanceView do
     Repo.get(Timesheet, id) |> Repo.preload([:status, :user])
   end
 
+  def instance_match_params(instance, conn) do
+    accepted_workflow_values = [nil, "", to_string(instance.workflow_id)]
+    accepted_state_values = [nil, "", to_string(instance.state_id)]
+    Enum.member?(accepted_workflow_values, conn.params["workflow"])
+    and Enum.member?(accepted_state_values, conn.params["state"])
+  end
+
 
 end

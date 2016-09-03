@@ -21,7 +21,7 @@
 
 <%= form_for @conn, instance_path(@conn, :index), [as: :query], fn f ->  %>
   <div class="ui selection dropdown">
-    <%= hidden_input f, :workflow %>
+    <%= hidden_input f, :workflow, value: @conn.params["workflow"] %>
     <div class="default text">Worflow</div>
     <i class="dropdown icon"></i>
     <div class="menu">
@@ -32,11 +32,11 @@
   </div>
 
   <div class="ui selection dropdown">
-    <%= hidden_input f, :state %>
+    <%= hidden_input f, :state, value: @conn.params["state"] %>
     <div class="default text">Status</div>
     <i class="dropdown icon"></i>
     <div class="menu">
-      <%= for workflow <- @workflows do %>
+      <%= for workflow <- @workflows, @conn.params["workflow"] == to_string(workflow.id) do %>
         <%= for state <- workflow.states do %>
           <div class="item" data-value="<%= state.id %>" data-worflow="<%= workflow.id %>">
           <%= state.name %>
@@ -46,73 +46,77 @@
     </div>
   </div>
   <div class="ui right floated">
-    <a class="ui primary button">
+    <button class="ui primary button">
       <i class="ui icon cogs"></i>
       Begin process
-    </a>
+    </button>
   </div>
-  <%= if Enum.empty? @instances do %>
-    <div class="emtpy-list-message meta">
-      No workflow match the current search criteria
-    </div>
-  <% else %>
-    <table class="ui table">
-    <%= for instance <- @instances  do %>
-      <tr data-worflow="<%= instance.workflow_id %>" data-state="<%= instance.state_id%>">
-        <td>
-          <div class="ui grid">
-            <div class="row">
-              <div class="ten wide column">
+<% end %>
 
-                <%= link to: instance_path(@conn, :edit, instance.id) do %>
-                  <%= instance.workflow.name %>
-                <%end%>
+<%= if Enum.empty? @instances do %>
+  <div class="emtpy-list-message meta">
+    No workflow match the current search criteria
+  </div>
+<% else %>
+  <table class="ui table">
+  <%= for instance <- @instances  do %>
+    <%= if instance_match_params instance, @conn do %>
+      <tr>
+      <td>
+        <div class="ui grid">
+          <div class="row">
+            <div class="ten wide column">
+
+              <%= link to: instance_path(@conn, :edit, instance.id) do %>
+                <%= instance.workflow.name %>
+              <%end%>
 
 
-                  <div class="ui label <%=instance.state.color%>">
-                    <i class="ui icon <%=instance.state.icon_name %>"></i>
-                    <%= instance.state.name %>
+                <div class="ui label <%=instance.state.color%>">
+                  <i class="ui icon <%=instance.state.icon_name %>"></i>
+                  <%= instance.state.name %>
+                </div>
+
+                <% user_value = Enum.find instance.values, &(Field.reference_user &1.field) %>
+                <%= if user_value != nil and user_value.integer_value != nil do %>
+                  <% user = @users[user_value.integer_value] %>
+                  <div class="ui image label">
+                    <img src="<%= user.image_url%>">
+                    <%= user.handle %>
                   </div>
+                <% end %>
 
-                  <% user_value = Enum.find instance.values, &(Field.reference_user &1.field) %>
-                  <%= if user_value != nil and user_value.integer_value != nil do %>
-                    <% user = @users[user_value.integer_value] %>
-                    <div class="ui image label">
-                      <img src="<%= user.image_url%>">
-                      <%= user.handle %>
-                    </div>
-                  <% end %>
-
-                  <% account_value = Enum.find instance.values, &(Field.reference_account &1.field) %>
-                  <%= if account_value != nil and account_value.integer_value != nil do %>
-                    <% account = @accounts[account_value.integer_value] %>
-                    <div class="ui label">
-                      Account
-                      <div class="detail"><%= account.name %></div>
-                    </div>
-                  <% end %>
+                <% account_value = Enum.find instance.values, &(Field.reference_account &1.field) %>
+                <%= if account_value != nil and account_value.integer_value != nil do %>
+                  <% account = @accounts[account_value.integer_value] %>
+                  <div class="ui label">
+                    Account
+                    <div class="detail"><%= account.name %></div>
+                  </div>
+                <% end %>
 
 
-              </div>
-            <div class="six wide column">
-              <div class="ui meta right floated">
-                Updated at: <%= instance.updated_at %>
-              </div>
+            </div>
+          <div class="six wide column">
+            <div class="ui meta right floated">
+              Updated at: <%= instance.updated_at %>
             </div>
           </div>
+        </div>
 
-        </td>
-      </tr>
+      </td>
+    </tr>
     <% end %>
-  </table>
   <% end %>
-  <center>
-    Don't find the process you were looking for ?
-    <%= link to: instance_path(@conn, :new) do %>
-      Create it now !
-    <% end %>
+</table>
+  <% end %>
+<center>
+  Don't find the process you were looking for ?
+  <%= link to: instance_path(@conn, :new) do %>
+    Create it now !
+  <% end %>
   </center>
-<% end %>
+
 <style>
   .emtpy-list-message {
     padding :10rem;
@@ -126,39 +130,13 @@
   }
 </style>
 <script>
-  var filter_possible_state = function(event){
-    $('.ui.dropdown:nth(1)').dropdown('clear')
-    var current_workflow = $(event.target).val();
-    $('.dropdown:nth(2) .menu .item').each(function(index, status){
-        if($(status).attr('data-worflow') == current_workflow){
-          $(status).show()
-        }else {
-          $(status).hide()
-        }
-    });
-  };
-  var toggleSelectAll = function(){
-    $('#select-all').toggle();
-    $('#unselect-all').toggle();
-  };
-  var filter_instances_on_workflow_and_state = function(){
+  var do_search = function(event){
+    var changed_workflow = $(event.target).attr('id') == 'query_workflow'
     var workflow_id = $('#query_workflow').val();
-    var state_id = $('#query_state').val();
-
-    $('tr').each(function(index, tr){
-      if($(tr).attr('data-worflow') == workflow_id && (!state_id || $(tr).attr('data-state') == state_id )){
-        $(tr).show();
-      }else{
-        $(tr).hide();
-      }
-    });
-  }
-
+    var state_id = changed_workflow ? "" : $('#query_state').val();
+    var destination = location.pathname+"?workflow="+workflow_id +"&state="+state_id;
+    Turbolinks.visit(destination);
+  };
   $('.ui.dropdown').dropdown();
-  $('.ui.checkbox').checkbox();
-  $('#query_workflow').change(filter_possible_state);
-  $('#query_workflow').change(filter_instances_on_workflow_and_state);
-  $('#query_state').change(filter_instances_on_workflow_and_state);
-  $('#select-all').click(selectAll);
-  $('#unselect-all').click(unselectAll);
+  $('.ui.dropdown').change(do_search);
 </script>
