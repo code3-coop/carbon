@@ -24,20 +24,20 @@
       <div class="content">
         <div class="summary">
           <a class="user" href="<%= user_path(@conn, :show, activity.user.id) %>"><%= activity.user.full_name %></a>
-          <%= past_tense activity.action %> <%= singular activity.target_schema %> #<%= activity.target_id %>
+          <%= past_tense activity.action %> <%= singular activity.entity_name %> #<%= activity.entity_id %>
           <div class="date">
             <%= activity.inserted_at %> GMT
           </div>
         </div>
         <div class="meta">
-          <%= if activity.target_value != "" do %>
+          <%= if activity.changes != "" do %>
             <%= case activity.action do %>
               <%= "create" -> %><i class="icon add"></i>
               <%= "remove" -> %><i class="icon trash outline"></i>
               <%= "update" -> %><i class="icon write"></i>
               <%= "restore" -> %><i class="icon recycle"></i>
             <% end %>
-            <% field_names = activity.target_value |> String.split(",") |> Enum.map(&for_humans/1) %>
+            <% field_names = activity.changes |> String.split(",") |> Enum.map(&for_humans/1) %>
             <%= for { name, reverse_index } <- Enum.zip(field_names, (length field_names)-1..0) do %>
               <%= name %><%= if reverse_index > 1, do: ", " %><%= if reverse_index == 1, do: " and " %><%= if reverse_index == 0, do: "." %>
             <% end %>

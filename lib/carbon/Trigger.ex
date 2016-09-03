@@ -3,19 +3,16 @@ defmodule Carbon.Trigger do
   alias Carbon.Workflow.{ Instance, Value, Field }
   import Ecto.Query, only: [from: 2]
 
-  def start(activity, changes) do
-    spawn __MODULE__, :check, [activity, changes]
-  end
-
-  def check(activity, changes) do
+  def fire(activity, changes) do
     changes
-    |> Enum.filter(&only_allowed_fields(activity.target_schema, &1))
+    |> Enum.filter(&only_allowed_fields(activity.entity_name, &1))
     |> Enum.map(&create_query(activity, &1))
     |> Enum.map(&Task.async(Repo, :all, [&1]))
     |> Enum.flat_map(&Task.await/1)
     |> Enum.uniq_by(&(&1.id))
     |> Enum.map(&instantiate_workflow(activity, &1))
-    |> Enum.map(&Repo.insert(&1))
+    |> insert_instances
+    |> update_activity(activity)
   end
 
   defp only_allowed_fields(entity, {field, _value}) do
@@ -35,7 +32,7 @@ defmodule Carbon.Trigger do
   defp base_query(activity) do
     from r in Rule,
       where: r.action == ^activity.action,
-      where: r.entity == ^activity.target_schema,
+      where: r.entity == ^activity.entity_name,
       where: r.active,
       preload: [ workflow: [ :states, sections: [ :fields ] ] ]
   end
@@ -55,9 +52,9 @@ defmodule Carbon.Trigger do
   end
 
   defp initialize_field(activity, field, instance) do
-    case { field.entity_reference_name, activity.target_schema } do
-      { "Carbon.Account", "account" } -> add_value_to_instance(instance, field, activity.target_id)
-      { "Carbon.Timesheet", "timesheet" } -> add_value_to_instance(instance, field, activity.target_id)
+    case { field.entity_reference_name, activity.entity_name } do
+      { "Carbon.Account", "account" } -> add_value_to_instance(instance, field, activity.entity_id)
+      { "Carbon.Timesheet", "timesheet" } -> add_value_to_instance(instance, field, activity.entity_id)
       _ -> instance
     end
   end
@@ -65,5 +62,16 @@ defmodule Carbon.Trigger do
   defp add_value_to_instance(instance, field, id) do
     value = %Value{field: field, integer_value: id }
     %{ instance | values: [ value | instance.values ] }
+  end
+
+  @spec insert_instances(list(%Instance{})) :: String.t
+  defp insert_instances([]), do: "noop"
+  defp insert_instances(instances) do
+    Repo.transaction(fn -> Enum.map(instances, &Repo.insert(&1)) end) |> elem(0)
+  end
+
+  @spec update_activity(String.t, %Activity{}) :: Ecto.Schema.t | no_return
+  defp update_activity(trigger_status, activity) do
+    Repo.update! Activity.changeset(activity, %{ trigger_status: to_string(trigger_status) })
   end
 end

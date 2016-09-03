@@ -13,7 +13,9 @@ defmodule Carbon.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
-     deps: deps()]
+     deps: deps(),
+     dialyzer: [plt_add_deps: :transitive]
+   ]
   end
 
   # Configuration for the OTP application.
@@ -53,7 +55,9 @@ defmodule Carbon.Mixfile do
      {:cowboy, "~> 1.0"},
      {:bamboo, "~> 0.7"},
      {:number, "~> 0.4.2"},
-     {:ex_doc, "~> 0.12", only: :dev}]
+     {:ex_doc, "~> 0.12", only: :dev},
+     {:dialyxir, "~> 0.3.5", only: :dev}
+   ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
