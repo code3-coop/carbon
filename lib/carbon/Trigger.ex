@@ -29,9 +29,7 @@ defmodule Carbon.Trigger do
       where: r.field == ^to_string(field),
       where: r.value == ^value
   end
-  defp create_query(activity, _) do
-    base_query(activity)
-  end
+  defp create_query(activity, _), do: base_query(activity)
 
   @spec base_query(%Activity{}) :: Ecto.Queryable.t
   defp base_query(activity) do
