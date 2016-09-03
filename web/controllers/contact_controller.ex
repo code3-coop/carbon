@@ -17,7 +17,7 @@ defmodule Carbon.ContactController do
 
     case Repo.insert(changeset) do
       {:ok, contact} ->
-        Carbon.Activity.new(account_id, current_user.id, :create, "contact", contact.id, changeset)        
+        Carbon.Activity.new("account", String.to_integer(account_id), current_user.id, :create, "contact", contact.id, changeset)        
         conn
         |> put_flash(:info, "Contact created successfully.")
         |> redirect(to: account_path(conn, :show, account_id))
@@ -46,7 +46,7 @@ defmodule Carbon.ContactController do
 
     case Repo.update(changeset) do
       {:ok, contact} ->
-        Carbon.Activity.new(account_id, current_user.id, :update, "contact", contact.id, changeset)
+        Carbon.Activity.new("account", String.to_integer(account_id), current_user.id, :update, "contact", contact.id, changeset)
         conn
         |> put_flash(:info, "Contacts updated successfully.")
         |> redirect(to: account_path(conn, :show, account_id))

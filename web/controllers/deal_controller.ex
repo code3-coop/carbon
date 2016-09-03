@@ -33,7 +33,7 @@ defmodule Carbon.DealController do
 
     case Repo.insert(changeset) do
       {:ok, deal} ->
-        Carbon.Activity.new(account_id, current_user.id, :create, "deal", deal.id, changeset)
+        Carbon.Activity.new("account", String.to_integer(account_id), current_user.id, :create, "deal", deal.id, changeset)
         conn
         |> put_flash(:info, "Deal created successfully.")
         |> redirect(to: account_deal_path(conn, :index, account_id))
@@ -52,7 +52,7 @@ defmodule Carbon.DealController do
 
     case Repo.update(changeset) do
       {:ok, deal} ->
-        Carbon.Activity.new(account_id, current_user.id, :remove, "deal", deal.id, changeset)
+        Carbon.Activity.new("account", String.to_integer(account_id), current_user.id, :remove, "deal", deal.id, changeset)
         conn
         |> put_flash(:deleted_deal, deal)
         |> redirect(to: account_deal_path(conn, :index, account_id))
@@ -71,7 +71,7 @@ defmodule Carbon.DealController do
 
     case Repo.update(changeset) do
       {:ok, deal} ->
-        Carbon.Activity.new(account_id, current_user.id, :restore, "deal", deal.id, changeset)
+        Carbon.Activity.new("account", String.to_integer(account_id), current_user.id, :restore, "deal", deal.id, changeset)
         conn
         |> redirect(to: account_deal_path(conn, :index, account_id))
       {:error, changeset} ->
@@ -104,7 +104,7 @@ defmodule Carbon.DealController do
 
     case Repo.update(changeset) do
       {:ok, _deal} ->
-        Carbon.Activity.new(account_id, current_user.id, :update, "deal", deal.id, changeset)
+        Carbon.Activity.new("account", String.to_integer(account_id), current_user.id, :update, "deal", deal.id, changeset)
         conn
         |> put_flash(:info, "Deal updated successfully.")
         |> redirect(to: account_deal_path(conn, :index, account_id))

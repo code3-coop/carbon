@@ -6,6 +6,9 @@ defmodule Carbon.Activity do
   schema "activities" do
     field :action, :string
 
+    field :owning_entity_name, :string
+    field :owning_entity_id, :integer
+
     field :entity_name, :string
     field :entity_id, :integer
     field :changes, :string
@@ -13,7 +16,6 @@ defmodule Carbon.Activity do
     field :trigger_status, :string, default: "pending"
 
     belongs_to :user, Carbon.User
-    belongs_to :account, Carbon.Account
 
     timestamps
   end
@@ -23,32 +25,34 @@ defmodule Carbon.Activity do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:action, :entity_name, :user_id, :account_id, :trigger_status])
-    |> validate_required([:action, :entity_name, :user_id, :account_id])
+    |> cast(params, [:owning_entity_name, :owning_entity_id, :action, :entity_name, :user_id, :trigger_status])
+    |> validate_required([:owning_entity_name, :owning_entity_id, :action, :entity_name, :user_id])
     |> validate_inclusion(:action, ~w(create remove update restore))
+    |> validate_inclusion(:owning_entity_name, ~w(account timesheet))
     |> validate_inclusion(:trigger_status, ~w(pending noop ok error))
     |> foreign_key_constraint(:user_id)
-    |> foreign_key_constraint(:account_id)
   end
 
-  def new(account_id, user_id, action, entity_name, entity_id, changeset) do
+  def new(owning_entity_name, owning_entity_id, user_id, action, entity_name, entity_id, changeset) do
     if Mix.env != :test do
-      do_new(account_id, user_id, action, entity_name, entity_id, changeset)
+      do_new(owning_entity_name, owning_entity_id, user_id, action, entity_name, entity_id, changeset)
     end
   end
 
-  defp do_new(account_id, user_id, :remove, entity_name, entity_id, nil) do
+  defp do_new(owning_entity_name, owning_entity_id, user_id, :remove, entity_name, entity_id, nil) do
     activity = %__MODULE__{
       :action => "remove",
+      :owning_entity_name => owning_entity_name,
+      :owning_entity_id => owning_entity_id,
       :entity_name => entity_name,
       :entity_id => entity_id,
       :changes => "",
       :user_id => user_id,
-      :account_id => (if is_bitstring(account_id), do: String.to_integer(account_id), else: account_id) }
+    }
     spawn __MODULE__, :do_insert, [activity]
   end
 
-  defp do_new(account_id, user_id, action, entity_name, entity_id, %Ecto.Changeset{changes: changes}) do
+  defp do_new(owning_entity_name, owning_entity_id, user_id, action, entity_name, entity_id, %Ecto.Changeset{changes: changes}) do
     string_changes = changes
     |> Map.to_list
     |> Stream.filter(fn {_key, value} -> value != [] end)
@@ -60,18 +64,18 @@ defmodule Carbon.Activity do
 
     activity = %__MODULE__{
       :action => Atom.to_string(action),
+      :owning_entity_name => owning_entity_name,
+      :owning_entity_id => owning_entity_id,
       :entity_name => entity_name,
       :entity_id => entity_id,
       :changes => string_changes,
       :user_id => user_id,
-      :account_id => (if is_bitstring(account_id), do: String.to_integer(account_id), else: account_id) }
+    }
     spawn __MODULE__, :do_insert, [activity, changes]
   end
 
   def do_insert(activity, changes \\ []) do
-    if activity.entity_name in ~w(account contact) do
-      Carbon.SearchIndex.refresh()
-    end
+    if activity.entity_name in ~w(account contact), do: Carbon.SearchIndex.refresh()
 
     activity
     |> changeset
