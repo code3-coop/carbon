@@ -31,7 +31,6 @@ defmodule Carbon.Workflow.InstanceController do
         |> put_flash(:info, "Workflow instance created with success")
         |> redirect(to: instance_path(conn, :show, instance.id))
       {:error, changeset} ->
-        IO.inspect changeset
         conn
         |> assign(:changeset, changeset)
         |> render("new.html")
