@@ -2,7 +2,7 @@ defmodule Carbon.Repo.Migrations.CreateTrigger do
   use Ecto.Migration
 
   def change do
-    create table(:trigger_rules) do
+    create table(:rules) do
       add :name, :string
       add :description, :string
       add :action, :string
@@ -15,7 +15,7 @@ defmodule Carbon.Repo.Migrations.CreateTrigger do
 
       timestamps
     end
-    create index(:trigger_rules, [:action, :entity, :field, :value])
+    create index(:rules, [:action, :entity, :field, :value])
 
   end
 end
