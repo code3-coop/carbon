@@ -4,14 +4,14 @@ defmodule Carbon.ActivityController do
   alias Carbon.{ Account, Activity }
   
   def index(conn, %{"account_id" => account_id}) do
-    query = from a in Activity,
+    activities = Repo.all from a in Activity,
       where: a.account_id == ^account_id,
       order_by: [ desc: a.inserted_at ],
       preload: [ :user, :account ]
     
     conn
-    |> assign(:activities, Repo.all(query))
-    |> assign(:account, Repo.get(Account, account_id)) 
+    |> assign(:activities, activities)
+    |> assign(:account, hd(activities).account)
     |> render("index.html")
   end
 end
