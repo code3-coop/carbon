@@ -92,7 +92,7 @@
 
   <div class="row">
     <div class="column">
-      <div class="ui cards">
+      <div class="ui four cards">
         <%= for contact <- Enum.sort_by(@account.contacts, &(&1.full_name)) do %>
           <div class="card">
             <div class="content">

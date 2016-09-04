@@ -71,7 +71,7 @@ defmodule Carbon.AccountController do
 
     case Repo.insert(changeset) do
       {:ok, account} ->
-        Carbon.Activity.new(account.id, current_user.id, :create, "account", account.id, changeset)
+        Carbon.Activity.new("account", account.id, current_user.id, :create, "account", account.id, changeset)
         conn
         |> put_flash(:info, "Account created successfully.")
         |> redirect(to: account_path(conn, :show, account.id))
@@ -153,7 +153,7 @@ defmodule Carbon.AccountController do
 
     case Repo.update(changeset) do
       {:ok, account} ->
-        Carbon.Activity.new(account.id, current_user.id, :update, "account", account.id, changeset)
+        Carbon.Activity.new("account", account.id, current_user.id, :update, "account", account.id, changeset)
         conn
         |> put_flash(:info, "Account updated successfully.")
         |> redirect(to: account_path(conn, :show, account))
@@ -169,7 +169,7 @@ defmodule Carbon.AccountController do
 
     case Repo.update(changeset) do
       {:ok, account} ->
-        Carbon.Activity.new(account.id, current_user.id, :remove, "account", account.id, changeset)
+        Carbon.Activity.new("account", account.id, current_user.id, :remove, "account", account.id, changeset)
         conn
         |> put_flash(:deleted_account, account)
         |> redirect(to: account_path(conn, :index))
@@ -187,7 +187,7 @@ defmodule Carbon.AccountController do
 
     case Repo.update(changeset) do
       {:ok, account} ->
-        Carbon.Activity.new(account.id, current_user.id, :restore, "account", account.id, changeset)
+        Carbon.Activity.new("account", account.id, current_user.id, :restore, "account", account.id, changeset)
         conn
         |> redirect(to: account_path(conn, :index))
       {:error, _changeset} -> 
