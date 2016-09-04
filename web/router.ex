@@ -58,6 +58,7 @@ defmodule Carbon.Router do
 
     resources "/workflows/instances", Workflow.InstanceController, except: [:show]
     put "/workflows/instances/:id/restore", Workflow.InstanceController, :restore
+    get "/workflows/instances/:ids/process", Workflow.InstanceController, :process
 
   end
 

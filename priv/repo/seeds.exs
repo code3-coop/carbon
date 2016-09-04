@@ -30,10 +30,16 @@ alias Carbon.{
   TimesheetStatus,
   Timesheet,
   TimesheetEntryTag,
-  Workflow
+  Workflow,
 }
 
-alias Carbon.Workflow.{Field, Section, Instance, State, Value}
+alias Carbon.Workflow.{
+  Field,
+  Section,
+  Instance,
+  State,
+  Value,
+}
 
 #
 # Sample data

@@ -19,20 +19,24 @@
   </div>
 <% end %>
 
-<%= form_for @conn, instance_path(@conn, :index), [as: :query], fn f ->  %>
+<div>
+  <% selected_instances =  @instances |> Enum.filter(&instance_match_params(&1, @conn)) |> Enum.map(&(&1.id))%>
+
   <div class="ui selection dropdown">
-    <%= hidden_input f, :workflow, value: @conn.params["workflow"] %>
+    <%= hidden_input :query, :workflow, value: @conn.params["workflow"] %>
     <div class="default text">Worflow</div>
     <i class="dropdown icon"></i>
     <div class="menu">
       <%= for workflow <- @workflows do %>
-        <div class="item" data-value="<%=workflow.id%>"><%= workflow.name %></div>
+        <div class="item" data-value="<%=workflow.id%>">
+          <%= workflow.name %>
+        </div>
       <% end %>
     </div>
   </div>
 
   <div class="ui selection dropdown">
-    <%= hidden_input f, :state, value: @conn.params["state"] %>
+    <%= hidden_input :query, :state, value: @conn.params["state"] %>
     <div class="default text">Status</div>
     <i class="dropdown icon"></i>
     <div class="menu">
@@ -46,12 +50,12 @@
     </div>
   </div>
   <div class="ui right floated">
-    <button class="ui primary button">
+    <%= link to: instance_path(@conn, :process, Enum.join(selected_instances, ",")), class: "ui primary button" do %>
       <i class="ui icon cogs"></i>
       Begin process
-    </button>
+    <% end %>
   </div>
-<% end %>
+</div>
 
 <%= if Enum.empty? @instances do %>
   <div class="emtpy-list-message meta">
@@ -59,57 +63,58 @@
   </div>
 <% else %>
   <table class="ui table">
-  <%= for instance <- @instances  do %>
-    <%= if instance_match_params instance, @conn do %>
-      <tr>
-      <td>
-        <div class="ui grid">
-          <div class="row">
-            <div class="ten wide column">
+    <%= for instance <- @instances  do %>
+      <%= if instance_match_params instance, @conn do %>
+        <tr>
+          <td>
+            <div class="ui grid">
+              <div class="row">
+                <div class="ten wide column">
+                  <% index = Enum.find_index selected_instances, &(&1 == instance.id)%>
+                  <%= link to: instance_path(@conn, :process,  selected_instances |> Enum.slice(index, Enum.count selected_instances) |> Enum.join(",") ) do %>
+                    <%= instance.workflow.name %>
+                  <%end%>
 
-              <%= link to: instance_path(@conn, :edit, instance.id) do %>
-                <%= instance.workflow.name %>
-              <%end%>
+
+                    <div class="ui label <%=instance.state.color%>">
+                      <i class="ui icon <%=instance.state.icon_name %>"></i>
+                      <%= instance.state.name %>
+                    </div>
+
+                    <% user_value = Enum.find instance.values, &(Field.reference_user &1.field) %>
+                    <%= if user_value != nil and user_value.integer_value != nil do %>
+                      <% user = @users[user_value.integer_value] %>
+                      <div class="ui image label">
+                        <img src="<%= user.image_url%>">
+                        <%= user.handle %>
+                      </div>
+                    <% end %>
+
+                    <% account_value = Enum.find instance.values, &(Field.reference_account &1.field) %>
+                    <%= if account_value != nil and account_value.integer_value != nil do %>
+                      <% account = @accounts[account_value.integer_value] %>
+                      <div class="ui label">
+                        Account
+                        <div class="detail"><%= account.name %></div>
+                      </div>
+                    <% end %>
 
 
-                <div class="ui label <%=instance.state.color%>">
-                  <i class="ui icon <%=instance.state.icon_name %>"></i>
-                  <%= instance.state.name %>
                 </div>
-
-                <% user_value = Enum.find instance.values, &(Field.reference_user &1.field) %>
-                <%= if user_value != nil and user_value.integer_value != nil do %>
-                  <% user = @users[user_value.integer_value] %>
-                  <div class="ui image label">
-                    <img src="<%= user.image_url%>">
-                    <%= user.handle %>
-                  </div>
-                <% end %>
-
-                <% account_value = Enum.find instance.values, &(Field.reference_account &1.field) %>
-                <%= if account_value != nil and account_value.integer_value != nil do %>
-                  <% account = @accounts[account_value.integer_value] %>
-                  <div class="ui label">
-                    Account
-                    <div class="detail"><%= account.name %></div>
-                  </div>
-                <% end %>
-
-
+              <div class="six wide column">
+                <div class="ui meta right floated">
+                  Updated at: <%= instance.updated_at %>
+                </div>
+              </div>
             </div>
-          <div class="six wide column">
-            <div class="ui meta right floated">
-              Updated at: <%= instance.updated_at %>
-            </div>
-          </div>
-        </div>
 
-      </td>
-    </tr>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
-  <% end %>
-</table>
-  <% end %>
+  </table>
+<% end %>
+
 <center>
   Don't find the process you were looking for ?
   <%= link to: instance_path(@conn, :new) do %>

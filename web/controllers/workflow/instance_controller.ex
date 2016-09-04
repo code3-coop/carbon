@@ -3,14 +3,14 @@ defmodule Carbon.Workflow.InstanceController do
 
   alias Ecto.Multi
   alias Carbon.{ Account, User, Workflow }
-  alias Carbon.Workflow.{ Instance, Value, Field, State }
+  alias Carbon.Workflow.{ Instance, Value, Field}
 
   def new(conn, _params) do
     instance = %Instance{}
     changeset = Instance.changeset(instance)
     conn
     |> assign(:changeset, changeset)
-    # |> assign(:instance, instance)
+
     |> render("new.html")
   end
 
@@ -29,7 +29,7 @@ defmodule Carbon.Workflow.InstanceController do
       {:ok, instance } ->
         conn
         |> put_flash(:info, "Workflow instance created with success")
-        |> redirect(to: instance_path(conn, :show, instance.id))
+        |> redirect(to: instance_path(conn, :index))
       {:error, changeset} ->
         conn
         |> assign(:changeset, changeset)
@@ -87,13 +87,28 @@ defmodule Carbon.Workflow.InstanceController do
   defp extract_references([ { _, { :ok, accounts } }, { _, { :error, _ } } ]) , do: { accounts, [] }
   defp extract_references([ { _, { :error, _ } }    , { _, { :error, _ } } ]) , do: { [], [] }
 
+  def process(conn, %{"ids" => instance_ids}) do
+    ids = instance_ids |> String.split(",") |> Enum.map(&String.to_integer/1)
+
+    conn
+    |> put_session(:selected_instances, ids)
+    |> redirect(to: instance_path(conn, :edit, hd ids))
+  end
+
   def edit(conn, %{"id" => instance_id}) do
+    selected_instances = get_session(conn, :selected_instances)
+    current_index = Enum.find_index(selected_instances, &(to_string(&1) == instance_id))
+    next = Enum.at selected_instances , current_index + 1, nil
+    previous = if current_index > 0 do Enum.at selected_instances, current_index - 1 else  nil end
     instance = Repo.get(Instance, instance_id) |> Repo.preload([:values, :state, workflow: [:states, sections: [ :fields ]]])
     changeset = Instance.changeset(instance, %{})
 
     conn
     |> assign(:instance, instance)
     |> assign(:changeset, changeset)
+    |> assign(:next, next)
+    |> assign(:previous, previous)
+    |> put_resp_header("turbolinks-Location", instance_path(conn, :edit, instance_id))
     |> render("edit.html")
   end
 
@@ -122,11 +137,22 @@ defmodule Carbon.Workflow.InstanceController do
     |> Multi.update(:instance, changeset)
     |> apply_multiple_changeset_to_multi(values_changesets)
 
+    selected_instances = get_session(conn, :selected_instances)
+    index = Enum.find_index selected_instances, &(to_string(&1) == instance_id)
+    is_last = index + 1 == Enum.count selected_instances
+
+    path = if is_last do
+      instance_path(conn, :index)
+    else
+      next = Enum.at(selected_instances, index+1)
+      instance_path(conn, :edit, next)
+    end
+
     case Repo.transaction(multi) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Workflow instance updated with success")
-        |> redirect(to: instance_path(conn, :index))
+        |> redirect(to: path)
       {:error, changeset} ->
         conn
         |> put_flash(:info, "Failed to update workflow instance")

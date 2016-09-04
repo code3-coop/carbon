@@ -1,6 +1,14 @@
 <%= form_for @changeset, instance_path(@conn, :update, @instance.id), fn _f -> %>
   <div class="ui form">
-
+    <div class="ui right floated icon buttons">
+      <%%>
+      <%= link to: instance_path(@conn, :edit, to_string(@previous)), class: "ui button #{if !@previous or @previous == @instance.id, do: "disabled"}" do %>
+        <i class="icon chevron up"></i>
+      <% end %>
+      <%= link to: instance_path(@conn, :edit, to_string(@next)), class: "ui button #{if !@next or @next == @instance.id, do: "disabled"}" do %>
+        <i class="icon chevron down"></i>
+      <% end %>
+    </div>
 
     <div class="ui field">
       <label>Workflow</label>
@@ -23,6 +31,7 @@
         </div>
       </div>
     </div>
+
     <% sorted_sections = Enum.sort_by @instance.workflow.sections, &(&1.presentation_order_index) %>
     <%= for section <- sorted_sections do %>
       <% sorted_fields = Enum.sort_by section.fields, &(&1.presentation_order_index) %>
@@ -116,6 +125,7 @@
 
   </div>
 <% end %>
+
 <script>
   $('.ui.dropdown').dropdown()
   $('.reference').change(function(event){
@@ -123,6 +133,3 @@
     $(elm).parent().children("a").attr("href", $(elm).val());
   })
 </script>
-<style>
-
-</style>
