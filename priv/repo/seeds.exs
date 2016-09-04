@@ -145,9 +145,9 @@ Repo.insert! %TimesheetEntryTag{description: "Not billable, yet", color: "yellow
 # Workflow
 #
 
-timesheet_workflow = Repo.insert! %Workflow{name: "Timesheet submission", description: "..."}
+timesheet_workflow = Repo.insert! %Workflow{name: "Timesheet submission", description: "This is the process for submission of timesheet. This process is for employees only. Consultants should refer to the permit a38."}
 
-contract_workflow = Repo.insert! %Workflow{name: "Contract signature", description: "..."}
+contract_workflow = Repo.insert! %Workflow{name: "Contract signature", description: "This process is carefully crafted in order to reduce risk, and increase illusion of control."}
 
 submitted = Repo.insert! %State{name: "Submitted", icon_name: "send", color: "blue", presentation_order_index: 0, workflow: timesheet_workflow}
 approved = Repo.insert! %State{name: "Approved", icon_name: "mail forward", color: "green", presentation_order_index: 1, workflow: timesheet_workflow}

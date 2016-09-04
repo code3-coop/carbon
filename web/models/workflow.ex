@@ -4,6 +4,7 @@ defmodule Carbon.Workflow do
   schema "workflows" do
     field :name, :string
     field :description, :string
+    field :active, :boolean, default: true
 
     has_many :sections, Carbon.Workflow.Section
     has_many :states, Carbon.Workflow.State

@@ -1,0 +1,36 @@
+<div class="ui cards">
+  <%= for workflow <- @workflows do %>
+    <div class="ui card">
+      <div class="content">
+        <a class="header">
+          <%= workflow.name %>
+          </a>
+        <div class="meta">
+          <div>
+            <%= Enum.count workflow.sections %> Sections
+            <span class="ui right floated">
+              <%= Enum.count workflow.instances %> Instances
+            </span>
+          </div>
+          <div>
+            <%= Enum.count workflow.states %> States
+            <span class="right floated date">Updated on <%= workflow.updated_at |> Ecto.DateTime.to_date %></span>
+          </div>
+        </div>
+        <div class="description">
+          <%= workflow.description %>
+        </div>
+      </div>
+      <div class="extra content">
+        <%= link to: workflow_path(@conn, :edit, workflow.id) do %>
+          <i class="icon write"></i>
+          Edit
+        <% end %>
+        <%= link to: workflow_path(@conn, :delete, workflow.id), method: :delete, form: [style: "display: inline"] do %>
+          <i class="icon trash"></i>
+          Delete
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
