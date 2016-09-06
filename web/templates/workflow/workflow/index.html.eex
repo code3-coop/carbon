@@ -39,7 +39,7 @@
   <%= link(to: workflow_path(@conn, :new), class: "ui card") do %>
     <div class="content">
       <div class="header" style="color:rgba(0,0,0,.4)">
-        Create new ...
+        <%= fake_workflow.name %>
       </div>
       <div class="meta">
         <div>
