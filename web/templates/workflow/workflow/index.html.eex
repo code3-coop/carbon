@@ -33,4 +33,36 @@
       </div>
     </div>
   <% end %>
+
+  <% fake_workflow = random_fake_workflow %>
+
+  <%= link(to: workflow_path(@conn, :new), class: "ui card") do %>
+    <div class="content">
+      <div class="header" style="color:rgba(0,0,0,.4)">
+        Create new ...
+      </div>
+      <div class="meta">
+        <div>
+          <%= Enum.count fake_workflow.sections %> Sections
+          <span class="ui right floated">
+            <%= Enum.count fake_workflow.instances %> Instances
+          </span>
+        </div>
+        <div>
+          <%= Enum.count fake_workflow.states %> States
+          <span class="right floated date">Updated on <%= fake_workflow.updated_at |> Ecto.DateTime.to_date %></span>
+        </div>
+      </div>
+      <div class="description" style="color:rgba(0,0,0,.4)">
+        <%= fake_workflow.description %>
+      </div>
+    </div>
+    <div class="extra content">
+      <span>
+        <i class="icon plus"></i>
+        Create
+      </span>
+    </div>
+  <% end %>
+
 </div>
