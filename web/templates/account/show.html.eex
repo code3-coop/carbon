@@ -144,8 +144,7 @@
         <% end %>
         <%= link to: account_contact_path(@conn, :new, @account.id), class: "ui card" do %>
           <div class="content">
-            <img class="right floated mini ui circular image"
-                 style="-webkit-filter: grayscale(100%);"
+            <img class="right floated mini ui circular disabled image"
                  src="/images/avatars/<%= Enum.random(["female", "male"]) %>/<%= Enum.random(1..114) %>.png">
             <div class="header" style="color:rgba(0,0,0,.4)">create new&hellip;</div>
             <div class="meta"><%= Enum.random(["Senior ", "Junior ", ""]) %><%= Enum.random(["Marketing", "Accounting", "Production", "R&D", "HR", "Purchasing"]) %> Placeholder</div>
@@ -316,6 +315,5 @@
   });
 
   $('.menu .item').tab();
-  $('.ui.progress').progress();
 
 </script>
