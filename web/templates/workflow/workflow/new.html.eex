@@ -1,0 +1,25 @@
+<h3>New Workflow</h3>
+
+<%= form_for @changeset, workflow_path(@conn, :create), fn f -> %>
+  <div class="ui form">
+    <div class="field <%= if f.errors[:description], do: "error" %>">
+      <label>
+        Name
+        <%= error_tag f, :name %>
+      </label>
+      <%= text_input f, :name %>
+  </div>
+
+  <div class="field <%= if f.errors[:description], do: "error" %>">
+    <label>
+      Description
+      <%= error_tag f, :description %>
+    </label>
+    <%= textarea f, :description %>
+  </div>
+
+  <%= submit "Create workflow", class: "ui primary button"%>
+  <%= link "Cancel", to: workflow_path(@conn, :index), class: "ui button"%>
+
+
+<% end %>
