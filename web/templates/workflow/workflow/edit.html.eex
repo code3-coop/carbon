@@ -125,7 +125,7 @@
       </div>
     </div>
 
-    <%= submit "Upadte workflow", class: "ui primary button" %>
+    <%= submit "Update workflow", class: "ui primary button" %>
     <%= link "Cancel", to: account_path(@conn, :index), class: "ui button" %>
 
   </div>
