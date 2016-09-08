@@ -162,7 +162,7 @@ main_section = Repo.insert! %Section{name: "Submit", description: "...", workflo
 
 date_field = Repo.insert! %Field{name: "Accepted on", description: "...", type: "date", section: main_section, presentation_order_index: 0}
 comment_field = Repo.insert! %Field{name: "Comments", description: "...", type: "long_text", section: main_section, presentation_order_index: 1}
-reference_field = Repo.insert! %Field{name: "timesheet", description: "...", type: "reference", entity_reference_name: "Carbon.Timesheet", section: main_section, presentation_order_index: 2}
+reference_field = Repo.insert! %Field{name: "Timesheet", description: "...", type: "reference", entity_reference_name: "Carbon.Timesheet", section: main_section, presentation_order_index: 2}
 user_reference_field = Repo.insert! %Field{name: "Owner", description: "...", type: "reference", entity_reference_name: "Carbon.User", section: main_section, presentation_order_index: 3}
 account_reference_field = Repo.insert! %Field{name: "Account", description: "...", type: "reference", entity_reference_name: "Carbon.Account", section: main_section, presentation_order_index: 4}
 
