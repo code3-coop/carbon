@@ -1,0 +1,162 @@
+<h3>
+  Edit workflow
+</h3>
+
+<%= form_for @changeset, workflow_path(@conn, :update, @workflow.id), fn f -> %>
+  <div class="ui form ">
+
+    <div class="field <%if f.errors[:name], do: "error" %>">
+      <label>
+        Name
+        <%= error_tag f, :name %>
+      </label>
+      <%= text_input f, :name%>
+    </div>
+
+    <div class="field <%= if f.errors[:name], do: "error" %>">
+      <label>
+        Description
+        <%= error_tag f, :description %>
+      </label>
+      <%= textarea f, :description %>
+    </div>
+
+    <div class="field">
+      <label>States</label>
+      <div class="ui labels">
+        <% sorted_states = Enum.sort_by @workflow.states, &(&1.presentation_order_index) %>
+        <% states_ids = sorted_states |> Enum.map(&(&1.id)) |> Enum.join(",") %>
+        <%= hidden_input f, :states_ids, value: states_ids %>
+        <div class="sortable-list">
+          <%= for state <- sorted_states do %>
+
+            <div class="ui <%= state.color %> label draggable" data-state="<%= state.id %>">
+              <i class="<%= state.icon_name %> icon"></i>
+              <%= state.name %>
+              <%= link to: "" do %>
+                <i class="icon close"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <%= link to: "" do %>
+          <div class="ui label">
+            <i class="icon plus"></i>
+            Add state
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+
+    <div class="field">
+      <label>Sections</label>
+      <div class="ui cards">
+        <% sorted_sections = Enum.sort_by @workflow.sections, &(&1.presentation_order_index) %>
+        <%= for section <- sorted_sections do %>
+          <div class="card">
+            <div class="content">
+              <div class="header"><%= section.name %></div>
+              <div class="description">
+                <%= section.description %>
+                <div class="ui list">
+                  <% sorted_fields = Enum.sort_by section.fields, &(&1.presentation_order_index) %>
+                  <%= for field <-  sorted_fields do %>
+                  <div class="item">
+                    <i class="icon <%= icon_for_field_type(field.type) %>"></i>
+                    <%= field.name %>
+                  </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="extra content">
+              <%= link to: "" do %>
+                <i class="icon write"></i>
+                Edit
+              <% end %>
+              <%= link to: "", class: "right floated" do %>
+                <i class="icon close"></i>
+                Delete
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%= link to: "", class: "card" do %>
+
+            <div class="content">
+              <div class="header">Create new &hellip;</div>
+              <div class="description">
+                A nice description
+                <div class="ui list">
+
+                  <div class="item">
+                    <i class="icon calculator %>"></i>
+                    Usefull field
+                  </div>
+
+                  <div class="item">
+                    <i class="icon dollar %>"></i>
+                    Useless field
+                  </div>
+
+                  <div class="item">
+                    <i class="icon font %>"></i>
+                    Boring text
+                  </div>
+
+                  <div class="item">
+                    <i class="icon reply %>"></i>
+                    Unrelated Account
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="extra content">
+
+                <i class="icon plus"></i>
+                Add
+            </div>
+
+        <% end %>
+
+      </div>
+    </div>
+
+    <%= submit "Upadte workflow", class: "ui primary button" %>
+    <%= link "Cancel", to: account_path(@conn, :index), class: "ui button" %>
+
+  </div>
+<% end %>
+<script>
+
+  var update_states_hidden_input = function (evt) {
+    var states_ids = $(evt.target)
+    .parent()
+    .find(".draggable")
+    .attr("data-state")
+    .map(function(_index, elm){
+      return $(elm).attr("data-state")
+    })
+    .toArray()
+    .join(",")
+    $("#owrkflow_states_ids").val(states_ids)
+  };
+  var labels = $('.sortable-list')[0];
+  Sortable.create(labels, {
+    draggable: ".draggable",
+    onEnd: update_states_hidden_input
+  });
+
+</script>
+<style>
+    .ui.labels .label.draggable {
+      cursor: move;
+    }
+    .sortable-list {
+      display: inline;
+      padding-right: .25em;
+    }
+</style>

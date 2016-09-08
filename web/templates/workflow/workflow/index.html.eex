@@ -2,9 +2,9 @@
   <%= for workflow <- @workflows do %>
     <div class="ui card">
       <div class="content">
-        <a class="header">
+        <div class="header">
           <%= workflow.name %>
-          </a>
+        </div>
         <div class="meta">
           <div>
             <%= Enum.count workflow.sections %> Sections

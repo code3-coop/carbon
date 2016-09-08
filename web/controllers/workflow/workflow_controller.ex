@@ -37,4 +37,29 @@ defmodule Carbon.Workflow.WorkflowController do
     |> render("index.html")
   end
 
+  def edit(conn, %{"id" => workflow_id}) do
+    workflow = Repo.get(Workflow, workflow_id) |> Repo.preload([:states, sections: [:fields]])
+    changeset = Workflow.changeset(workflow)
+
+    conn
+    |> assign(:workflow, workflow)
+    |> assign(:changeset, changeset)
+    |> render("edit.html")
+  end
+
+  def update(conn, %{"id" => workflow_id, "workflow" => workflow_params}) do
+    workflow = Repo.get(Workflow, workflow_id)
+    changeset = Workflow.changeset(workflow, workflow_params)
+    case Repo.update(changeset) do
+      {:ok, _workflow} ->
+        conn
+        |> put_flash(:info, "Workflow successfully updated")
+        |> redirect(to: workflow_path(conn, :index))
+      {:error, changeset} ->
+        conn
+        |> assign(:changeset, changeset)
+        |> render("edit.html")
+    end
+  end
+
 end

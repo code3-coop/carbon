@@ -14,4 +14,14 @@ defmodule Carbon.Workflow.WorkflowView do
     Enum.random(@fake_workflows)
   end
 
+  def icon_for_field_type("date"), do: "calendar"
+  def icon_for_field_type("long_text"), do: "font"
+  def icon_for_field_type("text"), do: "font"
+  def icon_for_field_type("reference"), do: "reply"
+  def icon_for_field_type("integer"), do: "calculator"
+  def icon_for_field_type("float"), do: "calculator"
+  def icon_for_field_type("currency"), do: "dollar"
+  def icon_for_field_type("enum"), do: "list"
+  def icon_for_field_type(type), do: IO.inspect( type)
+
 end
