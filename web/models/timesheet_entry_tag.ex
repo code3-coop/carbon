@@ -16,6 +16,6 @@ defmodule Carbon.TimesheetEntryTag do
     struct
     |> cast(params, [:description, :color])
     |> validate_required([:description, :color])
-    |> validate_inclusion(:color, Carbon.SupportedColors.tags)
+    |> validate_inclusion(:color, Carbon.SupportedEnums.colors)
   end
 end

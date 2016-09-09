@@ -39,7 +39,7 @@
             </div>
           <% end %>
         </div>
-        <%= link to: "" do %>
+        <%= link to: workflow_state_path(@conn, :new, @workflow.id ) do %>
           <div class="ui label">
             <i class="icon plus"></i>
             Add state
@@ -136,13 +136,12 @@
     var states_ids = $(evt.target)
     .parent()
     .find(".draggable")
-    .attr("data-state")
     .map(function(_index, elm){
       return $(elm).attr("data-state")
     })
     .toArray()
     .join(",")
-    $("#owrkflow_states_ids").val(states_ids)
+    $("#workflow_states_ids").val(states_ids)
   };
   var labels = $('.sortable-list')[0];
   Sortable.create(labels, {

@@ -27,7 +27,7 @@
         <i class="dropdown icon"></i>
         <div class="default text">Select color</div>
         <div class="menu">
-          <%= for color <- Carbon.SupportedColors.tags do %>
+          <%= for color <- Carbon.SupportedEnums.colors do %>
             <div class="item" data-value="<%= color %>">
               <div class="ui <%= color %> empty circular label"></div>
               <%= color %>
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    
+
     <%= submit "Create tag", class: "ui submit primary button" %>
     <%= link "cancel", to: tag_path(@conn, :index), class: "ui button" %>
   </div>
@@ -44,4 +44,3 @@
 <script>
   $('.ui.dropdown').dropdown();
 </script>
-

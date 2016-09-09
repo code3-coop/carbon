@@ -1,0 +1,77 @@
+<%= form_for @changeset, workflow_state_path(@conn, :create, @conn.params["workflow_id"]), fn f -> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+
+      <div class="ui error message">
+        <div class="header">Ruh roh!</div>
+        <p>Something went wrong. Please check the following errors.</p>
+      </div>
+
+
+    <div class="field <%= if f.errors[:name], do: "error" %>">
+      <label>
+        Name
+        <% error_tag f, :name%>
+      </label>
+      <%= text_input f, :name %>
+    </div>
+
+    <div class="fields">
+      <div class="inline field  <%= if f.errors[:color], do: "error" %>">
+        <label>
+          Color
+          <%= error_tag f, :color %>
+        </label>
+        <div class="ui fluid selection dropdown" style="width: 300px;">
+          <%= hidden_input f, :color, value: @changeset.changes[:color] %>
+          <i class="dropdown icon"></i>
+          <div class="default text">Select color</div>
+          <div class="menu">
+            <div class="ui icon search input">
+              <i class="search icon"></i>
+              <input type="text" placeholder="Search color...">
+            </div>
+            <%= for color <- Carbon.SupportedEnums.colors do %>
+              <div class="item" data-value="<%= color %>">
+                <div class="ui <%= color %> empty circular label"></div>
+                <%= color %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="inline field  <%= if f.errors[:icon_name], do: "error" %>">
+
+        <label>
+          Icon
+          <%= error_tag f, :icon_name%>
+        </label>
+        <div class="ui fluid selection dropdown" style="width: 300px">
+          <%= hidden_input f, :icon_name, value: @changeset.changes[:icon_name] %>
+          <i class="dropdown icon"></i>
+          <div class="default text">Select an icon</div>
+          <div class="menu">
+            <div class="ui icon search input">
+              <i class="search icon"></i>
+              <input type="text" placeholder="Search icon...">
+            </div>
+            <%= for {categorie, icons} <- Carbon.SupportedEnums.icons do %>
+              <div class="header"><%= categorie %> </div>
+              <%= for icon <- icons do %>
+                <div class="item" data-value="<%= icon %>">
+                  <i class="ui <%=icon %> icon"></i>
+                  <%= icon %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%= submit "Add state", class: "ui primary button " %>
+  </div>
+<% end %>
+<script>
+  $('.ui.dropdown').dropdown();
+</script>

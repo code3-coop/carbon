@@ -15,9 +15,9 @@ defmodule Carbon.AccountController do
   "
 
   @similar_term_query "
-    select word 
+    select word
     from search_words
-    where similarity(word, $1) > 0.5 
+    where similarity(word, $1) > 0.5
     order by word <-> $1
     limit 1;
   "
@@ -44,7 +44,7 @@ defmodule Carbon.AccountController do
     |> assign(:query, user_query)
     |> render(Carbon.AccountView, "index.html")
   end
-  
+
   def index(conn, params) do
     query = from a in Account,
       left_join: c in Carbon.Contact, on: c.account_id == a.id and c.active == true,
@@ -56,7 +56,7 @@ defmodule Carbon.AccountController do
       preload: [contacts: c, billing_address: b]
     render(conn, "index.html", accounts: Repo.all(query))
   end
-  
+
 
   def new(conn, _params) do
     changeset = Account.changeset(%Account{contacts: [%Carbon.Contact{}]})
@@ -93,7 +93,7 @@ defmodule Carbon.AccountController do
       left_join: sa in assoc(a, :shipping_address),
       left_join: e in Carbon.Event, on: e.account_id == a.id and ago(1, "year") <= e.date and e.date <= from_now(1, "year") and e.active == true and (not e.private or e.user_id == ^current_user.id),
       left_join: eu in assoc(e, :user),
-      left_join: er in Carbon.Reminder, on: er.event_id == e.id and er.user_id == ^current_user.id and er.active == true and fragment("current_date <= ?", er.date),      
+      left_join: er in Carbon.Reminder, on: er.event_id == e.id and er.user_id == ^current_user.id and er.active == true and fragment("current_date <= ?", er.date),
       left_join: et in assoc(e, :tags),
       left_join: d in Carbon.Deal, on: d.account_id == a.id and d.active == true,
       left_join: dt in assoc(d, :tags),
@@ -173,7 +173,7 @@ defmodule Carbon.AccountController do
         conn
         |> put_flash(:deleted_account, account)
         |> redirect(to: account_path(conn, :index))
-      {:error, _changeset} -> 
+      {:error, _changeset} ->
         conn
         |> put_flash(:info, "Failed to delete account")
         |> redirect(to: account_path(conn, :show, id))
@@ -190,7 +190,7 @@ defmodule Carbon.AccountController do
         Carbon.Activity.new("account", account.id, current_user.id, :restore, "account", account.id, changeset)
         conn
         |> redirect(to: account_path(conn, :index))
-      {:error, _changeset} -> 
+      {:error, _changeset} ->
         conn
         |> put_flash(:info, "Failed to restore account")
         |> redirect(to: account_path(conn, :show, id))
