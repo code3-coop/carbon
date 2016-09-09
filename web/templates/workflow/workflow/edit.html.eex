@@ -1,3 +1,20 @@
+
+<style>
+.inline-form {
+  display: inline-block;
+}
+.inline-form a {
+  cursor: pointer;
+  color: inherit;
+  opacity: .5;
+  -webkit-transition: .1s opacity ease;
+  transition: .1s opacity ease;
+}
+.inline-form a:hover {
+  opacity: 1;
+}
+
+</style>
 <h3>
   Edit workflow
 </h3>
@@ -33,7 +50,7 @@
             <div class="ui <%= state.color %> label draggable" data-state="<%= state.id %>">
               <i class="<%= state.icon_name %> icon"></i>
               <%= state.name %>
-              <%= link to: "" do %>
+              <%= link to: workflow_state_path(@conn, :delete, @workflow.id, state.id), method: :delete, form: [class: "inline-form"] do %>
                 <i class="icon close"></i>
               <% end %>
             </div>

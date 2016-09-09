@@ -1,6 +1,7 @@
 defmodule Carbon.Workflow.WorkflowController do
   use Carbon.Web, :controller
   alias Carbon.{ Account, User, Workflow }
+  alias Carbon.Workflow.{State, Section, Field}
 
   def new(conn, _params) do
     workflow = %Workflow{}
@@ -26,7 +27,18 @@ defmodule Carbon.Workflow.WorkflowController do
 
   def index(conn, _params) do
     query = from w in Workflow,
-      where: w.active
+    join: st in assoc(w, :states),
+    join: se in assoc(w, :sections),
+    join: f in assoc(se, :fields),
+    preload: [
+      states: st,
+      sections: {se, [
+        fields: f
+        ]}
+    ],
+    where: st.active,
+    where: se.active,
+    where: f.active
 
     workflows = query
     |> Repo.all()
@@ -38,7 +50,21 @@ defmodule Carbon.Workflow.WorkflowController do
   end
 
   def edit(conn, %{"id" => workflow_id}) do
-    workflow = Repo.get(Workflow, workflow_id) |> Repo.preload([:states, sections: [:fields]])
+    query = from w in Workflow,
+      join: st in assoc(w, :states),
+      join: se in assoc(w, :sections),
+      join: f in assoc(se, :fields),
+      preload: [
+        states: st,
+        sections: {se, [
+          fields: f
+          ]}
+      ],
+      where: w.id == ^workflow_id,
+      where: st.active,
+      where: se.active,
+      where: f.active
+    workflow = Repo.one(query)
     changeset = Workflow.changeset(workflow)
 
     conn

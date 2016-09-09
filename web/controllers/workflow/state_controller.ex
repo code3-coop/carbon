@@ -27,6 +27,20 @@ defmodule Carbon.Workflow.StateController do
         |> assign(:changeset, changeset)
         |> render("new.html")
     end
+  end
 
+  def delete(conn, %{"workflow_id" => workflow_id, "id" => state_id}) do
+    state = Repo.get(State, state_id)
+    changeset = State.changeset(state, %{active: false})
+    case Repo.update changeset do
+      {:ok, _state} ->
+        conn
+        |> put_flash(:info, "State was successfully deleted")
+        |> redirect(to: workflow_path(conn, :edit, workflow_id))
+      {:error, _changeset} ->
+        conn
+        |>put_flash(:info, "Failed to delete state")
+        |> redirect(to: workflow_path(conn, :edit, workflow_id))
+    end
   end
 end

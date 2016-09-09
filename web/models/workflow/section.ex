@@ -5,6 +5,7 @@ defmodule Carbon.Workflow.Section do
     field :name, :string
     field :description, :string
     field :presentation_order_index, :integer, default: 0
+    field :active, :boolean, default: true
 
     has_many :fields, Carbon.Workflow.Field
     belongs_to :workflow, Carbon.Workflow

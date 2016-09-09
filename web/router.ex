@@ -62,8 +62,7 @@ defmodule Carbon.Router do
     get "/workflows/instances/:ids/process", Workflow.InstanceController, :process
 
     resources "/workflows", Workflow.WorkflowController do
-      get "/states/new", Workflow.StateController, :new
-      post "/states", Workflow.StateController, :create
+      resources "/states", Workflow.StateController, only: [:new, :create, :delete]
     end
 
   end

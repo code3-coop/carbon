@@ -7,6 +7,7 @@ defmodule Carbon.Workflow.Field do
     field :type, :string
     field :presentation_order_index, :integer, default: 0
     field :entity_reference_name, :string
+    field :active, :boolean, default: true
 
     has_many :enums, Carbon.Workflow.Enum
     belongs_to :section, Carbon.Workflow.Section
