@@ -1,7 +1,6 @@
 defmodule Carbon.Workflow.WorkflowController do
   use Carbon.Web, :controller
-  alias Carbon.{ Account, User, Workflow }
-  alias Carbon.Workflow.{State, Section, Field}
+  alias Carbon.{ Workflow }
 
   def new(conn, _params) do
     workflow = %Workflow{}
@@ -74,10 +73,32 @@ defmodule Carbon.Workflow.WorkflowController do
   end
 
   def update(conn, %{"id" => workflow_id, "workflow" => workflow_params}) do
-    workflow = Repo.get(Workflow, workflow_id)
+    workflow = Repo.get(Workflow, workflow_id) |> Repo.preload([:states])
     changeset = Workflow.changeset(workflow, workflow_params)
-    case Repo.update(changeset) do
-      {:ok, _workflow} ->
+    max_index = Enum.max_by(workflow.states, &(&1.presentation_order_index)).presentation_order_index
+
+    state_changesets =
+      workflow_params["states_ids"]
+      |> String.split(",")
+      |> Enum.map(&String.to_integer/1)
+      |> Enum.map(fn (id) -> Enum.find(workflow.states, &(&1.id == id)) end )
+      |> Enum.with_index()
+      |> Enum.map(fn({state, index}) -> {state, Ecto.Changeset.change(state, %{presentation_order_index: index})} end )
+      |>Enum.reject(fn({_state, changeset}) -> Enum.empty?(changeset.changes) end)
+
+    tr = Repo.transaction( fn ->
+      Repo.update!(changeset)
+
+      Enum.each state_changesets, fn({state, _state_changeset}) ->
+        Repo.update! Ecto.Changeset.change( state, %{presentation_order_index: max_index + 1 + state.presentation_order_index})
+      end
+      Enum.each state_changesets, fn({_state, state_changeset}) ->
+        Repo.update(state_changeset)
+      end
+    end)
+
+    case tr do
+      {:ok, _} ->
         conn
         |> put_flash(:info, "Workflow successfully updated")
         |> redirect(to: workflow_path(conn, :index))
@@ -86,6 +107,10 @@ defmodule Carbon.Workflow.WorkflowController do
         |> assign(:changeset, changeset)
         |> render("edit.html")
     end
+  end
+
+  def delete(_conn, _params) do
+
   end
 
 end

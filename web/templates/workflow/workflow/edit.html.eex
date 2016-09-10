@@ -13,6 +13,13 @@
 .inline-form a:hover {
   opacity: 1;
 }
+.ui.labels .label.draggable {
+  cursor: move;
+}
+.sortable-list {
+  display: inline;
+  padding-right: .25em;
+}
 
 </style>
 <h3>
@@ -37,7 +44,7 @@
       </label>
       <%= textarea f, :description %>
     </div>
-
+<form></form>
     <div class="field">
       <label>States</label>
       <div class="ui labels">
@@ -50,6 +57,7 @@
             <div class="ui <%= state.color %> label draggable" data-state="<%= state.id %>">
               <i class="<%= state.icon_name %> icon"></i>
               <%= state.name %>
+
               <%= link to: workflow_state_path(@conn, :delete, @workflow.id, state.id), method: :delete, form: [class: "inline-form"] do %>
                 <i class="icon close"></i>
               <% end %>
@@ -147,8 +155,8 @@
 
   </div>
 <% end %>
-<script>
 
+<script>
   var update_states_hidden_input = function (evt) {
     var states_ids = $(evt.target)
     .parent()
@@ -167,12 +175,3 @@
   });
 
 </script>
-<style>
-    .ui.labels .label.draggable {
-      cursor: move;
-    }
-    .sortable-list {
-      display: inline;
-      padding-right: .25em;
-    }
-</style>
