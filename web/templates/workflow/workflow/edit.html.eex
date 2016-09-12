@@ -1,5 +1,8 @@
 
 <style>
+.grey {
+  color: rgba(0,0,0,.4) !important;
+ }
 .inline-form {
   display: inline-block;
 }
@@ -111,11 +114,11 @@
             </div>
           <% end %>
 
-        <%= link to: "", class: "card" do %>
+        <%= link to: workflow_section_path(@conn, :new, @workflow.id), class: "card" do %>
 
             <div class="content">
-              <div class="header">Create new &hellip;</div>
-              <div class="description">
+              <div class="grey header">Create new &hellip;</div>
+              <div class="grey description">
                 A nice description
                 <div class="ui list">
 
