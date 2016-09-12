@@ -13,7 +13,7 @@
 .inline-form a:hover {
   opacity: 1;
 }
-.ui.labels .label.draggable {
+.ui.labels .label.draggable, .ui.cards  .card.draggable{
   cursor: move;
 }
 .sortable-list {
@@ -77,36 +77,39 @@
     <div class="field">
       <label>Sections</label>
       <div class="ui cards">
-        <% sorted_sections = Enum.sort_by @workflow.sections, &(&1.presentation_order_index) %>
-        <%= for section <- sorted_sections do %>
-          <div class="card">
-            <div class="content">
-              <div class="header"><%= section.name %></div>
-              <div class="description">
-                <%= section.description %>
-                <div class="ui list">
-                  <% sorted_fields = Enum.sort_by section.fields, &(&1.presentation_order_index) %>
-                  <%= for field <-  sorted_fields do %>
-                  <div class="item">
-                    <i class="icon <%= icon_for_field_type(field.type) %>"></i>
-                    <%= field.name %>
+
+          <% sorted_sections = Enum.sort_by @workflow.sections, &(&1.presentation_order_index) %>
+          <%= for section <- sorted_sections do %>
+            <div class="draggable card" data-section="<%= section.id %>">
+              <div class="content">
+                <div class="header">
+                  <i class="ui icon ellipsis vertical"></i><%= section.name %>
+                </div>
+                <div class="description">
+                  <%= section.description %>
+                  <div class="ui list">
+                    <% sorted_fields = Enum.sort_by section.fields, &(&1.presentation_order_index) %>
+                    <%= for field <-  sorted_fields do %>
+                    <div class="item">
+                      <i class="icon <%= icon_for_field_type(field.type) %>"></i>
+                      <%= field.name %>
+                    </div>
+                    <% end %>
                   </div>
-                  <% end %>
                 </div>
               </div>
+              <div class="extra content">
+                <%= link to: "" do %>
+                  <i class="icon write"></i>
+                  Edit
+                <% end %>
+                <%= link to: "", class: "right floated" do %>
+                  <i class="icon close"></i>
+                  Delete
+                <% end %>
+              </div>
             </div>
-            <div class="extra content">
-              <%= link to: "" do %>
-                <i class="icon write"></i>
-                Edit
-              <% end %>
-              <%= link to: "", class: "right floated" do %>
-                <i class="icon close"></i>
-                Delete
-              <% end %>
-            </div>
-          </div>
-        <% end %>
+          <% end %>
 
         <%= link to: "", class: "card" do %>
 
@@ -140,11 +143,9 @@
               </div>
             </div>
             <div class="extra content">
-
-                <i class="icon plus"></i>
-                Add
+              <i class="icon plus"></i>
+              Add
             </div>
-
         <% end %>
 
       </div>
@@ -162,16 +163,33 @@
     .parent()
     .find(".draggable")
     .map(function(_index, elm){
-      return $(elm).attr("data-state")
+      return $(elm).attr("data-state");
     })
     .toArray()
     .join(",")
     $("#workflow_states_ids").val(states_ids)
   };
+  var update_sections_hidden_input = function(evt){
+    var sections_ids = $(evt.target)
+    .parent()
+    .find(".draggable")
+    .map(function(_index, elm){
+      return $(elm).attr("data-sections");
+    })
+    .toArray()
+    .join(',')
+    console.log(sections_ids)
+
+  }
   var labels = $('.sortable-list')[0];
   Sortable.create(labels, {
     draggable: ".draggable",
     onEnd: update_states_hidden_input
+  });
+  var cards = $('.ui.cards')[0];
+  Sortable.create(cards, {
+    draggable: ".draggable",
+    onEnd: update_sections_hidden_input
   });
 
 </script>
