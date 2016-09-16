@@ -51,9 +51,9 @@ defmodule Carbon.Workflow.WorkflowController do
 
   def edit(conn, %{"id" => workflow_id}) do
     query = from w in Workflow,
-      join: st in assoc(w, :states),
-      join: se in assoc(w, :sections),
-      join: f in assoc(se, :fields),
+      left_join: st in assoc(w, :states),
+      left_join: se in assoc(w, :sections),
+      left_join: f in assoc(se, :fields),
       preload: [
         states: st,
         sections: {se, [
@@ -63,8 +63,9 @@ defmodule Carbon.Workflow.WorkflowController do
       where: w.id == ^workflow_id,
       where: st.active,
       where: se.active,
-      where: f.active
+      where: f.active or is_nil f.id # the last clause is requried in order to obtain the sections witout active fields
     workflow = Repo.one(query)
+
     changeset = Workflow.changeset(workflow)
 
     conn

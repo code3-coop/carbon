@@ -63,6 +63,7 @@ defmodule Carbon.Router do
 
     resources "/workflows", Workflow.WorkflowController do
       resources "/states", Workflow.StateController, only: [:new, :create, :delete]
+      resources "/sections", Workflow.SectionController
     end
 
   end

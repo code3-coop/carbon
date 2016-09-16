@@ -1,0 +1,28 @@
+<h3>
+  Create workflow section
+</h3>
+
+ <%= form_for @changeset, workflow_section_path(@conn, :create, @conn.params["workflow_id"]), fn f -> %>
+
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+
+
+    <div class="ui field <%= if f.errors[:name], do: "error" %>">
+      <label>Name <%=error_tag f, :name%> </label>
+      <%= text_input f, :name %>
+    </div>
+
+    <div class="ui field <%= if f.errors[:name], do: "error" %>">
+      <label> Description <%=error_tag f, :description%></label>
+      <%= textarea f, :description %>
+    </div>
+
+    <%= submit "Create section", class: "ui button primary" %>
+    <%= link "Cancel", to: workflow_path(@conn, :edit, @conn.params["workflow_id"]), class: "ui  button" %>
+
+  </div>
+<% end %>

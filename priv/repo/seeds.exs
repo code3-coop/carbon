@@ -158,7 +158,7 @@ informal_offer = Repo.insert! %State{name: "Informal offer", icon_name: "file te
 contract_sended = Repo.insert! %State{name: "Contract sened", icon_name: "write", color: "orange", presentation_order_index: 2, workflow: contract_workflow}
 contract_signed = Repo.insert! %State{name: "Contract signed", icon_name: "dollar", color: "green", presentation_order_index: 3, workflow: contract_workflow}
 
-main_section = Repo.insert! %Section{name: "Submit", description: "...", workflow: timesheet_workflow}
+main_section = Repo.insert! %Section{name: "Submit", description: "...", workflow: timesheet_workflow, presentation_order_index: 0}
 
 date_field = Repo.insert! %Field{name: "Accepted on", description: "...", type: "date", section: main_section, presentation_order_index: 0}
 comment_field = Repo.insert! %Field{name: "Comments", description: "...", type: "long_text", section: main_section, presentation_order_index: 1}
