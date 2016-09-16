@@ -16,7 +16,7 @@ defmodule Carbon.Workflow.Section do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :description, :presentation_order_index])
+    |> cast(params, [:name, :description, :presentation_order_index, :active])
     |> validate_required([:name, :description, :presentation_order_index])
   end
 end
