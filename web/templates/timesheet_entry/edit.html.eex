@@ -14,20 +14,40 @@
    <div class="inline fields">
 
 
-     <div class="field">
+     <div class="field <%= if f.errors[:account], do: "error" %>">
+       <label>Account
+         <span class="error">
+           <%= if f.errors[:account], do: translate_error f.errors[:account] %>
+         </span>
+       </label>
+       <div class="ui selection dropdown">
+         <%= hidden_input f, :account_id %>
+         <i class="dropdown icon"></i>
+         <div class="default text">Select account</div>
+         <div class="menu">
+           <%= for account <- account_select do %>
+             <div class="item" data-value="<%= account.id %>">
+                 <%= account.name %>
+             </div>
+           <% end %>
+         </div>
+       </div>
+     </div>
+
+     <div class="field  <%= if f.errors[:project], do: "error" %>">
        <label>Project
          <span class="error">
            <%= if f.errors[:project], do: translate_error f.errors[:project] %>
          </span>
        </label>
-       <div class="ui search selection dropdown">
-         <%= hidden_input f, :project_id, value: @timesheet_entry.project.id %>
+       <div class="ui selection dropdown">
+         <%= hidden_input f, :project_id %>
          <i class="dropdown icon"></i>
          <div class="default text">Select project</div>
          <div class="menu">
            <%= for project <- project_select do %>
-             <div class="item" data-value="<%= project.id %>">
-                 <%= project.code %> (<%=project.account.name%>)
+             <div class="item project" data-value="<%= project.id %>" data-account="<%= project.account_id %>" style="<%= if @timesheet_entry.account_id != project.account_id, do: "display: none;"%>">
+                 <%= project.code %>
              </div>
            <% end %>
          </div>
@@ -108,4 +128,17 @@
 
 <script>
   $('.dropdown').dropdown();
+  $('.ui.checkbox').checkbox();
+  $('#timesheet_entry_account_id').change(function(event){
+    $('.ui.dropdown:nth(1)').dropdown("clear");
+    var target = event.target;
+    $('.project').each(function(_index, elm){
+      if($(elm).attr('data-account') == $(target).val()){
+        $(elm).show();
+      } else {
+        $(elm).hide();
+      }
+    })
+  })
+
 </script>
