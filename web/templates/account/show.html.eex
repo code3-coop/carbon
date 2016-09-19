@@ -284,7 +284,7 @@
 <%= if Enum.empty?(@account.attachments) do %>
   <center>
     Attach files to this account
-    <%= link "Start uploading files!", to: "" %>
+    <%= link "Start uploading files!", to: account_attachment_path(@conn, :new, @account.id) %>
   </center>
 <% else %>
   <div class="ui four cards">
