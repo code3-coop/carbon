@@ -1,7 +1,7 @@
 defmodule Carbon.Workflow.WorkflowController do
   use Carbon.Web, :controller
   alias Carbon.{ Workflow }
-  alias Carbon.Workflow.{ State }
+  alias Carbon.Workflow.{ State, Section }
 
   def new(conn, _params) do
     workflow = %Workflow{}
@@ -27,18 +27,18 @@ defmodule Carbon.Workflow.WorkflowController do
 
   def index(conn, _params) do
     query = from w in Workflow,
-    join: st in assoc(w, :states),
-    join: se in assoc(w, :sections),
-    join: f in assoc(se, :fields),
+    left_join: st in assoc(w, :states),
+    left_join: se in assoc(w, :sections),
+    left_join: f in assoc(se, :fields),
     preload: [
       states: st,
       sections: {se, [
         fields: f
         ]}
     ],
-    where: st.active,
-    where: se.active,
-    where: f.active
+    where: st.active or is_nil(st.id),
+    where: se.active or is_nil(se.id),
+    where: f.active or is_nil(f.id)
 
     workflows = query
     |> Repo.all()
@@ -78,15 +78,25 @@ defmodule Carbon.Workflow.WorkflowController do
     changeset = Workflow.changeset(workflow, workflow_params)
 
     tr = Repo.transaction( fn ->
-      Ecto.Adapters.SQL.query! Carbon.Repo, "set constraints  workflow_states_presentation_order_index_workflow_id_key deferred ;"
+      Ecto.Adapters.SQL.query! Carbon.Repo, "set constraints workflow_states_presentation_order_index_workflow_id_key deferred ;"
+      Ecto.Adapters.SQL.query! Carbon.Repo, "set constraints workflow_sections_presentation_order_index_workflow_id_key deferred ;"
 
       Repo.update!(changeset)
+
       workflow_params["states_ids"]
       |> String.split(",")
       |> Enum.map(&String.to_integer/1)
       |> Enum.with_index()
       |> Enum.map(fn({state_id, index}) -> {index, from(s in State, where: s.id == ^state_id)} end)
       |> Enum.each(fn({index, query}) -> Repo.update_all(query, [set: [presentation_order_index: index]]) end)
+
+      workflow_params["sections_ids"]
+      |> String.split(",")
+      |> Enum.map(&String.to_integer/1)
+      |> Enum.with_index()
+      |> Enum.map(fn({section_id, index}) -> {index, from(s in Section, where: s.id == ^section_id)} end)
+      |> Enum.each(fn({index, query}) -> Repo.update_all(query, [set: [presentation_order_index: index]]) end)
+
     end)
 
     case tr do

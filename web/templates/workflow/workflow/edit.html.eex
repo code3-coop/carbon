@@ -60,7 +60,7 @@
       </label>
       <%= textarea f, :description %>
     </div>
-<form></form>
+    <form></form> <!-- this form is here just to not drop the next nested form -->
     <div class="field">
       <label>States</label>
       <div class="ui labels">
@@ -95,6 +95,8 @@
       <div class="ui cards">
 
           <% sorted_sections = Enum.sort_by @workflow.sections, &(&1.presentation_order_index) %>
+          <% sections_ids = sorted_sections |> Enum.map(&(&1.id)) |> Enum.join(",") %>
+          <%= hidden_input f, :sections_ids, value: sections_ids %>
           <%= for section <- sorted_sections do %>
             <div class="draggable card" data-section="<%= section.id %>">
               <div class="content">
@@ -190,12 +192,11 @@
     .parent()
     .find(".draggable")
     .map(function(_index, elm){
-      return $(elm).attr("data-sections");
+      return $(elm).attr("data-section");
     })
     .toArray()
     .join(',')
-    console.log(sections_ids)
-
+    $("#workflow_sections_ids").val(sections_ids)
   }
   var labels = $('.sortable-list')[0];
   Sortable.create(labels, {
