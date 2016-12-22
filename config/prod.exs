@@ -51,7 +51,7 @@ config :logger, level: :info
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start the server for all endpoints:
 #
-    config :phoenix, :serve_endpoints, true
+config :phoenix, :serve_endpoints, true
 #
 # Alternatively, you can configure exactly which server to
 # start per endpoint:
@@ -69,10 +69,7 @@ config :logger, level: :info
 
 
 # Do not include metadata nor timestamps in development logs
-config :logger, backends: [{LoggerFileBackend, :error_log}], format: "[$level] $message\n"
-config :logger, :error_log,
-  path: "/var/log/carbon/error.log",
-  level: :warn
+config :logger, :console, format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
