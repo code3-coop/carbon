@@ -13,7 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :carbon, Carbon.Endpoint,
   http: [port: 4000],
-  url: [host: "localhost"],
+  url: [host: "carbon.code3.ca"],
   cache_static_manifest: "priv/static/manifest.json",
   server: true
 
