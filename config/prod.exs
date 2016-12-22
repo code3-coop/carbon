@@ -79,7 +79,7 @@ config :phoenix, :stacktrace_depth, 20
 config :carbon, Carbon.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "postgres",
+  password: "&Ac6#5$=Pf2!Yd1_3:-8@",
   database: "carbon_prod",
   hostname: "localhost",
   pool_size: 10
