@@ -79,7 +79,7 @@ config :phoenix, :stacktrace_depth, 20
 config :carbon, Carbon.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
-  password: "&Ac6#5$=Pf2!Yd1_3:-8@",
+  password: System.get_env("POSTGRES_CARBON_PASSWORD"),
   database: "carbon_prod",
   hostname: "localhost",
   pool_size: 10
@@ -89,7 +89,7 @@ config :carbon, Carbon.Mailer,
   server: "smtp.gmail.com",
   port: 587,
   username: "carbon@code3.ca",
-  password: "a6#Ez9.w2:-g1&@c0=Ip3$8",
+  password: System.get_env("CARBON_GMAIL_PASSWORD"),
   tls: :always, # can be `:always` or `:never`
   ssl: false, # can be `true`
   retries: 1
