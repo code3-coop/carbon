@@ -61,7 +61,7 @@ defmodule Carbon.Mixfile do
      {:dialyxir, "~> 0.3.5", only: :dev},
      {:distillery, "~> 1.0"},
      {:bamboo_smtp, "~> 1.2.1", only: :prod},
-     {:logger_file_backend, "0.0.10", only: :prod},
+     {:logger_file_backend, "~> 0.0.9", only: :prod},
    ]
   end
 
