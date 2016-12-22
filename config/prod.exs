@@ -69,7 +69,10 @@ config :logger, level: :info
 
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+config :logger, backends: [{LoggerFileBackend, :error_log}], format: "[$level] $message\n"
+config :logger, :error_log,
+  path: "/var/log/carbon/error.log",
+  level: :warn
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
