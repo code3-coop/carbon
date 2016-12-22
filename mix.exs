@@ -7,7 +7,7 @@ defmodule Carbon.Mixfile do
      name: "Carbon",
      source_url: "https://github.com/code3-coop/carbon",
      homepage_url: "https://carbon.code3.ca/",
-     elixir: "~> 1.2",
+     elixir: "~> 1.3",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -33,6 +33,7 @@ defmodule Carbon.Mixfile do
        :phoenix_ecto,
        :postgrex,
        :bamboo,
+       :bamboo_smtp,
        :number,
      ]]
   end
@@ -56,7 +57,9 @@ defmodule Carbon.Mixfile do
      {:bamboo, "~> 0.7"},
      {:number, "~> 0.4.2"},
      {:ex_doc, "~> 0.12", only: :dev},
-     {:dialyxir, "~> 0.3.5", only: :dev}
+     {:dialyxir, "~> 0.3.5", only: :dev},
+     {:distillery, "~> 1.0"},
+     {:bamboo_smtp, "~> 1.2.1", only: :prod}
    ]
   end
 

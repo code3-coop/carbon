@@ -43,3 +43,5 @@ config :carbon, Carbon.Repo,
 config :carbon, Carbon.Mailer,
   adapter: Bamboo.LocalAdapter,
   website_entry_point: "http://localhost:4000"
+
+config :carbon, :env, :dev

@@ -57,3 +57,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 ## Run the tests
 
     mix test
+
+## Run all db migration in the prod env
+
+rel/my_app/bin/my_app command Elixir.Release.Tasks migrate

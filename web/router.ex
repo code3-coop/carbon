@@ -82,7 +82,7 @@ defmodule Carbon.Router do
     pipe_through :api
   end
 
-  if Mix.env == :dev do
+  if Application.get_env(:carbon, :env) == :dev do
     forward "/sent_emails", Bamboo.EmailPreviewPlug
   end
 end

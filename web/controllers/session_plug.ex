@@ -4,7 +4,7 @@ defmodule Carbon.SessionPlug do
 
   @moduledoc """
   Intercepts protected routes.
-  
+
   Checks the connection for a web session or a cookie containing a long-lived
   session token. If the web session is present, pass-through. If the long-lived
   session token is still valid, assign the user to the web session and
@@ -37,11 +37,10 @@ defmodule Carbon.SessionPlug do
   end
 
   defp get_key(conn, key) do
-    if Mix.env == :test do
+    if Application.get_env(:carbon, :env) == :test do
       conn.private[key]
     else
       get_session(conn, key)
     end
   end
 end
-

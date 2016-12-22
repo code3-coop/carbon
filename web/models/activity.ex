@@ -34,7 +34,7 @@ defmodule Carbon.Activity do
   end
 
   def new(owning_entity_name, owning_entity_id, user_id, action, entity_name, entity_id, changeset) do
-    if Mix.env != :test do
+    if Application.get_env(:carbon, :env) != :test do
       do_new(owning_entity_name, owning_entity_id, user_id, action, entity_name, entity_id, changeset)
     end
   end

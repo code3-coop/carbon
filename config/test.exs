@@ -17,3 +17,6 @@ config :carbon, Carbon.Repo,
   database: "carbon_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+
+config :carbon, :env, :test
