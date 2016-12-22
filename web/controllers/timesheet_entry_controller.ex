@@ -70,7 +70,7 @@ defmodule Carbon.TimesheetEntryController do
       {:error, changeset} ->
         conn
         |> assign(:changeset, changeset)
-        |> assign(:timesheet_id, timesheet_id)
+        |> assign(:timesheet_entry, timesheet_entry)
         |> render("edit.html")
     end
   end
