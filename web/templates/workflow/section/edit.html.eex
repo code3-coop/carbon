@@ -1,0 +1,62 @@
+<h3>
+  Edit section
+</h3>
+
+<%= form_for @changeset, :section, fn f ->%>
+  <div class="ui form">
+    <div class="field <%= if f.errors[:name], do: "error" %>">
+      <label>
+        Name
+        <%= error_tag f, :name %>
+      </label>
+      <%= text_input f, :name, class: "input" %>
+    </div>
+
+    <div class="field <%= if f.errors[:description], do: "error" %>">
+      <label>
+        Description
+        <%= error_tag f, :description %>
+      </label>
+      <%= textarea f, :description %>
+    </div>
+
+    <%= if Enum.empty? @section.fields do %>
+      <p>There is no fields declared, ATM !</p>
+    <% else %>
+      <h4>Fields</h4>
+
+      <%= inputs_for f, :fields, fn ff -> %>
+      <div class="ui form">
+        <% field = ff.data %>
+        <%= hidden_input ff, :presentation_order_index %>
+        <div class="field">
+          <label>Name</label>
+          <%= text_input ff, :name %>
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <%= textarea ff, :description %>
+        </div>
+        <div class="field">
+          <label>Type</label>
+          <%= select ff, :type, field_type_select, class: "ui dropdown" %>
+        </div>
+        <>
+          <%= if field.type == "reference" do %>
+            <%= field.entity_reference_name %>
+          <% end %>
+
+        </div>
+        </div>
+      <% end %>
+    <% end %>
+    <%= submit "Modify", class: "ui primary button" %>
+    <%= link "Cancel", to: workflow_path(@conn, :edit, @conn.params["workflow_id"]), class: "ui button" %>
+
+  </div>
+
+<% end %>
+
+<script>
+  $('.ui.dropdown').dropdown();
+</script>

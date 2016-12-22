@@ -46,6 +46,7 @@ defmodule Carbon.Workflow.SectionController do
     end
 
   end
+
   def restore(conn, %{"workflow_id" => workflow_id, "id" => section_id}) do
     section = Repo.get!(Section, section_id)
     changeset = Section.changeset(section, %{active: true})
@@ -59,6 +60,17 @@ defmodule Carbon.Workflow.SectionController do
         |> put_flash(:info, "Failed to restore section")
         |> render("edit.html")
     end
+  end
+
+  def edit(conn, %{"workflow_id" => workflow_id, "id" => section_id }) do
+    section = Repo.get(Section, section_id) |> Repo.preload([:fields])
+    changeset = Section.changeset(section)
+
+    conn
+    |> assign(:changeset, changeset)
+    |> assign(:section, section)
+    |> render("edit.html")
+
   end
 
 end

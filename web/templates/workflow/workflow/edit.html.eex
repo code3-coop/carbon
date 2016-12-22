@@ -45,12 +45,12 @@
 <%= form_for @changeset, workflow_path(@conn, :update, @workflow.id), fn f -> %>
   <div class="ui form ">
 
-    <div class="field <%if f.errors[:name], do: "error" %>">
+    <div class="field <%= if f.errors[:name], do: "error" %>">
       <label>
         Name
         <%= error_tag f, :name %>
       </label>
-      <%= text_input f, :name%>
+      <%= text_input f, :name %>
     </div>
 
     <div class="field <%= if f.errors[:name], do: "error" %>">
@@ -60,7 +60,9 @@
       </label>
       <%= textarea f, :description %>
     </div>
+
     <form></form> <!-- this form is here just to not drop the next nested form -->
+
     <div class="field">
       <label>States</label>
       <div class="ui labels">
@@ -117,7 +119,7 @@
                 </div>
               </div>
               <div class="extra content">
-                <%= link to: "" do %>
+                <%= link to: workflow_section_path(@conn, :edit, @workflow.id, section.id) do %>
                   <i class="icon write"></i>
                   Edit
                 <% end %>
