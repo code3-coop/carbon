@@ -26,12 +26,12 @@
 
 <h1 class="ui header">
   <div class="content">
-    Edit Timehseet
+    Edit Timesheet
   </div>
-<%= link to: timesheet_timesheet_entry_path(@conn, :new, @timesheet.id), class: "ui right floated button" do %>
-  <i class="ui icon plus"></i>
-  Add entry
-<% end %>
+  <%= link to: timesheet_timesheet_entry_path(@conn, :new, @timesheet.id), class: "ui right floated button" do %>
+    <i class="ui icon plus"></i>
+    Add entry
+  <% end %>
 </h1>
 
 <div class="ui left floated labeled inline field">

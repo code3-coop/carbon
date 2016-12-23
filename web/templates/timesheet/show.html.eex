@@ -12,7 +12,7 @@
 
 <h1 class="ui header">
   <div class="content">
-    Timehseet
+    Timesheet
     <h3 class="ui sub header">
       <%= @timesheet.start_date%>
       <div class="ui label"><%= @timesheet.status.key %></div>
@@ -23,6 +23,10 @@
     <%= link to: timesheet_path(@conn, :edit, @timesheet.id), class: "ui button" do %>
       <i class="ui icon write"></i>
       Edit timesheet
+    <% end %>
+    <%= link to: timesheet_timesheet_entry_path(@conn, :new, @timesheet.id), class: "ui green button" do %>
+      <i class="ui icon plus"></i>
+      Add entry
     <% end %>
   </div>
 
