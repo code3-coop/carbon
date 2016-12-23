@@ -44,9 +44,8 @@ defmodule Carbon.TimesheetEntryController do
     |> render("edit.html")
   end
 
-  def update(conn, %{"timesheet_id" => timesheet_id, "id" => entry_id, "timesheet_entry" => timesheet_entry_params}) do
+  def update(conn, %{"timesheet_id" => _timesheet_id, "id" => entry_id, "timesheet_entry" => timesheet_entry_params}) do
     tags = get_tags_from(TimesheetEntryTag, timesheet_entry_params)
-    timesheet_id = String.to_integer(timesheet_id)
 
     timesheet_entry_query = from te in TimesheetEntry,
       where: te.id == ^entry_id,

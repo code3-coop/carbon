@@ -1,8 +1,8 @@
 defmodule Carbon.Workflow.SectionController do
   use Carbon.Web, :controller
 
-  alias Carbon.{ Account, User, Workflow }
-  alias Carbon.Workflow.{ Section, Value, Field}
+  alias Carbon.Workflow
+  alias Carbon.Workflow.Section
 
   def new(conn, _params) do
     section = %Section{}
@@ -18,7 +18,7 @@ defmodule Carbon.Workflow.SectionController do
     section = %Section{workflow_id: String.to_integer(workflow_id), presentation_order_index: max_presentation_order_index + 1}
     changeset = Section.changeset(section, section_params)
     case Repo.insert(changeset) do
-      {:ok, section} ->
+      {:ok, _section} ->
         redirect(conn, to: workflow_path(conn, :edit, workflow_id))
       {:error, changeset} ->
         conn
@@ -52,7 +52,7 @@ defmodule Carbon.Workflow.SectionController do
     changeset = Section.changeset(section, %{active: true})
 
     case Repo.update(changeset) do
-      {:ok, section} ->
+      {:ok, _section} ->
         conn
         |> redirect(to: workflow_path(conn, :edit, workflow_id))
       {:error, _changeset} ->
@@ -62,7 +62,7 @@ defmodule Carbon.Workflow.SectionController do
     end
   end
 
-  def edit(conn, %{"workflow_id" => workflow_id, "id" => section_id }) do
+  def edit(conn, %{"workflow_id" => _workflow_id, "id" => section_id }) do
     section = Repo.get(Section, section_id) |> Repo.preload([:fields])
     changeset = Section.changeset(section)
 

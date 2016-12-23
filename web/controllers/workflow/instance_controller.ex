@@ -26,7 +26,7 @@ defmodule Carbon.Workflow.InstanceController do
     changeset = Instance.create_changeset(instance, instance_params, values)
 
     case Repo.insert(changeset) do
-      {:ok, instance } ->
+      {:ok, _instance} ->
         conn
         |> put_flash(:info, "Workflow instance created with success")
         |> redirect(to: instance_path(conn, :index))

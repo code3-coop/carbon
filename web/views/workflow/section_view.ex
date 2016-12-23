@@ -1,6 +1,5 @@
 defmodule Carbon.Workflow.SectionView do
   use Carbon.Web, :view
-  import Carbon.ViewHelpers
 
   def field_type_select do
       %{
