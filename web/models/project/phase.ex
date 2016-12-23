@@ -8,6 +8,8 @@ defmodule Carbon.Project.Phase do
     field :presentation_order_index, :integer
     field :active, :boolean, default: true
 
+    belongs_to :project, Carbon.Project
+
     timestamps
   end
 
