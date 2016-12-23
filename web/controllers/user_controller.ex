@@ -51,11 +51,11 @@ defmodule Carbon.UserController do
     case Repo.update(changeset) do
       {:ok, _user} ->
         conn
-        |> put_flash(:info, "Successfully update user")
+        |> put_flash(:info, "Successfully updated user profile")
         |> redirect(to: user_path(conn, :show, user_id))
       {:error, changeset} ->
         conn
-        |> put_flash(:info, "Failed to update user")
+        |> put_flash(:info, "Failed to update user profile")
         |> assign(:user, user)
         |> assign(:changeset, changeset)
         |> render("edit.html")
