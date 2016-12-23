@@ -3,7 +3,6 @@
 </h1>
 
 <div class="ui grid ">
-
   <div class="four wide column">
     <div class="ui card">
       <div class="image">
@@ -53,7 +52,6 @@
   </div>
 
   <div class="twelve wide column">
-
     <h3 class="ui horizontal divider header">
       <%= @current_user.handle %>'s lastest timesheets
     </h3>
@@ -176,13 +174,13 @@
             </div>
             <div class="extra content">
               <%= if !deal.closing_date and deal.probability do %>
-                <div class="ui <%= probability_color(deal.probability) %> label">
+                <div class="ui <%= probability_color(deal.probability) %> tiny label">
                   <%= deal.probability %>%
                   <div class="detail">probability</div>
                 </div>
               <% end %>
               <%= for tag <- deal.tags do %>
-                <div class="ui <%= tag.color%> label">
+                <div class="ui <%= tag.color%> tiny label">
                   <i class="icon tag"></i>
                   <%= tag.description %>
                 </div>
