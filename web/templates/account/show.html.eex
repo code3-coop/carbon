@@ -59,12 +59,14 @@
           <%= @account.owner.full_name %>
           <div class="detail">owner</div>
         </a>
-        <div class="ui label image">
-          <i class="ui icon dollar"></i>
-          <%= @account.billing_address.street_address %>
-          <div class="detail"><%= @account.billing_address.locality %>, <%= @account.billing_address.region %></div>
-        </div>
-        <%= if @account.use_distinct_address_for_shipping do %>
+        <%= if @account.billing_address != nil do %>
+          <div class="ui label image">
+            <i class="ui icon dollar"></i>
+            <%= @account.billing_address.street_address %>
+            <div class="detail"><%= @account.billing_address.locality %>, <%= @account.billing_address.region %></div>
+          </div>
+        <% end %>
+        <%= if @account.use_distinct_address_for_shipping and @account.shipping_address != nil do %>
           <div class="ui label image">
             <i class="ui icon truck"></i>
             <%= @account.shipping_address.street_address %>
