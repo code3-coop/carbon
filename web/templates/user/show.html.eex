@@ -53,7 +53,7 @@
 
   <div class="twelve wide column">
     <h3 class="ui horizontal divider header">
-      <%= @current_user.handle %>'s lastest timesheets
+      <%= @current_user.full_name %>'s latest timesheets
     </h3>
     <%= if Enum.empty? @timesheets do %>
       <center>
@@ -79,12 +79,20 @@
             </div>
             <div class="extra content">
               <% %{billables: billables, non_billables: non_billables} = Carbon.Timesheet.total_billables_and_non_billables(timesheet) %>
-              <div class="ui left floated">
-                <%= billables %> billables
-              </div>
-              <div class="ui right floated">
-                <%= non_billables %> non billables
-              </div>
+              <%= if billables > 0 do %>
+                <div class="ui left floated">
+                  <div class="ui tiny label"><i class="ui icon dollar"></i>
+                    <%= Carbon.Duration.format_minutes(billables) %>
+                  </div>
+                </div>
+              <% end %>
+              <%= if non_billables > 0 do %>
+                <div class="ui right floated">
+                  <div class="ui tiny label"><i class="ui icon stack overflow"></i>
+                    <%= Carbon.Duration.format_minutes(non_billables) %>
+                  </div>
+                </div>
+              <% end %>
             </div>
           </div>
         <% end %>
@@ -97,11 +105,11 @@
     </center>
 
     <h3 class="ui horizontal divider header">
-      Accounts handled by <%= @current_user.handle %>
+      Accounts handled by <%= @current_user.full_name %>
     </h3>
     <%= if Enum.empty? @accounts do %>
       <center style="margin: 1em;">
-        <%= @current_user.handle%> doesn't handle any accounts.
+        <%= @current_user.full_name %> doesn't handle any accounts.
       </center>
     <% else %>
       <div class="ui three cards">
@@ -134,11 +142,11 @@
     </center>
 
     <h3 class="ui horizontal divider header">
-      Deals managed by <%= @current_user.handle %>
+      Deals managed by <%= @current_user.full_name %>
     </h3>
     <%= if Enum.empty? @deals do %>
       <center style="margin: 1em;">
-        <%= @current_user.handle %> doesn't have any pending deals.
+        <%= @current_user.full_name %> doesn't have any pending deals.
       </center>
     <% else %>
       <div class="ui three cards">
