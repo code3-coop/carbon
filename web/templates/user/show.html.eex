@@ -2,195 +2,195 @@
   Profile
 </h1>
 
-<div class="ui two column grid ">
+<div class="ui grid ">
+
   <div class="four wide column">
     <div class="ui card">
-    <div class="image">
-      <img src="<%= @user.image_url %>"/>
-    </div>
-    <div class="content">
-      <a class="header">
-        <%= @user.full_name %>
-      </a>
-      <div class="meta">
-        <%= @user.title %>
+      <div class="image">
+        <img src="<%= @user.image_url %>"/>
       </div>
-      <div class="description">
-        <div>
-          <i class="icon user"></i>
-          <%= @user.handle %>
+      <div class="content">
+        <a class="header">
+          <%= @user.full_name %>
+        </a>
+        <div class="meta">
+          <%= @user.title %>
         </div>
-        <%= if Enum.count(@user.roles) > 0 do %>
+        <div class="description">
           <div>
-            <i class="icon users"></i>
-            <%= @user.roles |> Enum.map(&(&1.key)) |> Enum.join(", ") %>
+            <i class="icon user"></i>
+            <%= @user.handle %>
           </div>
-        <% end %>
-        <%= if @user.email do %>
-          <div>
-            <i class="icon mail"></i>
-            <%= @user.email %>
-          </div>
-        <% end %>
+          <%= if Enum.count(@user.roles) > 0 do %>
+            <div>
+              <i class="icon users"></i>
+              <%= @user.roles |> Enum.map(&(&1.key)) |> Enum.join(", ") %>
+            </div>
+          <% end %>
+          <%= if @user.email do %>
+            <div>
+              <i class="icon mail"></i>
+              <%= @user.email %>
+            </div>
+          <% end %>
+        </div>
       </div>
-    </div>
-    <div class="extra content">
-      <div class="left floated">
-        <%= link to: user_path(@conn, :edit, @user.id) do %>
-          <i class="icon write"></i>
-          Edit
-        <% end %>
-      </div>
-      <div class="right floated">
-        <%= link to: user_path(@conn, :delete, @user.id) do %>
-          <i class="icon ban"></i>
-          Close
-        <% end %>
+      <div class="extra content">
+        <div class="left floated">
+          <%= link to: user_path(@conn, :edit, @user.id) do %>
+            <i class="icon write"></i>
+            Edit
+          <% end %>
+        </div>
+        <div class="right floated">
+          <%= link to: user_path(@conn, :delete, @user.id) do %>
+            <i class="icon ban"></i>
+            Close
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="twelve wide column">
+  <div class="twelve wide column">
 
-  <h3 class="ui horizontal divider header">
-    <%= @current_user.handle %>'s lastest timesheets
-  </h3>
-
-  <%= if Enum.empty? @timesheets do %>
-    <center>
-      You don't have any timesheets. Now is the
-      <%= link to: timesheet_path(@conn, :new) do %>
-        time to start!
-      <% end %>
-    </center>
-  <% else %>
-    <div class="ui cards">
-      <%= for timesheet <- @timesheets do %>
-        <div class="ui card">
-          <div class="content">
-            <div class="ui floating right ribbon label" style="top:1em; left:calc(100% + 1rem + 1.6em);">
-              <%= timesheet.status.key %>
-            </div>
-            <div class="header" style="width:83%; overflow:hidden; text-overflow:ellipsis;">
-              <%= link timesheet.start_date, to: timesheet_path(@conn, :show, timesheet.id) %>
-            </div>
-            <div class="description">
-              <%= timesheet.notes %>
-            </div>
-          </div>
-          <div class="extra content">
-            <% %{billables: billables, non_billables: non_billables} = Carbon.Timesheet.total_billables_and_non_billables(timesheet) %>
-            <div class="ui left floated">
-              <%= billables %> billables
-            </div>
-            <div class="ui right floated">
-              <%= non_billables %> non billables
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-
-  <center style="margin: 1em;">
-    <%= link to: timesheet_path(@conn, :index) do %>
-      See the complete list of timesheets
-    <% end %>
-  </center>
-
-
-  <h3 class="ui horizontal divider header">
-    Accounts handled by <%= @current_user.handle %>
-  </h3>
-  <%= if Enum.empty? @accounts do %>
-    <center style="margin: 1em;">
-      <%= @current_user.handle%> doesn't handle any accounts.
-    </center>
-  <% else %>
-    <div class="ui cards">
-      <%= for account <- @accounts do %>
-        <div class="ui card">
-          <div class="content">
-            <div class="ui floating right ribbon <%= account.status.color %> label" style="top:1em; left:calc(100% + 1rem + 1.6em);">
-              <%= account.status.key %>
-            </div>
-            <div class="header" style="width:83%; overflow:hidden; text-overflow:ellipsis;">
-              <%= link account.name, to: account_path(@conn, :show, account.id) %>
-            </div>
-          </div>
-          <div class="extra content">
-            <%= for tag <- account.tags do %>
-              <div class="ui tiny label <%= tag.color%>">
-                <i class="ui icon tag"></i>
-                <%= tag.description %>
+    <h3 class="ui horizontal divider header">
+      <%= @current_user.handle %>'s lastest timesheets
+    </h3>
+    <%= if Enum.empty? @timesheets do %>
+      <center>
+        You don't have any timesheets. Now is the
+        <%= link to: timesheet_path(@conn, :new) do %>
+          time to start!
+        <% end %>
+      </center>
+    <% else %>
+      <div class="ui three cards">
+        <%= for timesheet <- @timesheets do %>
+          <div class="ui card">
+            <div class="content">
+              <div class="ui floating right ribbon label" style="top:1em; left:calc(100% + 1rem + 1.6em);">
+                <%= timesheet.status.key %>
               </div>
-            <% end %>
+              <div class="header" style="width:83%; overflow:hidden; text-overflow:ellipsis;">
+                <%= link timesheet.start_date, to: timesheet_path(@conn, :show, timesheet.id) %>
+              </div>
+              <div class="description">
+                <%= timesheet.notes %>
+              </div>
+            </div>
+            <div class="extra content">
+              <% %{billables: billables, non_billables: non_billables} = Carbon.Timesheet.total_billables_and_non_billables(timesheet) %>
+              <div class="ui left floated">
+                <%= billables %> billables
+              </div>
+              <div class="ui right floated">
+                <%= non_billables %> non billables
+              </div>
+            </div>
           </div>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-
-  <center style="margin: 1em;">
-    <%= link to: account_path(@conn, :index) do %>
-      See the complete list of accounts
-    <% end %>
-  </center>
-
-  <h3 class="ui horizontal divider header">
-    Deals managed by <%= @current_user.handle %>
-  </h3>
-  <%= if Enum.empty? @deals do %>
-    <center style="margin: 1em;">
-      <%= @current_user.handle %> doesn't have any pending deals.
-    </center>
-  <% else %>
-    <%= for deal <- @deals do %>
-      <div class="ui card">
-        <div class="content">
-          <%= if deal.closed_value do %>
-            <div class="ui floating right ribbon green label" style="top:1em; left:calc(100% + 1rem + 1.6em);">
-              Closed
-            </div>
-            <div class="header" style="width:83%; overflow:hidden; text-overflow:ellipsis;">
-              <%= link humanize(:amount, deal.closed_value), to: account_path(@conn, :show, deal.account_id) %>
-            </div>
-            <div class="meta">
-              <span class="date">
-                closed on <%= deal.closing_date %>
-              </span>
-            </div>
-          <% else %>
-            <div class="ui floating right ribbon yellow label" style="top:1em; left:calc(100% + 1rem + 1.6em);">
-              In progress
-            </div>
-            <div class="header" style="width:83%; overflow:hidden; text-overflow:ellipsis;">
-              <%= link humanize(:amount, deal.expected_value), to: account_path(@conn, :show, deal.account_id) %>
-            </div>
-            <div class="meta">
-              <span class="date">opened since <%= deal.updated_at |> Ecto.DateTime.to_date %></span>
-            </div>
-          <% end %>
-          <div class="description">
-            <%= deal.description %>
-          </div>
-        </div>
-        <div class="extra content">
-          <%= if !deal.closing_date and deal.probability do %>
-            <div class="ui <%= probability_color(deal.probability) %> label">
-              <%= deal.probability %>%
-              <div class="detail">probability</div>
-            </div>
-          <% end %>
-          <%= for tag <- deal.tags do %>
-            <div class="ui <%= tag.color%> label">
-              <i class="icon tag"></i>
-              <%= tag.description %>
-            </div>
-          <% end %>
-        </div>
+        <% end %>
       </div>
     <% end %>
-  <% end %>
+    <center style="margin: 1em;">
+      <%= link to: timesheet_path(@conn, :index) do %>
+        See the complete list of timesheets
+      <% end %>
+    </center>
+
+    <h3 class="ui horizontal divider header">
+      Accounts handled by <%= @current_user.handle %>
+    </h3>
+    <%= if Enum.empty? @accounts do %>
+      <center style="margin: 1em;">
+        <%= @current_user.handle%> doesn't handle any accounts.
+      </center>
+    <% else %>
+      <div class="ui three cards">
+        <%= for account <- @accounts do %>
+          <div class="ui card">
+            <div class="content">
+              <div class="ui floating right ribbon <%= account.status.color %> label" style="top:1em; left:calc(100% + 1rem + 1.6em);">
+                <%= account.status.key %>
+              </div>
+              <div class="header" style="width:83%; overflow:hidden; text-overflow:ellipsis;">
+                <%= link account.name, to: account_path(@conn, :show, account.id) %>
+              </div>
+            </div>
+            <div class="extra content">
+              <%= for tag <- account.tags do %>
+                <div class="ui tiny label <%= tag.color%>">
+                  <i class="ui icon tag"></i>
+                  <%= tag.description %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <center style="margin: 1em;">
+      <%= link to: account_path(@conn, :index) do %>
+        See the complete list of accounts
+      <% end %>
+    </center>
+
+    <h3 class="ui horizontal divider header">
+      Deals managed by <%= @current_user.handle %>
+    </h3>
+    <%= if Enum.empty? @deals do %>
+      <center style="margin: 1em;">
+        <%= @current_user.handle %> doesn't have any pending deals.
+      </center>
+    <% else %>
+      <div class="ui three cards">
+        <%= for deal <- @deals do %>
+          <div class="ui card">
+            <div class="content">
+              <%= if deal.closed_value do %>
+                <div class="ui floating right ribbon green label" style="top:1em; left:calc(100% + 1rem + 1.6em);">
+                  Closed
+                </div>
+                <div class="header" style="width:83%; overflow:hidden; text-overflow:ellipsis;">
+                  <%= link humanize(:amount, deal.closed_value), to: account_path(@conn, :show, deal.account_id) %>
+                </div>
+                <div class="meta">
+                  <span class="date">
+                    closed on <%= deal.closing_date %>
+                  </span>
+                </div>
+              <% else %>
+                <div class="ui floating right ribbon yellow label" style="top:1em; left:calc(100% + 1rem + 1.6em);">
+                  In progress
+                </div>
+                <div class="header" style="width:83%; overflow:hidden; text-overflow:ellipsis;">
+                  <%= link humanize(:amount, deal.expected_value), to: account_path(@conn, :show, deal.account_id) %>
+                </div>
+                <div class="meta">
+                  <span class="date">opened since <%= deal.updated_at |> Ecto.DateTime.to_date %></span>
+                </div>
+              <% end %>
+              <div class="description">
+                <%= deal.description %>
+              </div>
+            </div>
+            <div class="extra content">
+              <%= if !deal.closing_date and deal.probability do %>
+                <div class="ui <%= probability_color(deal.probability) %> label">
+                  <%= deal.probability %>%
+                  <div class="detail">probability</div>
+                </div>
+              <% end %>
+              <%= for tag <- deal.tags do %>
+                <div class="ui <%= tag.color%> label">
+                  <i class="icon tag"></i>
+                  <%= tag.description %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>
