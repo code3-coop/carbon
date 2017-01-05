@@ -37,7 +37,7 @@
             <% sorted_fields = Enum.sort_by @section.fields, &(&1.presentation_order_index) %>
             <% fields_ids = sorted_fields |> Enum.map(&(&1.id)) |> Enum.join(",") %>
             <%= hidden_input f, :fields_ids, value: fields_ids %>
-            <%= for field <- (sorted_fields |> Enum.take(2)) do %>
+            <%= for field <- sorted_fields do %>
               <div class="ui basic label draggable" data-field="<%= field.id %>">
                     <i class="icon <%= icon_for_field_type(field.type) %>"></i>
                     <%= field.name %>
