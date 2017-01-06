@@ -16,7 +16,7 @@ defmodule Carbon.Project do
 
     belongs_to :account, Carbon.Account
     has_many :phases, Carbon.Project.Phase
-    many_to_many :tags, Carbon.ProjectTag, join_through: "j_projects_tags"
+    many_to_many :tags, Carbon.ProjectTag, join_through: "j_projects_tags", on_replace: :delete
 
     timestamps
   end
@@ -30,5 +30,15 @@ defmodule Carbon.Project do
     |> validate_required([:code])
     |> validate_inclusion(:estimate_unit, ~w(hours CAD))
     |> optimistic_lock(:lock_version)
+  end
+
+  def update_changeset(struct, params \\ %{}, tags) do
+    changeset(struct, params)
+    |> put_assoc(:tags, Enum.map(tags, &Ecto.Changeset.change/1))
+  end
+
+  def archive_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:active])
   end
 end

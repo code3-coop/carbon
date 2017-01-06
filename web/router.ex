@@ -48,6 +48,9 @@ defmodule Carbon.Router do
       put "/events/:id/restore", EventController, :restore
 
       resources "/attachments", AttachmentController
+
+      resources "/projects", ProjectController
+      put "/projects/:id/restore", ProjectController, :restore
     end
 
     resources "/tags", TagController, except: [:show]

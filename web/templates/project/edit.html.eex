@@ -1,0 +1,108 @@
+<style>
+  ::-webkit-inner-spin-button { display: none; }
+</style>
+
+<h2 class="ui header">Edit project</h2>
+
+<%= form_for @changeset, account_project_path(@conn, :update, @project.account_id, @project.id), fn f -> %>
+  <div class="ui form <%= if @changeset.action, do: "error" %>">
+    <div class="ui error message">
+      <div class="header">Ruh roh!</div>
+      <p>Something went wrong. Please check the following errors.</p>
+    </div>
+
+    <div class="field <%= if f.errors[:code], do: "error" %>">
+      <label>Code
+        <%= error_tag f, :description %>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= text_input f, :code %>
+        <div class="ui left corner label"><i class="asterisk icon"></i></div>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:description], do: "error" %>">
+      <label>Description
+        <%= error_tag f, :description %>
+      </label>
+      <div class="ui input">
+        <%= textarea f, :description %>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Estimation unit</label>
+      <div class="ui fluid selection dropdown">
+        <%= hidden_input f, :estimate_unit %>
+        <div class="default text">Select unit</div>
+        <div class="menu">
+          <div class="item" data-value="CAD">CAD</div>
+          <div class="item" data-value="hours">hours</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:estimate_min], do: "error" %>">
+      <label>Estimated minimum
+        <%= error_tag f, :estimate_min %>
+      </label>
+      <div class="ui input">
+        <%= number_input f, :estimate_min, step: "any" %>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:estimate_max], do: "error" %>">
+      <label>Estimated maximum
+        <%= error_tag f, :estimate_max %>
+      </label>
+      <div class="ui input">
+        <%= number_input f, :estimate_max, step: "any" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Project tags</label>
+      <div class="ui fluid multiple search selection dropdown">
+        <%= hidden_input f, :tags_id, value: Enum.map_join(@project.tags, ",", & &1.id) %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select tags</div>
+        <div class="menu">
+          <%= for tag <- project_tags_select do %>
+            <div class="item " data-value="<%= tag.id %>">
+              <div class="ui label <%= tag.color %>">
+                <i class="ui tag icon"></i>
+                <%= tag.description %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:start_date], do: "error" %>">
+      <label>Start date
+        <%= error_tag f, :start_date %>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= text_input f, :start_date, type: "date" %>
+      </div>
+    </div>
+
+    <div class="field <%= if f.errors[:end_date], do: "error" %>">
+      <label>End date
+        <%= error_tag f, :end_date %>
+      </label>
+      <div class="ui left corner labeled input">
+        <%= text_input f, :end_date, type: "date" %>
+      </div>
+    </div>
+
+    <%= submit "Edit project", class: "ui submit button" %>
+    <%= link "cancel", to: account_project_path(@conn, :index, @conn.params["account_id"]) %>
+  </div>
+<% end %>
+
+<script>
+  $(".ui.dropdown").dropdown();
+</script>
+
