@@ -28,6 +28,6 @@ defmodule Carbon.Workflow.Field do
     struct
     |> cast(params, [:name, :description, :type, :entity_reference_name, :presentation_order_index])
     |> validate_required([:name, :description, :type, :presentation_order_index])
-    |> validate_inclusion(:type, ~w(text long_text integer currency decimal date enum reference boolean))
+    |> validate_inclusion(:type, Carbon.SupportedEnums.field_types)
   end
 end

@@ -3,6 +3,7 @@ defmodule Carbon.Workflow.SectionController do
 
   alias Carbon.Workflow
   alias Carbon.Workflow.Section
+  alias Carbon.Workflow.Field
 
   def new(conn, _params) do
     section = %Section{}
@@ -62,15 +63,50 @@ defmodule Carbon.Workflow.SectionController do
     end
   end
 
-  def edit(conn, %{"workflow_id" => _workflow_id, "id" => section_id }) do
-    section = Repo.get(Section, section_id) |> Repo.preload([:fields])
+  def edit(conn, %{"workflow_id" => workflow_id, "id" => section_id }) do
+
+    query = from s in Section,
+    left_join: f in assoc(s, :fields),
+    preload: [fields: f],
+    where: f.active or is_nil(f.id),
+    where: s.id == ^section_id
+
+
+    section = Repo.one(query)
+
     changeset = Section.changeset(section)
 
     conn
     |> assign(:changeset, changeset)
     |> assign(:section, section)
+    |> assign(:section_id, section_id)
+    |> assign(:workflow_id, workflow_id)
     |> render("edit.html")
 
+  end
+
+  def update(conn, %{"workflow_id" => workflow_id, "id" => section_id, "section" => section_params}) do
+
+    section = Repo.get!(Section, section_id) |> Repo.preload([:fields])
+    changeset = Section.changeset(section, section_params)
+    tr = Repo.transaction( fn ->
+      Repo.update!(changeset)
+      Ecto.Adapters.SQL.query! Carbon.Repo, "set constraints workflow_fields_presentation_order_index_section_id_key deferred ;"
+      IO.inspect section_params["fields_ids"]
+      section_params["fields_ids"]
+      |> String.split(",")
+      |> Enum.map(&String.to_integer/1)
+      |> Enum.with_index()
+      |> Enum.map(fn({field_id, index}) -> {index, from(s in Field, where: s.id == ^field_id)} end)
+      |> Enum.each(fn({index, query}) -> Repo.update_all(query, [set: [presentation_order_index: index]]) end)
+    end)
+
+    case tr do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "Section successfully updated")
+        |> redirect(to: workflow_path(conn, :edit, workflow_id))
+    end
   end
 
 end

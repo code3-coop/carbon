@@ -18,5 +18,6 @@ defmodule Carbon.Workflow.Section do
     struct
     |> cast(params, [:name, :description, :presentation_order_index, :active])
     |> validate_required([:name, :description, :presentation_order_index])
+    |> cast_assoc(:fields, required: false)
   end
 end

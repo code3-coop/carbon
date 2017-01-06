@@ -69,6 +69,8 @@ defmodule Carbon.Router do
       resources "/states", Workflow.StateController, only: [:new, :create, :delete]
       resources "/sections", Workflow.SectionController do
         resources "/fields", Workflow.FieldController
+        put "/workflows/:workflow_id/sections/:section_id/fields/:id/restore", Workflow.FieldController, :restore
+
       end
       put "/workflows/:workflow_id/sections/:id/restore", Workflow.SectionController, :restore
     end

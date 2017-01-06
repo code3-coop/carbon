@@ -1,9 +1,40 @@
+<style>
+.ui.labels .label.draggable {
+  cursor: move;
+}
+.inline-form {
+  display: inline-block;
+}
+.inline-form a {
+  cursor: pointer;
+  color: inherit;
+  opacity: .5;
+  -webkit-transition: .1s opacity ease;
+  transition: .1s opacity ease;
+}
+.inline-form a:hover {
+  opacity: 1;
+}
+</style>
+
 <h3>
   Edit section
 </h3>
 
-<%= form_for @changeset, :section, fn f ->%>
-  <div class="ui form">
+<%= if get_flash(@conn, :archived_workflow_field) do %>
+  <div class="ui message">
+    <div class="header">
+      Field deleted
+    </div>
+    <% field = get_flash(@conn, :archived_workflow_field) %>
+    Field <%= field.name %> successfully deleted.
+    <%= link to: workflow_section_field_path(@conn, :restore, @workflow_id, @section_id, field.id), method: :put, form: [class: "inline-form"] do %>
+      Get it back.
+    <% end %>
+  </div>
+<% end %>
+
+<%= form_for @changeset, workflow_section_path(@conn, :update, @conn.params["workflow_id"], @section.id), [class: "ui form"], fn f -> %>
     <div class="field <%= if f.errors[:name], do: "error" %>">
       <label>
         Name
@@ -20,43 +51,73 @@
       <%= textarea f, :description %>
     </div>
 
-    <%= if Enum.empty? @section.fields do %>
-      <p>There is no fields declared, ATM !</p>
-    <% else %>
-      <h4>Fields</h4>
+    <div class="ui field ">
+      <label>Fields</label>
 
-      <%= inputs_for f, :fields, fn ff -> %>
-      <div class="ui form">
-        <% field = ff.data %>
-        <%= hidden_input ff, :presentation_order_index %>
-        <div class="field">
-          <label>Name</label>
-          <%= text_input ff, :name %>
-        </div>
-        <div class="field">
-          <label>Description</label>
-          <%= textarea ff, :description %>
-        </div>
-        <div class="field">
-          <label>Type</label>
-          <%= select ff, :type, field_type_select, class: "ui dropdown" %>
-        </div>
-        <>
-          <%= if field.type == "reference" do %>
-            <%= field.entity_reference_name %>
+
+          <%= if Enum.empty? @section.fields do %>
+            <p>There is no fields declared, ATM !</p>
+          <% end %>
+          <div class="ui labels sortable-list">
+            <!-- this form is here just to prevent fucked up delete link -->
+            <!-- <form></form> -->
+
+            <% sorted_fields = Enum.sort_by @section.fields, &(&1.presentation_order_index) %>
+            <% fields_ids = sorted_fields |> Enum.map(&(&1.id)) |> Enum.join(",") %>
+            <%= hidden_input f, :fields_ids, value: fields_ids %>
+            <%= for field <- sorted_fields do %>
+              <div class="ui basic label draggable" data-field="<%= field.id %>">
+                    <i class="icon <%= icon_for_field_type(field.type) %>"></i>
+                    <%= field.name %>
+                    <%= if field.type == "reference" do %>
+                      (<%= field.entity_reference_name %>)
+                    <% end %>
+
+                      <% field.description %>
+
+
+                <div class="detail">
+                  <%= link to: workflow_section_field_path(@conn, :edit, @conn.params["workflow_id"], @section.id, field.id) do %>
+                    <i class="icon write"></i>
+                  <% end %>
+                </div>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+          <%= link to: workflow_section_field_path(@conn, :create, @conn.params["workflow_id"], @section.id), class: "ui label" do %>
+            <i class="icon plus"></i>
+            Add field
           <% end %>
 
-        </div>
-        </div>
-      <% end %>
-    <% end %>
-    <%= submit "Modify", class: "ui primary button" %>
-    <%= link "Cancel", to: workflow_path(@conn, :edit, @conn.params["workflow_id"]), class: "ui button" %>
+      </div>
 
-  </div>
+  <%= submit "Update section", class: "ui submit primary button" %>
+  <%= link "Cancel", to: workflow_path(@conn, :edit, @conn.params["workflow_id"]), class: "ui button" %>
+
 
 <% end %>
 
 <script>
   $('.ui.dropdown').dropdown();
+
+  var update_fields_hidden_input = function(evt){
+    var fields_ids = $(evt.target)
+    .parent()
+    .find(".draggable")
+    .map(function(_index, elm){
+      return $(elm).attr("data-field");
+    })
+    .toArray()
+    .join(',')
+    $("#section_fields_ids").val(fields_ids)
+  };
+  var labels = $('.sortable-list')[0];
+  Sortable.create(labels, {
+    draggable: ".draggable",
+    onEnd: update_fields_hidden_input
+  });
 </script>
