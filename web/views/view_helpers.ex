@@ -27,6 +27,9 @@ defmodule Carbon.ViewHelpers do
   def event_tags_select do
     Carbon.Repo.all from Carbon.EventTag, where: [active: true], order_by: [:id]
   end
+  def project_tags_select do
+    Carbon.Repo.all from Carbon.ProjectTag, where: [active: true], order_by: [:id]
+  end
   def timehseet_entry_tags_select do
     Carbon.Repo.all from Carbon.TimesheetEntryTag, where: [active: true], order_by: [:id]
   end

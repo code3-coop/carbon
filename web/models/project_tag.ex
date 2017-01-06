@@ -4,7 +4,7 @@ defmodule Carbon.ProjectTag do
   schema "project_tags" do
     field :description, :string
     field :color, :string
-    field :active, :boolean, default: false
+    field :active, :boolean, default: true
 
     timestamps()
   end

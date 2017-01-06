@@ -1,0 +1,104 @@
+<style>
+  .empty-list-message {
+    text-align: center;
+    color: rgba(0,0,0,0.5);
+  }
+  form.item a {
+    color: rgba(0,0,0,.87);
+  }
+  .underlined {
+    text-decoration: underline;
+  }
+  .ui.feed>.event>.content>.meta .links {
+    padding-top: 10px;
+  }
+  .ui.feed>.event>.content>.meta .link {
+    display: inline;
+    padding-right: 5px;
+  }
+  .ui.message .inline-form {
+    display: inline-block;
+  }
+</style>
+
+<%= if get_flash(@conn, :deleted_project) do %>
+  <div class="ui message">
+    <div class="header">
+      Project archived
+    </div>
+    Project archived successfully
+      <% project = get_flash(@conn, :deleted_project) %>
+      <% path_to_restore = account_project_path(@conn, :restore, @conn.params["account_id"], project.id) %>
+      <%= link to: path_to_restore, method: :put, form: [class: "inline-form"] do %>
+        Get it back.
+      <% end %>
+  </div>
+<% end %>
+
+<h1 class="ui header">
+  <div class="content">
+    Projects
+    <h2 class="ui sub header">
+      <%= link @account.name, to: account_path(@conn, :show, @account.id) %>
+    </h2>
+  </div>
+  <%= link to: account_project_path @conn, :new, @account.id do %>
+    <div class="ui right floated button">
+      <i class="plus icon"></i>
+      Add project
+    </div>
+  <% end %>
+</h1>
+
+<%= if Enum.empty?(@projects) do %>
+  <center>
+    Are there any projects?<br/>
+    <%= link "Start adding them here!", to: account_project_path(@conn, :new, @conn.params["account_id"]) %>
+  </center>
+<% else %>
+  <div class="ui feed">
+    <%= for project <- @projects do %>
+      <div class="event">
+        <div class="label">
+          <i class="cubes icon"></i>
+        </div>
+        <div class="content">
+          <div class="summary">
+            <%= project.code %>
+            <div class="date">
+              <%= if project.start_date do %>
+                from <%= project.start_date %>
+              <% end %>
+              <%= if project.end_date do %>
+                until <%= project.end_date %>
+              <% end %>
+            </div>
+          </div>
+          <div class="extra text">
+            <%= project.description %>
+          </div>
+          <div class="meta">
+            <%= for tag <- project.tags do %>
+              <div class="ui mini label <%= tag.color %>"><i class="tag icon"></i><%= tag.description %></div>
+            <% end %>
+            <%= if project.estimate_min != nil and project.estimate_max != nil do %>
+              <div class="ui mini label green">
+                [ <%= :io_lib.format("~.2f", [project.estimate_min]) %>, <%= :io_lib.format("~.2f", [project.estimate_max]) %> ]
+                <div class="detail"><%= project.estimate_unit %></div>
+              </div>
+            <% end %>
+            <div class="links">
+              <%= link to: account_project_path(@conn, :edit, project.account_id, project.id) do %>
+                <i class="ui icon write"></i>Edit 
+              <% end %>
+              <%= link to: account_project_path(@conn, :delete, project.account_id, project.id), method: :delete do %>
+                <i class="ui icon trash"></i>Delete
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+

@@ -271,14 +271,50 @@
 <%= if Enum.empty?(@account.projects) do %>
   <center>
     Are there any ongoing projects you would want to log billable hours to?<br/>
-    <%= link "Start adding projects!", to: account_path(@conn, :index) %> <% #Make this point to project_path(@conn, :new, @account.id) %>
+    <%= link "Start adding projects!", to: account_project_path(@conn, :new, @account.id) %>
   </center>
 <% else %>
-  <ul>
+  <div class="ui feed">
     <%= for project <- @account.projects do %>
-      <li><%= project.description %></li>
+      <div class="event">
+        <div class="label">
+          <i class="cubes icon"></i>
+        </div>
+        <div class="content">
+          <div class="summary">
+            <%= project.code %>
+            <div class="date">
+              <%= if project.start_date do %>
+                from <%= project.start_date %>
+              <% end %>
+              <%= if project.end_date do %>
+                until <%= project.end_date %>
+              <% end %>
+            </div>
+          </div>
+          <div class="extra text">
+            <%= project.description %>
+          </div>
+          <div class="meta">
+            <%= for tag <- project.tags do %>
+              <div class="ui mini label <%= tag.color %>"><i class="tag icon"></i><%= tag.description %></div>
+            <% end %>
+            <%= if project.estimate_min != nil and project.estimate_max != nil do %>
+              <div class="ui mini label green">
+                [ <%= :io_lib.format("~.2f", [project.estimate_min]) %>, <%= :io_lib.format("~.2f", [project.estimate_max]) %> ]
+                <div class="detail"><%= project.estimate_unit %></div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ul>
+  </div>
+  <center>
+    <%= link to: account_project_path(@conn, :index, @account.id) do %>
+      Edit the list of projects for this account
+    <% end %>
+  </center>
 <% end %>
 
 <h3 class="ui horizontal divider header">Attachments</h3>
