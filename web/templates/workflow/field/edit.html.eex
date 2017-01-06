@@ -22,7 +22,7 @@
 
   <div class="row">
     <div class="column">
-      <%= form_for @changeset, instance_path(@conn, :update, @field.id), [class: "ui form"], fn f -> %>
+      <%= form_for @changeset, workflow_section_field_path(@conn, :update, @conn.params["workflow_id"], @conn.params["section_id"], @field.id), [class: "ui form"], fn f -> %>
 
         <div class="field">
           <label>Name</label>

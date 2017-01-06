@@ -39,9 +39,19 @@ defmodule Carbon.Workflow.FieldController do
     |> render("edit.html")
   end
 
-  # udpate need to be done
-  # def udpate(conn, %{"id" => field_id}) do
-  #
-  # end
+
+  def update(conn, %{"workflow_id" => workflow_id, "section_id" => section_id, "id" => field_id, "field" => field_params}) do
+    field = Repo.get!(Field, field_id)
+    changeset = Field.changeset(field, field_params)
+    case Repo.update(changeset) do
+      {:ok, field} ->
+        conn
+        |> put_flash(:info, "Field updated successfully.")
+        |> redirect(to: workflow_section_path(conn, :edit, workflow_id, section_id))
+      {:error, changeset} ->
+        render(conn, "edit.html", field: field, changeset: changeset)
+    end
+
+  end
 
 end

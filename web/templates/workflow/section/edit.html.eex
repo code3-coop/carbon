@@ -34,16 +34,6 @@
   </div>
 <% end %>
 
-<%= if get_flash(@conn, :info) do %>
-  <div class="ui message">
-    <div class="header">
-      An error occured
-    </div>
-    <% get_flash(@conn, :info) %>
-  </div>
-<% end %>
-
-
 <%= form_for @changeset, workflow_section_path(@conn, :update, @conn.params["workflow_id"], @section.id), [class: "ui form"], fn f -> %>
     <div class="field <%= if f.errors[:name], do: "error" %>">
       <label>
