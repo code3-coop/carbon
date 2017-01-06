@@ -12,6 +12,7 @@ defmodule Carbon.TimesheetEntry do
 
     belongs_to :timesheet, Carbon.Timesheet
     belongs_to :project, Carbon.Project
+    # FIXTHIS: Dénormalisation douteuse...
     belongs_to :account, Carbon.Account
     many_to_many :tags, Carbon.TimesheetEntryTag, join_through: "j_timesheet_entries_tags", on_replace: :delete
 

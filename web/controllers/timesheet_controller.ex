@@ -117,8 +117,8 @@ defmodule Carbon.TimesheetController do
         |> redirect(to: timesheet_path(conn, :index))
     end
   end
-  def restore(conn, _params) do
-    %{"id" => timesheet_id} = conn.params
+
+  def restore(conn, %{"id" => timesheet_id}) do
     timesheet = Repo.get!(Timesheet, timesheet_id)
     changeset = Timesheet.archive_changeset(timesheet, %{active: true})
 
@@ -131,5 +131,20 @@ defmodule Carbon.TimesheetController do
         |> put_flash(:info, "Failed to restore the event.")
         |> redirect(to: timesheet_path(conn, :index))
     end
+  end
+
+  def print(conn, %{"id" => id}) do
+    entries_query = from e in TimesheetEntry,
+      where: e.active == true,
+      join: p in assoc(e, :project),
+      join: a in assoc(p, :account),
+      order_by: [desc: [a.name, p.code]],
+      preload: [project: {p, account: a}]
+    timesheet = Repo.get!(Timesheet, id) |> Repo.preload([:user, :status, entries: entries_query])
+
+    conn
+    |> assign(:timesheet, timesheet)
+    |> put_layout(false)
+    |> render("print.html")
   end
 end

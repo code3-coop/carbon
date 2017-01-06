@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic.min.css") %>/>
+  <script src="<%= static_path(@conn, "/vendor/jquery.min.js") %>"></script>
+  <script src="<%= static_path(@conn, "/vendor/semantic.min.js") %>"></script>
+  <script src="<%= static_path(@conn, "/vendor/phoenix.js") %>"></script>
+  <script src="<%= static_path(@conn, "/vendor/phoenix_html.js") %>"></script>
+  <title>Carbon</title>
+</head>
+<body>
+  <ul>
+  <%= for d <- date_range(@timesheet) do %>
+    <h1><%= d %></h1>
+    <%= for e <- @timesheet |> header |> ordered_project_list do %>
+      <li><%= e.project.code %> <%= hour_sum_by(@timesheet, d, e.project.id) %></li>
+    <% end %>
+  <% end %>
+  </ul>
+</body>
+</html>

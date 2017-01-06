@@ -23,6 +23,7 @@ defmodule Carbon.Router do
     get "/", PageController, :index
 
     put "/timesheets/:id/restore", TimesheetController, :restore
+    get "/timesheets/:id/print", TimesheetController, :print
     resources "/timesheets", TimesheetController do
       resources "/entries", TimesheetEntryController
       put "/entries/:id/restore", TimesheetEntryController, :restore
