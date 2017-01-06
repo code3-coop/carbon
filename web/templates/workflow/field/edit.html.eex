@@ -1,0 +1,83 @@
+<style>
+  .ui.red.button a {
+    color: #FFF;
+  }
+</style>
+
+<div class="ui grid ">
+
+  <div class="row">
+    <div class="eight wide column">
+      <h1 class="ui header">
+        Edit field
+      </h1>
+    </div>
+    <div class="right aligned eight wide column">
+      <%= link to: workflow_section_field_path(@conn, :delete, @conn.params["workflow_id"], @conn.params["section_id"], @conn.params["id"]), method: :delete, form: [class: "ui red button"]  do %>
+          <i class="ui icon trash"></i>
+          Delete
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <%= form_for @changeset, instance_path(@conn, :update, @field.id), [class: "ui form"], fn f -> %>
+
+        <div class="field">
+          <label>Name</label>
+          <%= text_input f, :name, class: "input" %>
+        </div>
+
+        <div class="field">
+          <label>Description</label>
+          <%= textarea f, :description, class: "input" %>
+        </div>
+
+        <div class="field">
+          <label>Type</label>
+          <div class="ui fluid selection dropdown">
+            <%= hidden_input f, :type, value: @field.type %>
+            <i class="dropdown icon"></i>
+            <div class="default text">Select type</div>
+            <div class="menu">
+              <%= for field_type <- SupportedEnums.field_types do %>
+                <div class="item" data-value="<%= field_type %>">
+                  <%= String.capitalize field_type %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Refer to</label>
+          <div class="ui fluid selection dropdown">
+            <%= hidden_input f, :entity_reference_name, value: @field.entity_reference_name %>
+            <i class="dropdown icon"></i>
+            <div class="default text">Select type</div>
+            <div class="menu">
+              <%= for field_type <-  SupportedEnums.field_supported_references do %>
+                <div class="item" data-value="<%= field_type %>">
+                  <%= String.capitalize field_type %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+
+        <%= submit "Save field", class: "ui button primary" %>
+        <%= link "Cancel", to: workflow_section_path(@conn, :edit, @conn.params["workflow_id"], @conn.params["section_id"]), class: "ui button default" %>
+
+      <% end %>
+
+    </div>
+  </div>
+
+
+
+
+<script>
+  $('.ui.dropdown').dropdown();
+</script>

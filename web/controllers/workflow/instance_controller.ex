@@ -177,7 +177,7 @@ defmodule Carbon.Workflow.InstanceController do
         |> redirect(to: instance_path(conn, :index))
       true ->
         conn
-        |> put_flash(:info, "Failed to archive workflow instace")
+        |> put_flash(:info, "Failed to archive workflow instance")
         |> render("show.html")
     end
   end

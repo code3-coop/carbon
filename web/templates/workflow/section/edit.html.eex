@@ -2,11 +2,47 @@
 .ui.labels .label.draggable {
   cursor: move;
 }
+.inline-form {
+  display: inline-block;
+}
+.inline-form a {
+  cursor: pointer;
+  color: inherit;
+  opacity: .5;
+  -webkit-transition: .1s opacity ease;
+  transition: .1s opacity ease;
+}
+.inline-form a:hover {
+  opacity: 1;
+}
 </style>
 
 <h3>
   Edit section
 </h3>
+
+<%= if get_flash(@conn, :archived_workflow_field) do %>
+  <div class="ui message">
+    <div class="header">
+      Field deleted
+    </div>
+    <% field = get_flash(@conn, :archived_workflow_field) %>
+    Field <%= field.name %> successfully deleted.
+    <%= link to: workflow_section_field_path(@conn, :restore, @workflow_id, @section_id, field.id), method: :put, form: [class: "inline-form"] do %>
+      Get it back.
+    <% end %>
+  </div>
+<% end %>
+
+<%= if get_flash(@conn, :info) do %>
+  <div class="ui message">
+    <div class="header">
+      An error occured
+    </div>
+    <% get_flash(@conn, :info) %>
+  </div>
+<% end %>
+
 
 <%= form_for @changeset, workflow_section_path(@conn, :update, @conn.params["workflow_id"], @section.id), [class: "ui form"], fn f -> %>
     <div class="field <%= if f.errors[:name], do: "error" %>">
@@ -33,6 +69,8 @@
             <p>There is no fields declared, ATM !</p>
           <% end %>
           <div class="ui labels sortable-list">
+            <!-- this form is here just to prevent fucked up delete link -->
+            <!-- <form></form> -->
 
             <% sorted_fields = Enum.sort_by @section.fields, &(&1.presentation_order_index) %>
             <% fields_ids = sorted_fields |> Enum.map(&(&1.id)) |> Enum.join(",") %>
@@ -52,9 +90,6 @@
                   <%= link to: workflow_section_field_path(@conn, :edit, @conn.params["workflow_id"], @section.id, field.id) do %>
                     <i class="icon write"></i>
                   <% end %>
-                  <%= link to: workflow_section_field_path(@conn, :delete, @conn.params["workflow_id"], @section.id, field.id) do %>
-                    <i class="icon delete"></i>
-                  <% end %>
                 </div>
 
               </div>
@@ -63,17 +98,12 @@
 
           </div>
 
-          <%= link to: workflow_section_field_path(@conn, :create, @conn.params["workflow_id"], @section.id) do %>
-            <div class="ui label">
-              <i class="icon plus"></i>
-              Add field
-            </div>
+          <%= link to: workflow_section_field_path(@conn, :create, @conn.params["workflow_id"], @section.id), class: "ui label" do %>
+            <i class="icon plus"></i>
+            Add field
           <% end %>
 
       </div>
-
-
-
 
   <%= submit "Update section", class: "ui submit primary button" %>
   <%= link "Cancel", to: workflow_path(@conn, :edit, @conn.params["workflow_id"]), class: "ui button" %>

@@ -64,7 +64,16 @@ defmodule Carbon.Workflow.SectionController do
   end
 
   def edit(conn, %{"workflow_id" => workflow_id, "id" => section_id }) do
-    section = Repo.get(Section, section_id) |> Repo.preload([:fields])
+
+    query = from s in Section,
+    left_join: f in assoc(s, :fields),
+    preload: [fields: f],
+    where: f.active or is_nil(f.id),
+    where: s.id == ^section_id
+
+
+    section = Repo.one(query)
+
     changeset = Section.changeset(section)
 
     conn
