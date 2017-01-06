@@ -1,6 +1,6 @@
-<h3>
+<h1>
   Create workflow section
-</h3>
+</h1>
 
  <%= form_for @changeset, workflow_section_path(@conn, :create, @conn.params["workflow_id"]), fn f -> %>
 
