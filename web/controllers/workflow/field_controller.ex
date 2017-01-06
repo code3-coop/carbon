@@ -44,7 +44,7 @@ defmodule Carbon.Workflow.FieldController do
     field = Repo.get!(Field, field_id)
     changeset = Field.changeset(field, field_params)
     case Repo.update(changeset) do
-      {:ok, field} ->
+      {:ok, _field} ->
         conn
         |> put_flash(:info, "Field updated successfully.")
         |> redirect(to: workflow_section_path(conn, :edit, workflow_id, section_id))
