@@ -27,25 +27,26 @@ defmodule Carbon.TimesheetView do
 
   def sum_hours_by(timesheet, date, project_id) do
     timesheet.entries
-    |> Enum.filter(fn e -> e.project.id == project_id and Ecto.Date.compare(e.date, date) == :eq end)
-    |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
+    |> filter_by_date(date)
+    |> filter_by_project_id(project_id)
+    |> sum_duration
   end
 
   def sum_hours_by_date(timesheet, date) do
     timesheet.entries
-    |> Enum.filter(fn e -> Ecto.Date.compare(e.date, date) == :eq end)
-    |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
+    |> filter_by_date(date)
+    |> sum_duration
   end
 
   def sum_hours_by_project(timesheet, project_id) do
     timesheet.entries
-    |> Enum.filter(fn e -> e.project.id == project_id end)
-    |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
+    |> filter_by_project_id(project_id)
+    |> sum_duration
   end
 
   def sum_hours(timesheet) do
     timesheet.entries
-    |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
+    |> sum_duration
   end
 
   def date_range(timesheet) do
@@ -59,8 +60,19 @@ defmodule Carbon.TimesheetView do
 
   def notes_by(timesheet, date, project_id) do
     timesheet.entries
-    |> Enum.filter(fn e -> e.project.id == project_id and Ecto.Date.compare(e.date, date) == :eq end)
+    |> filter_by_date(date)
+    |> filter_by_project_id(project_id)
     |> Enum.map(& &1.notes)
     |> Enum.reject(& &1 == "")
+  end
+
+  defp filter_by_date(entries, date) do
+    entries |> Enum.filter(fn e -> Ecto.Date.compare(e.date, date) == :eq end)
+  end
+  defp filter_by_project_id(entries, project_id) do
+    entries |> Enum.filter(fn e -> e.project.id == project_id end)
+  end
+  defp sum_duration(entries) do
+    entries |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
   end
 end
