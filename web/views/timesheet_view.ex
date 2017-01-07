@@ -25,7 +25,16 @@ defmodule Carbon.TimesheetView do
     end
   end
 
-  def sum_hours_by(timesheet, date, project_id) do
+  def date_range(timesheet) do
+    Enum.map(0..13, &add_days(timesheet.start_date, &1))
+  end
+
+  def add_days(ecto_date, 0), do: ecto_date
+  def add_days(ecto_date, nb_days) do
+    Ecto.Date.from_erl(:calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(Ecto.Date.to_erl(ecto_date)) + nb_days))
+  end
+
+  def sum_hours_by_date_and_project_id(timesheet, date, project_id) do
     timesheet.entries
     |> filter_by_date(date)
     |> filter_by_project_id(project_id)
@@ -38,7 +47,7 @@ defmodule Carbon.TimesheetView do
     |> sum_duration
   end
 
-  def sum_hours_by_project(timesheet, project_id) do
+  def sum_hours_by_project_id(timesheet, project_id) do
     timesheet.entries
     |> filter_by_project_id(project_id)
     |> sum_duration
@@ -49,16 +58,7 @@ defmodule Carbon.TimesheetView do
     |> sum_duration
   end
 
-  def date_range(timesheet) do
-    Enum.map(0..13, &add_days(timesheet.start_date, &1))
-  end
-
-  def add_days(ecto_date, 0), do: ecto_date
-  def add_days(ecto_date, nb_days) do
-    Ecto.Date.from_erl(:calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(Ecto.Date.to_erl(ecto_date)) + nb_days))
-  end
-
-  def notes_by(timesheet, date, project_id) do
+  def notes_by_date_and_project_id(timesheet, date, project_id) do
     timesheet.entries
     |> filter_by_date(date)
     |> filter_by_project_id(project_id)
