@@ -5,9 +5,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic.min.css") %>/>
-  <style>
-    
-  </style>
   <script src="<%= static_path(@conn, "/vendor/jquery.min.js") %>"></script>
   <script src="<%= static_path(@conn, "/vendor/semantic.min.js") %>"></script>
   <script src="<%= static_path(@conn, "/vendor/phoenix.js") %>"></script>
@@ -17,45 +14,78 @@
 <body>
   <% header_columns = @timesheet |> header %>
   <% projects = header_columns |> ordered_project_list %>
-  <table class="ui small celled striped structured compact table">
-    <thead>
-      <tr>
-        <th rowspan="2" style="width:1rem" class="center aligned">Jour</th>
-        <th rowspan="2" style="width:7rem" class="center aligned">Date</th>
-        <%= for group <- header_columns do %>
-          <th colspan="<%= length(group) %>" class="center aligned"><%= hd(group).project.account.name %></th>
-        <% end %>
-        <th rowspan="2" style="width:7rem" class="center aligned">Total</th>
-      </tr>
-      <tr>
-        <%= for e <- projects do %>
-          <th style="width:7rem", class="center aligned"><%= e.project.code %></th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <%= for {d, idx} <- date_range(@timesheet) |> Enum.with_index do %>
-        <tr>
-          <td class="center aligned"><%= idx + 1 %></td>
-          <td class="center aligned"><%= d %></td>
-          <%= for e <- projects do %>
-            <% sum = sum_hours_by(@timesheet, d, e.project.id) %>
-            <td class="right aligned"><%= if sum == 0, do: "", else: sum %></td>
+  <% {:ok, footnotes} = Agent.start(fn -> [] end) %>
+  <div class="ui container">
+    <h2 class="ui header">
+      <img src="<%= @timesheet.user.image_url %>" class="ui circular image">
+      <div class="content">
+        <%= @timesheet.user.full_name %>
+        <div class="sub header">Feuille de temps pour la période du <%= @timesheet.start_date %> au <%= @timesheet.start_date |> add_days(13) %></div>
+      </div>
+    </h2>
+    <div class="ui grid">
+      <div class="sixteen wide column">
+        <table class="ui small celled striped structured compact table">
+          <thead>
+            <tr>
+              <th rowspan="2" style="width:1rem" class="center aligned">Jour</th>
+              <th rowspan="2" style="width:3rem" class="center aligned">Date</th>
+              <%= for group <- header_columns do %>
+                <th colspan="<%= length(group) %>" class="center aligned"><%= hd(group).project.account.name %></th>
+              <% end %>
+              <th rowspan="2" style="width:7rem" class="center aligned">Total</th>
+            </tr>
+            <tr>
+              <%= for e <- projects do %>
+                <th style="width:7rem", class="center aligned"><%= e.project.code %></th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for {d, idx} <- date_range(@timesheet) |> Enum.with_index do %>
+              <tr>
+                <td class="center aligned"><%= idx + 1 %></td>
+                <td class="center aligned"><%= d %></td>
+                <%= for e <- projects do %>
+                  <td class="right aligned">
+                    <% sum = sum_hours_by(@timesheet, d, e.project.id) %>
+                    <%= if sum == 0, do: "", else: sum %>
+                    <% notes = notes_by(@timesheet, d, e.project.id) %>
+                    <%= if length(notes) > 0 do %>
+                      <sup>
+                        <%= for note <- notes do %>
+                          <% Agent.update(footnotes, fn state -> [ note | state ] end) %>
+                          <%= Agent.get(footnotes, fn state -> length(state) end) %>
+                        <% end %>
+                      </sup>
+                    <% end %>
+                  </td>
+                <% end %>
+                <td class="right aligned"><strong><%= sum_hours_by_date(@timesheet, d) %></strong></td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th class="center aligned"><strong>Total</strong></th>
+              <%= for e <- projects do %>
+                <th class="right aligned"><strong><%= sum_hours_by_project(@timesheet, e.project.id) %></strong></th>
+              <% end %>
+              <th class="right aligned"><strong><%= sum_hours(@timesheet) %></strong></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="sixteen wide column">
+        <h3 class="ui header">Notes</h3>
+        <ol>
+          <%= for footnote <- Agent.get(footnotes, &(&1)) |> Enum.reverse do %> 
+            <li><%= footnote %></li>
           <% end %>
-          <td class="right aligned"><strong><%= sum_hours_by_date(@timesheet, d) %></strong></td>
-        </tr>
-      <% end %>
-    </tbody>
-    <tfoot>
-      <tr>
-        <th></th>
-        <th class="center aligned"><strong>Total</strong></th>
-        <%= for e <- projects do %>
-          <th class="right aligned"><strong><%= sum_hours_by_project(@timesheet, e.project.id) %></strong></th>
-        <% end %>
-        <th class="right aligned"><strong><%= sum_hours(@timesheet) %></strong></th>
-      </tr>
-    </tfoot>
-  </table>
+        </ol>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

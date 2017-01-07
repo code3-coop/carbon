@@ -52,8 +52,15 @@ defmodule Carbon.TimesheetView do
     Enum.map(0..13, &add_days(timesheet.start_date, &1))
   end
 
-  defp add_days(ecto_date, 0), do: ecto_date
-  defp add_days(ecto_date, nb_days) do
+  def add_days(ecto_date, 0), do: ecto_date
+  def add_days(ecto_date, nb_days) do
     Ecto.Date.from_erl(:calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(Ecto.Date.to_erl(ecto_date)) + nb_days))
+  end
+
+  def notes_by(timesheet, date, project_id) do
+    timesheet.entries
+    |> Enum.filter(fn e -> e.project.id == project_id and Ecto.Date.compare(e.date, date) == :eq end)
+    |> Enum.map(& &1.notes)
+    |> Enum.reject(& &1 == "")
   end
 end
