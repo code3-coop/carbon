@@ -5,6 +5,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href=<%= static_path(@conn, "/vendor/semantic.min.css") %>/>
+  <style>
+    
+  </style>
   <script src="<%= static_path(@conn, "/vendor/jquery.min.js") %>"></script>
   <script src="<%= static_path(@conn, "/vendor/semantic.min.js") %>"></script>
   <script src="<%= static_path(@conn, "/vendor/phoenix.js") %>"></script>
@@ -12,13 +15,47 @@
   <title>Carbon</title>
 </head>
 <body>
-  <ul>
-  <%= for d <- date_range(@timesheet) do %>
-    <h1><%= d %></h1>
-    <%= for e <- @timesheet |> header |> ordered_project_list do %>
-      <li><%= e.project.code %> <%= hour_sum_by(@timesheet, d, e.project.id) %></li>
-    <% end %>
-  <% end %>
-  </ul>
+  <% header_columns = @timesheet |> header %>
+  <% projects = header_columns |> ordered_project_list %>
+  <table class="ui small celled striped structured compact table">
+    <thead>
+      <tr>
+        <th rowspan="2" style="width:1rem" class="center aligned">Jour</th>
+        <th rowspan="2" style="width:7rem" class="center aligned">Date</th>
+        <%= for group <- header_columns do %>
+          <th colspan="<%= length(group) %>" class="center aligned"><%= hd(group).project.account.name %></th>
+        <% end %>
+        <th rowspan="2" style="width:7rem" class="center aligned">Total</th>
+      </tr>
+      <tr>
+        <%= for e <- projects do %>
+          <th style="width:7rem", class="center aligned"><%= e.project.code %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for {d, idx} <- date_range(@timesheet) |> Enum.with_index do %>
+        <tr>
+          <td class="center aligned"><%= idx + 1 %></td>
+          <td class="center aligned"><%= d %></td>
+          <%= for e <- projects do %>
+            <% sum = sum_hours_by(@timesheet, d, e.project.id) %>
+            <td class="right aligned"><%= if sum == 0, do: "", else: sum %></td>
+          <% end %>
+          <td class="right aligned"><strong><%= sum_hours_by_date(@timesheet, d) %></strong></td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th></th>
+        <th class="center aligned"><strong>Total</strong></th>
+        <%= for e <- projects do %>
+          <th class="right aligned"><strong><%= sum_hours_by_project(@timesheet, e.project.id) %></strong></th>
+        <% end %>
+        <th class="right aligned"><strong><%= sum_hours(@timesheet) %></strong></th>
+      </tr>
+    </tfoot>
+  </table>
 </body>
 </html>

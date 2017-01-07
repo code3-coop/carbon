@@ -25,9 +25,26 @@ defmodule Carbon.TimesheetView do
     end
   end
 
-  def hour_sum_by(timesheet, date, project_id) do
+  def sum_hours_by(timesheet, date, project_id) do
     timesheet.entries
     |> Enum.filter(fn e -> e.project.id == project_id and Ecto.Date.compare(e.date, date) == :eq end)
+    |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
+  end
+
+  def sum_hours_by_date(timesheet, date) do
+    timesheet.entries
+    |> Enum.filter(fn e -> Ecto.Date.compare(e.date, date) == :eq end)
+    |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
+  end
+
+  def sum_hours_by_project(timesheet, project_id) do
+    timesheet.entries
+    |> Enum.filter(fn e -> e.project.id == project_id end)
+    |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
+  end
+
+  def sum_hours(timesheet) do
+    timesheet.entries
     |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
   end
 
