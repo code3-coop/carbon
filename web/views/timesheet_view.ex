@@ -69,16 +69,16 @@ defmodule Carbon.TimesheetView do
   defp filter_by_date(entries, date) do
     entries |> Enum.filter(fn e -> Ecto.Date.compare(e.date, date) == :eq end)
   end
+
   defp filter_by_project_id(entries, project_id) do
     entries |> Enum.filter(fn e -> e.project.id == project_id end)
   end
+
   defp sum_duration(entries) do
     entries |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
   end
 
-  def in_hours(minutes) do
-    minutes / 60
-  end
+  def in_hours(minutes), do: minutes / 60
 
   def no_zeros(0.0), do: ""
   def no_zeros(hours), do: :io_lib.format("~.2f", [hours])
