@@ -75,4 +75,11 @@ defmodule Carbon.TimesheetView do
   defp sum_duration(entries) do
     entries |> Enum.reduce(0, &(&1.duration_in_minutes + &2))
   end
+
+  def in_hours(minutes) do
+    minutes / 60
+  end
+
+  def no_zeros(0.0), do: ""
+  def no_zeros(hours), do: :io_lib.format("~.2f", [hours])
 end

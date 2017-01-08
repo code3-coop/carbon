@@ -48,8 +48,7 @@
                 <td class="center aligned"><%= d %></td>
                 <%= for e <- projects do %>
                   <td class="right aligned">
-                    <% sum = sum_hours_by_date_and_project_id(@timesheet, d, e.project.id) %>
-                    <%= if sum > 0, do: sum %>
+                    <%= sum_hours_by_date_and_project_id(@timesheet, d, e.project.id) |> in_hours |> no_zeros %>
                     <% notes = notes_by_date_and_project_id(@timesheet, d, e.project.id) %>
                     <%= if length(notes) > 0 do %>
                       <sup>
@@ -62,8 +61,7 @@
                   </td>
                 <% end %>
                 <td class="right aligned">
-                  <% sum = sum_hours_by_date(@timesheet, d) %>
-                  <strong><%= if sum > 0, do: sum %></strong>
+                  <strong><%= sum_hours_by_date(@timesheet, d) |> in_hours |> no_zeros %></strong>
                 </td>
               </tr>
             <% end %>
@@ -74,13 +72,11 @@
               <th class="center aligned"><strong>Total</strong></th>
               <%= for e <- projects do %>
                 <th class="right aligned">
-                  <% sum = sum_hours_by_project_id(@timesheet, e.project.id) %>
-                  <strong><%= if sum > 0, do: sum %></strong>
+                  <strong><%= sum_hours_by_project_id(@timesheet, e.project.id) |> in_hours |> no_zeros %></strong>
                 </th>
               <% end %>
               <th class="right aligned">
-                <% sum = sum_hours(@timesheet) %>
-                <strong><%= if sum > 0, do: sum %></strong>
+                <strong><%= sum_hours(@timesheet) |> in_hours |> no_zeros %></strong>
               </th>
             </tr>
           </tfoot>
