@@ -140,7 +140,13 @@ defmodule Carbon.TimesheetController do
       join: a in assoc(p, :account),
       order_by: [desc: [a.name, p.code]],
       preload: [project: {p, account: a}]
-    timesheet = Repo.get!(Timesheet, id) |> Repo.preload([:user, :status, entries: entries_query])
+
+    timesheet_query = from t in Timesheet,
+      where: t.id == ^id,
+      where: t.user_id == ^conn.assigns[:current_user].id,
+      preload: [:user, :status, entries: ^entries_query]
+
+    timesheet = Repo.one!(timesheet_query)
 
     conn
     |> assign(:timesheet, timesheet)
