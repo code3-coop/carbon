@@ -1,0 +1,67 @@
+<h1>
+  New field
+</h1>
+
+<%= form_for @changeset, workflow_section_field_path(@conn, :create, @conn.params["workflow_id"], @conn.params["section_id"]), fn f -> %>
+  <div class="ui form">
+
+    <div class="ui field">
+      <label>Name</label>
+      <%= text_input f, :name %>
+    </div>
+
+    <div class="ui field">
+      <label>Description</label>
+      <%= textarea f, :description %>
+    </div>
+
+    <div class="field">
+      <label>Type</label>
+      <div class="ui fluid selection dropdown">
+        <%= hidden_input f, :type %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select type</div>
+        <div class="menu">
+          <%= for field_type <- SupportedEnums.field_types do %>
+            <div class="item" data-value="<%= field_type %>">
+              <%= String.capitalize field_type %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field referer">
+      <label>Refer to</label>
+      <div class="ui fluid selection dropdown">
+        <%= hidden_input f, :entity_reference_name %>
+        <i class="dropdown icon"></i>
+        <div class="default text">Select type</div>
+        <div class="menu">
+          <%= for field_type <-  SupportedEnums.field_supported_references do %>
+            <div class="item" data-value="<%= field_type %>">
+              <%= String.capitalize field_type %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <%= submit "Save field", class: "ui button primary" %>
+    <%= link "Cancel", to: workflow_section_path(@conn, :edit, @conn.params["workflow_id"], @conn.params["section_id"]), class: "ui button default" %>
+
+  </div>
+
+<% end %>
+
+<script>
+var updateRefererFieldVisibility = function(){
+  $('.field.referer').toggleClass("disabled", $('[id="field_type"]').val() !== "reference")
+}
+
+$('.dropdown').dropdown()
+$('[id="field_type"]').change(updateRefererFieldVisibility)
+updateRefererFieldVisibility();
+
+
+</script>

@@ -49,7 +49,37 @@ defmodule Carbon.Workflow.FieldController do
         |> put_flash(:info, "Field updated successfully.")
         |> redirect(to: workflow_section_path(conn, :edit, workflow_id, section_id))
       {:error, changeset} ->
-        render(conn, "edit.html", field: field, changeset: changeset)
+        conn
+        |> assign(:field, field)
+        |> assign(:changeset, changeset)
+        |> render(conn, "edit.html")
+    end
+  end
+
+  def new(conn, %{"workflow_id" => workflow_id, "section_id" => section_id}) do
+    conn
+    |> assign(:changeset, Field.changeset(%Field{}, %{}))
+    |> render("new.html")
+  end
+
+  def create(conn, %{"workflow_id" => workflow_id, "section_id" => section_id, "field" => field_params}) do
+    query = from f in Field,
+      select: max(f.presentation_order_index),
+      where: f.section_id == ^section_id
+    max_presentation_order_index = Repo.one query
+
+    field = %Field{section_id: String.to_integer(section_id), presentation_order_index: max_presentation_order_index + 1}
+    changeset = Field.changeset(field, field_params)
+    case Repo.insert(changeset) do
+      {:ok, field} ->
+        conn
+        |> put_flash(:info, "Field created successfully")
+        |> redirect(to: workflow_section_path(conn, :edit, workflow_id, section_id))
+      {:error, changeset} ->
+        conn
+        |> put_flash(:info, "Failed to create new field")
+        |> assign(:changeset, changeset)
+        |> render("new.html")
     end
 
   end

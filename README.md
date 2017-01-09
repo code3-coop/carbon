@@ -60,13 +60,13 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Run all db migration in the prod env
 
-rel/my_app/bin/my_app command Elixir.Release.Tasks migrate
+    rel/my_app/bin/my_app command Elixir.Release.Tasks migrate
 
 
 ## Build a Release
 
-MIX_ENV=prod mix release --env=prod
+    MIX_ENV=prod mix release --env=prod
 
 ## start the released server
 
-_build/prod/rel/carbon/bin/carbon start
+    _build/prod/rel/carbon/bin/carbon start

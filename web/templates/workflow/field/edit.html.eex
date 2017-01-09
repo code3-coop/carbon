@@ -50,7 +50,7 @@
           </div>
         </div>
 
-        <div class="field">
+        <div class="field referer">
           <label>Refer to</label>
           <div class="ui fluid selection dropdown">
             <%= hidden_input f, :entity_reference_name, value: @field.entity_reference_name %>
@@ -67,7 +67,7 @@
         </div>
 
 
-        <%= submit "Save field", class: "ui button primary" %>
+        <%= submit "Update field", class: "ui button primary" %>
         <%= link "Cancel", to: workflow_section_path(@conn, :edit, @conn.params["workflow_id"], @conn.params["section_id"]), class: "ui button default" %>
 
       <% end %>
@@ -75,9 +75,12 @@
     </div>
   </div>
 
-
-
-
 <script>
-  $('.ui.dropdown').dropdown();
+  var updateRefererFieldVisibility = function(){
+    $('.field.referer').toggleClass("disabled", $('[id="field_type"]').val() !== "reference")
+  }
+
+  $('.dropdown').dropdown()
+  $('[id="field_type"]').change(updateRefererFieldVisibility)
+  updateRefererFieldVisibility();
 </script>
