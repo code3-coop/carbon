@@ -70,4 +70,3 @@ MIX_ENV=prod mix release --env=prod
 ## start the released server
 
 _build/prod/rel/carbon/bin/carbon start
-
