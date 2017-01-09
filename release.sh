@@ -1,3 +1,4 @@
+cd /home/sshadmin/carbon
 _build/prod/rel/carbon/bin/carbon stop
 git checkout --force
 mix deps.get
