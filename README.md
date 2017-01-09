@@ -70,5 +70,3 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 ## start the released server
 
     _build/prod/rel/carbon/bin/carbon start
-
-
