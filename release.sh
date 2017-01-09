@@ -1,4 +1,6 @@
+echo Running release
 cd /home/sshadmin/carbon
+pwd
 _build/prod/rel/carbon/bin/carbon stop
 git checkout --force
 mix deps.get
