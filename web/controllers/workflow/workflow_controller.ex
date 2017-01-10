@@ -61,8 +61,8 @@ defmodule Carbon.Workflow.WorkflowController do
           ]}
       ],
       where: w.id == ^workflow_id,
-      where: st.active,
-      where: se.active,
+      where: st.active or is_nil(st.id),
+      where: se.active or is_nil(se.id),
       where: f.active or is_nil f.id # the last clause is requried in order to obtain the sections witout active fields
     workflow = Repo.one!(query)
     changeset = Workflow.changeset(workflow)
