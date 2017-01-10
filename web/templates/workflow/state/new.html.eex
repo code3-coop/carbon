@@ -70,6 +70,7 @@
     </div>
 
     <%= submit "Add state", class: "ui primary button " %>
+    <%# TODO missing cancel button here%>
   </div>
 <% end %>
 <script>
