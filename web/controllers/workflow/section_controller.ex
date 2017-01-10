@@ -32,7 +32,7 @@ defmodule Carbon.Workflow.SectionController do
   defp get_presentation_order(section), do: section.presentation_order_index
 
   def delete(conn, %{"workflow_id" => workflow_id, "id" => section_id}) do
-    section = Repo.get!(Section, section_id)
+    section = Repo.get!(Section, section_id) |> Repo.preload(:fields)
     changeset = Section.changeset(section, %{active: false})
 
     case Repo.update(changeset) do
@@ -49,7 +49,7 @@ defmodule Carbon.Workflow.SectionController do
   end
 
   def restore(conn, %{"workflow_id" => workflow_id, "id" => section_id}) do
-    section = Repo.get!(Section, section_id)
+    section = Repo.get!(Section, section_id) |> Repo.preload(:fields)
     changeset = Section.changeset(section, %{active: true})
 
     case Repo.update(changeset) do
