@@ -53,11 +53,6 @@
 
     <div class="ui field ">
       <label>Fields</label>
-
-
-          <%= if Enum.empty? @section.fields do %>
-            <p>There is no fields declared, ATM !</p>
-          <% end %>
           <div class="ui labels sortable-list">
             <!-- this form is here just to prevent fucked up delete link -->
             <!-- <form></form> -->
@@ -88,7 +83,7 @@
 
           </div>
 
-          <%= link to: workflow_section_field_path(@conn, :create, @conn.params["workflow_id"], @section.id), class: "ui label" do %>
+          <%= link to: workflow_section_field_path(@conn, :new, @conn.params["workflow_id"], @section.id), class: "ui label" do %>
             <i class="icon plus"></i>
             Add field
           <% end %>
