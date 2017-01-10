@@ -56,22 +56,26 @@ defmodule Carbon.Workflow.FieldController do
     end
   end
 
-  def new(conn, %{"workflow_id" => workflow_id, "section_id" => section_id}) do
+  def new(conn, %{"workflow_id" => _workflow_id, "section_id" => _section_id}) do
     conn
     |> assign(:changeset, Field.changeset(%Field{}, %{}))
     |> render("new.html")
   end
 
+  def next_presentation_order(nil), do: 1
+  def next_presentation_order(anything), do: anything + 1
+
   def create(conn, %{"workflow_id" => workflow_id, "section_id" => section_id, "field" => field_params}) do
     query = from f in Field,
       select: max(f.presentation_order_index),
       where: f.section_id == ^section_id
-    max_presentation_order_index = Repo.one query
+    max_presentation_order_index = Repo.one(query)
 
-    field = %Field{section_id: String.to_integer(section_id), presentation_order_index: max_presentation_order_index + 1}
+
+    field = %Field{section_id: String.to_integer(section_id), presentation_order_index: next_presentation_order(max_presentation_order_index)}
     changeset = Field.changeset(field, field_params)
     case Repo.insert(changeset) do
-      {:ok, field} ->
+      {:ok, _field} ->
         conn
         |> put_flash(:info, "Field created successfully")
         |> redirect(to: workflow_section_path(conn, :edit, workflow_id, section_id))
