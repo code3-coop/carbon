@@ -81,13 +81,6 @@ development_tag = Repo.insert! %ProjectTag{description: "development", color: "b
 consulting_tag = Repo.insert! %ProjectTag{description: "consulting", color: "violet"}
 training_tag = Repo.insert! %ProjectTag{description: "training", color: "purple"}
 
-initiation = Repo.insert! %Carbon.Project.Phase{name: "initiation", presentation_order_index: 0}
-definition = Repo.insert! %Carbon.Project.Phase{name: "definition", presentation_order_index: 1}
-design = Repo.insert! %Carbon.Project.Phase{name: "design", presentation_order_index: 2}
-development = Repo.insert! %Carbon.Project.Phase{name: "development", presentation_order_index: 3}
-implementation = Repo.insert! %Carbon.Project.Phase{name: "implementation", presentation_order_index: 4}
-followup = Repo.insert! %Carbon.Project.Phase{name: "followup", presentation_order_index: 5}
-
 billing_address_a = Repo.insert! %Address{street_address: "1 Billing Street", locality: "City A", region: "RA", country_name: "CA"}
 billing_address_b = Repo.insert! %Address{street_address: "1 Billing Street", locality: "City B", region: "RB", country_name: "CB"}
 
@@ -113,9 +106,9 @@ end
 
 reminder_a = Repo.insert! %Reminder{date: Ecto.DateTime.from_erl(:calendar.local_time), user: joe, event: event_a_1}
 
-Repo.insert! %Project{code: "AAA", description: "Project AAA description", account: account_b, phase: design, tags: [development_tag, consulting_tag] }
-Repo.insert! %Project{code: "BBB", description: "Project BBB description", account: account_b, phase: followup, tags: [consulting_tag, training_tag] }
-Repo.insert! %Project{code: "CCC", description: "Project CCC description", account: account_b, phase: implementation }
+Repo.insert! %Project{code: "AAA", description: "Project AAA description", account: account_b, tags: [development_tag, consulting_tag] }
+Repo.insert! %Project{code: "BBB", description: "Project BBB description", account: account_b, tags: [consulting_tag, training_tag] }
+Repo.insert! %Project{code: "CCC", description: "Project CCC description", account: account_b }
 
 casual_tag = Repo.insert! %DealTag{description: "show-me-the-money", color: "blue"}
 job_tag = Repo.insert! %DealTag{description: "job", color: "black"}
