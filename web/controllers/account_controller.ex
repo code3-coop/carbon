@@ -46,15 +46,33 @@ defmodule Carbon.AccountController do
   end
 
   def index(conn, params) do
+    limit = Map.get(params, "limit", "25") |> Integer.parse() |> elem(0) |> max(1) |> min(100)
+    offset = Map.get(params, "offset", "0") |> Integer.parse() |> elem(0) |> max(0)
+
+    count_query = from a in Account, where: a.active == true, select: count("*")
     query = from a in Account,
       left_join: c in Carbon.Contact, on: c.account_id == a.id and c.active == true,
       left_join: b in assoc(a, :billing_address),
       where: a.active == true,
       order_by: a.name,
-      limit: ^min(Map.get(params, "limit", 25), 25),
-      offset: ^Map.get(params, "offset", 0),
+      limit: ^limit,
+      offset: ^offset,
       preload: [contacts: c, billing_address: b]
-    render(conn, "index.html", accounts: Repo.all(query))
+    accounts = Repo.all(query)
+
+    conn
+    |> assign(:accounts, accounts)
+    |> assign(:page, paginate(Repo.one(count_query), limit, offset))
+    |> assign(:limit, limit)
+
+    |> render("index.html")
+  end
+
+  defp paginate(count, limit, offset) do
+    # IO.inspect " #{count} #{limit} #{offset}"
+    nb_pages = Float.ceil(count / limit)
+    current_page = (offset / limit) + 1
+    %{nb_pages: round(nb_pages), current_page: round(current_page)}
   end
 
 

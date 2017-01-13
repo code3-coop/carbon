@@ -79,7 +79,28 @@
           <% end %>
         </tbody>
       </table>
+
+
+      <%= if @conn.assigns[:page] do %>
+        <div class="ui center aligned container">
+          <div class="ui button basic">
+            <i class="ui icon angle left"></i>
+          </div>
+
+          <%= for page_number <- 1..@page.nb_pages do %>
+            <%= link to: account_path(@conn, :index, limit: "#{@limit}", offset: "#{(page_number-1) * @limit}"), class: "ui button basic #{if page_number == @page.current_page, do: 'active'}" do %>
+              <%= page_number %>
+            <% end %>
+          <% end %>
+
+          <div class="ui button basic">
+            <i class="ui icon angle right"></i>
+          </div>
+      </div>
     <% end %>
+
+  <% end %>
+
   </div>
 </div>
 <div class="ui one column centered grid">
