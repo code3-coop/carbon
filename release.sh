@@ -1,5 +1,6 @@
 echo Running release
 
+
 cd /home/sshadmin/carbon
 GIT_DIR=/home/sshadmin/carbon
 echo GIT_DIR $GIT_DIR
