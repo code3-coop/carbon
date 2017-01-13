@@ -3,7 +3,6 @@ echo Running release
 cd /home/sshadmin/carbon
 GIT_DIR=/home/sshadmin/carbon/.git
 
-
 echo Stopping current instance
 _build/prod/rel/carbon/bin/carbon stop
 
