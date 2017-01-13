@@ -35,7 +35,7 @@ defmodule Carbon.Mixfile do
        :bamboo,
        :bamboo_smtp,
        :number
-     ]]
+    ]]
   end
 
   # Specifies which paths to compile per environment.
@@ -59,7 +59,7 @@ defmodule Carbon.Mixfile do
      {:ex_doc, "~> 0.12", only: :dev},
      {:dialyxir, "~> 0.3.5", only: :dev},
      {:distillery, "~> 1.0"},
-     {:bamboo_smtp, "~> 1.2.1", only: :prod}
+     {:bamboo_smtp, "~> 1.2.1"}
    ]
   end
 
