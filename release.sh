@@ -1,6 +1,7 @@
+
 echo Running release
+echo GIT_DIR $GIT_DIR
 cd /home/sshadmin/carbon
-pwd
 _build/prod/rel/carbon/bin/carbon stop
 git --work-tree=${pwd} checkout --force
 mix deps.get
