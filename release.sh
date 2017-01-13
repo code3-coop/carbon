@@ -1,5 +1,6 @@
 
 echo Running release
+
 echo GIT_DIR $GIT_DIR
 cd /home/sshadmin/carbon
 _build/prod/rel/carbon/bin/carbon stop
