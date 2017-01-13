@@ -33,6 +33,7 @@ defmodule Carbon.Mixfile do
        :phoenix_ecto,
        :postgrex,
        :bamboo,
+       :bamboo_smtp,
        :number
      ]]
   end
