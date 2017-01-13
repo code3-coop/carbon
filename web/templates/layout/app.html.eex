@@ -40,6 +40,11 @@
           Tags
         <% end %>
       </div>
+      <div class="item">
+        <%= link to: timesheet_path(@conn, :index) do %>
+          Timesheets
+        <% end %>
+      </div>
       <%= if assigns[:current_user] do %>
         <div class="right menu">
           <div class="item">
