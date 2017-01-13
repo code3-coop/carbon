@@ -17,9 +17,20 @@ defmodule Carbon.Duration do
 
       iex> Carbon.Duration.parse_minutes("1d")
       420
+
+      iex> Carbon.Duration.parse_minutes("100")
+      100
   """
   def parse_minutes(duration_string) do
-    exp = ~r/\d{1,4}(?:\.\d{1,2})?[mhd]/
+    res = Float.parse(duration_string)
+    if res != :error && elem(res, 1) == "" do
+      res |> elem(0) |> round()
+    else
+      parse_minutes_by_split(duration_string)
+    end
+  end
+  def parse_minutes_by_split(duration_string) do
+    exp = ~r/\d{1,4}(?:\.\d{1,2})?[mhd]?/
     if String.match?(duration_string, exp) do
       Regex.scan(exp, duration_string, catch: :all)
       |> Enum.map(&(hd &1))
