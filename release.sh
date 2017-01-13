@@ -13,7 +13,7 @@ echo Updating dependcies
 mix deps.get
 
 echo Running migrations
-_build/prod/rel/carbon/bin/carbon command Release.Tasks migrate
+_build/prod/rel/carbon/bin/carbon command Carbon.Release.Tasks migrate
 
 echo Building release
 MIX_ENV=prod mix release --env=prod
