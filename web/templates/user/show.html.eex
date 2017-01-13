@@ -53,7 +53,7 @@
 
   <div class="twelve wide column">
     <h3 class="ui horizontal divider header">
-      <%= @current_user.full_name %>'s latest timesheets
+      <%= @user.full_name %>'s latest timesheets
     </h3>
     <%= if Enum.empty? @timesheets do %>
       <center>
@@ -105,11 +105,11 @@
     </center>
 
     <h3 class="ui horizontal divider header">
-      Accounts handled by <%= @current_user.full_name %>
+      Accounts handled by <%= @user.full_name %>
     </h3>
     <%= if Enum.empty? @accounts do %>
       <center style="margin: 1em;">
-        <%= @current_user.full_name %> doesn't handle any accounts.
+        <%= @user.full_name %> doesn't handle any accounts.
       </center>
     <% else %>
       <div class="ui three cards">
@@ -142,11 +142,11 @@
     </center>
 
     <h3 class="ui horizontal divider header">
-      Deals managed by <%= @current_user.full_name %>
+      Deals managed by <%= @user.full_name %>
     </h3>
     <%= if Enum.empty? @deals do %>
       <center style="margin: 1em;">
-        <%= @current_user.full_name %> doesn't have any pending deals.
+        <%= @user.full_name %> doesn't have any pending deals.
       </center>
     <% else %>
       <div class="ui three cards">
