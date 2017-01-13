@@ -15,7 +15,7 @@ defmodule Carbon.Project do
     field :active, :boolean, default: true
 
     belongs_to :account, Carbon.Account
-    has_many :phases, Carbon.Project.Phase
+
     many_to_many :tags, Carbon.ProjectTag, join_through: "j_projects_tags", on_replace: :delete
 
     timestamps
