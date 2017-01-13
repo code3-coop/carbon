@@ -48,14 +48,19 @@ defmodule Carbon.TimesheetController do
         |> render("new.html")
     end
   end
+
   def show(conn, %{"id" => timesheet_id}) do
+    timesheet = Repo.get!(Timesheet, timesheet_id) |> Repo.preload([:status])
+    reject_if_draft_and_not_owner(conn, timesheet)
+
     timesheet_entry_query = from te in TimesheetEntry,
-      where: te.timesheet_id == ^timesheet_id and te.active == true,
+      where: te.timesheet_id == ^timesheet_id
+         and te.active == true,
       left_join: p in assoc(te, :project),
       left_join: a in assoc(te, :account),
       left_join: ta in assoc(te, :tags),
       preload: [project: p, account: a, tags: ta]
-    timesheet = Repo.get!(Timesheet, timesheet_id) |> Repo.preload([:status])
+
     timesheet_entries = Repo.all(timesheet_entry_query)
     timesheet_entries_by_date = Enum.group_by(timesheet_entries, &(&1.date))
     total_duration = Enum.reduce timesheet_entries, 0, &(&1.duration_in_minutes + &2)
@@ -76,6 +81,9 @@ defmodule Carbon.TimesheetController do
       left_join: ta in assoc(te, :tags),
       preload: [project: p, account: a, tags: ta]
     timesheet = Repo.get!(Timesheet, timesheet_id)|> Repo.preload([:status])
+
+    reject_if_draft_and_not_owner(conn, timesheet)
+
     timesheet_entries = Repo.all(timesheet_entry_query)
     timesheet_entries_by_date = Enum.group_by(timesheet_entries, &(&1.date))
     total_duration = Enum.reduce timesheet_entries, 0, &(&1.duration_in_minutes + &2)
@@ -153,4 +161,13 @@ defmodule Carbon.TimesheetController do
     |> put_layout(false)
     |> render("print.html")
   end
+
+  defp reject_if_draft_and_not_owner(conn, timesheet) do
+    if timesheet.user_id != conn.assigns.current_user.id and timesheet.status.key == "Draft" do
+      conn
+      |> put_flash(:info, "You tried to acces somehting you can't see, foolish!!")
+      |> redirect(to: "/")
+    end
+  end
+
 end
