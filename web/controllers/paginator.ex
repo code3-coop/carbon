@@ -11,7 +11,7 @@ defmodule Carbon.Paginator do
     page = Map.get(params, "page", @default_page) |> Integer.parse() |> elem(0) |> max(1)
     length = Map.get(params, "length", @default_length) |> Integer.parse() |> elem(0) |> max(1)
 
-    total_length = Repo.all(query) |> Enum.count
+    total_length = Repo.aggregate(query, :count, :id)
 
     new_query = from query,
       limit: ^length,
