@@ -4,12 +4,14 @@ defmodule Carbon.PaginatorHelper do
   alias Carbon.Paginator
 
   def paginate(conn, paginator = %Paginator{}, module) do
-    content_tag :div, class: "ui center aligned container" do
-      [
-        get_previous_link(conn, paginator, module),
-        get_links(conn, paginator, module),
-        get_next_link(conn, paginator, module)
-      ]
+    if paginator.number_of_pages > 1 do
+      html_content = content_tag :div, class: "ui center aligned container" do
+        [
+          get_previous_link(conn, paginator, module),
+          get_links(conn, paginator, module),
+          get_next_link(conn, paginator, module)
+        ]
+      end
     end
   end
 
