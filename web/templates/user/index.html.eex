@@ -45,4 +45,7 @@
       </div>
     <% end %>
   <% end %>
+  <%= if assigns[:paginator] do %>
+    <%= paginate(@conn, @paginator, :user) %>
+  <% end %>
 </div>

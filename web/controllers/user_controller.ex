@@ -1,16 +1,18 @@
 defmodule Carbon.UserController do
   use Carbon.Web, :controller
 
-  alias Carbon.{ User, Timesheet, Account, Deal }
+  alias Carbon.{ User, Timesheet, Account, Deal, Paginator }
 
-  def index(conn, _params) do
+  def index(conn, params) do
     query = from u in User,
-      where: u.active == true
+      where: u.active == true,
+      preload: :roles
 
-    users = Repo.all(query) |> Repo.preload(:roles)
+    paginator = Paginator.create(query, params)
 
     conn
-    |> assign(:users, users)
+    |> assign(:users, paginator.data)
+    |> assign(:paginator, paginator)
     |> render("index.html")
 
   end
