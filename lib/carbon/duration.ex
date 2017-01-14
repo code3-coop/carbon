@@ -22,18 +22,11 @@ defmodule Carbon.Duration do
       100
   """
   def parse_minutes(duration_string) do
-    res = Float.parse(duration_string)
-    if res != :error && elem(res, 1) == "" do
-      res |> elem(0) |> round()
-    else
-      parse_minutes_by_split(duration_string)
-    end
-  end
-  def parse_minutes_by_split(duration_string) do
     exp = ~r/\d{1,4}(?:\.\d{1,2})?[mhd]?/
     if String.match?(duration_string, exp) do
       Regex.scan(exp, duration_string, catch: :all)
       |> Enum.map(&(hd &1))
+      |> Enum.map(&Float.parse/1)
       |> Enum.map(&in_minutes/1)
       |> Enum.reduce(0, &Kernel.+/2)
       |> round()
@@ -41,14 +34,10 @@ defmodule Carbon.Duration do
       0
     end
   end
-  defp in_minutes(duration_string) do
-      {value_string, unit} = String.split_at(duration_string, -1)
-      {value, _arg} = Float.parse value_string
-      in_minutes(value, unit)
-  end
-  defp in_minutes(value, "m"), do: value
-  defp in_minutes(value, "h"), do: value * 60
-  defp in_minutes(value, "d"), do: value * @work_hours_per_day * 60
+  defp in_minutes({value, "m"}), do: value
+  defp in_minutes({value, "h"}), do: value * 60
+  defp in_minutes({value, "d"}), do: value * @work_hours_per_day * 60
+  defp in_minutes({value, ""}), do: value
 
   @doc """
   Format a duration in minutes to a human readble string. Returns a string in the Format
