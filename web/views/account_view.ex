@@ -1,6 +1,7 @@
 defmodule Carbon.AccountView do
   use Carbon.Web, :view
   import Carbon.ViewHelpers, only: [account_status_select: 0, account_tags_select: 0, account_user_select: 0, humanize: 2, probability_color: 1]
+  import Carbon.PaginatorHelper
 
   def match_table_to_color("account"), do: "blue"
   def match_table_to_color("event"),   do: "yellow"
