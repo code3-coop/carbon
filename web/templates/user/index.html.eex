@@ -1,0 +1,48 @@
+<div class="ui grid">
+  <div class="ui row">
+    <div class="two wide column">
+      <h1>Users</h1>
+    </div>
+    <div class="three wide column right floated">
+      <%= link to: user_path(@conn, :new), class: "ui green button " do %>
+        <i class="ui icon plus"></i>
+        Create user
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="ui cards">
+  <%= for user <- @users do %>
+    <%= link to: user_path(@conn, :show, user.id), class: "ui card" do %>
+      <div class="image">
+        <img src="<%= user.image_url %>">
+      </div>
+      <div class="content">
+        <div class="header">
+          <%= user.full_name %>
+        </div>
+        <div class="meta">
+          <%= user.title %>
+        </div>
+        <div class="description">
+          <div>
+            <i class="icon user"></i>
+            <%= user.handle %>
+          </div>
+          <%= if Enum.count(user.roles) > 0 do %>
+            <div>
+              <i class="icon users"></i>
+              <%= user.roles |> Enum.map(&(&1.key)) |> Enum.join(", ") %>
+            </div>
+          <% end %>
+          <%= if user.email do %>
+            <div>
+              <i class="icon mail"></i>
+              <%= user.email %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

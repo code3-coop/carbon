@@ -45,6 +45,11 @@
           Timesheets
         <% end %>
       </div>
+      <div class="item">
+        <%= link to: user_path(@conn, :index) do %>
+          Users
+        <% end %>
+      </div>
       <%= if assigns[:current_user] do %>
         <div class="right menu">
           <div class="item">

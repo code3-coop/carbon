@@ -3,6 +3,17 @@ defmodule Carbon.UserController do
 
   alias Carbon.{ User, Timesheet, Account, Deal }
 
+  def index(conn, _params) do
+    query = from u in User,
+      where: u.active == true
+
+    users = Repo.all(query) |> Repo.preload(:roles)
+
+    conn
+    |> assign(:users, users)
+    |> render("index.html")
+
+  end
   def show(conn, %{"id" => user_id}) do
 
     user = Repo.get(User, user_id) |> Repo.preload([:roles])
