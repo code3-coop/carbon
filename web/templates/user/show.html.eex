@@ -42,9 +42,9 @@
           <% end %>
         </div>
         <div class="right floated">
-          <%= link to: user_path(@conn, :delete, @user.id) do %>
-            <i class="icon ban"></i>
-            Close
+          <%= link to: user_path(@conn, :delete, @user.id), method: :delete do %>
+            <i class="icon trash"></i>
+            Delete
           <% end %>
         </div>
       </div>
