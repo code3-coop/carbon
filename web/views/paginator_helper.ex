@@ -1,11 +1,10 @@
 defmodule Carbon.PaginatorHelper do
   use Phoenix.HTML
-  import Carbon.Router.Helpers
   alias Carbon.Paginator
 
   def paginate(conn, paginator = %Paginator{}, module) do
     if paginator.number_of_pages > 1 do
-      html_content = content_tag :div, class: "ui center aligned container" do
+      content_tag :div, class: "ui center aligned container" do
         [
           get_previous_link(conn, paginator, module),
           get_links(conn, paginator, module),
