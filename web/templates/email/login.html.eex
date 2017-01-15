@@ -65,7 +65,7 @@
         </p>
 
         <p style="<%= p_style %>">
-          <a href="https://carbon.code3.ca/session/validate/<%= URI.encode_www_form(@token) %>" style="<%= a_style %>">Click here to log into Carbon.</a>
+          <a href="<%= @website_entry_point %>/session/validate/<%= URI.encode_www_form(@token) %>" style="<%= a_style %>">Click here to log into Carbon.</a>
         </p>
 
         <p style="<%= p_style <> tiny_text  %>">

@@ -85,6 +85,7 @@ config :carbon, Carbon.Repo,
   pool_size: 10
 
 config :carbon, Carbon.Mailer,
+  website_entry_point: "https://carbon.code3.ca",
   adapter: Bamboo.SMTPAdapter,
   server: "smtp.gmail.com",
   port: 587,
