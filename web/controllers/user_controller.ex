@@ -12,8 +12,8 @@ defmodule Carbon.UserController do
     conn
     |> assign(:users, users)
     |> render("index.html")
-
   end
+
   def show(conn, %{"id" => user_id}) do
 
     user = Repo.get(User, user_id) |> Repo.preload([:roles])
@@ -70,6 +70,30 @@ defmodule Carbon.UserController do
         |> assign(:user, user)
         |> assign(:changeset, changeset)
         |> render("edit.html")
+    end
+  end
+
+  def new(conn, _params) do
+    user = %User{}
+    conn
+    |> assign(:user, user)
+    |> assign(:changeset, User.changeset(user))
+    |> render("new.html")
+  end
+
+  def create(conn, %{"user" => user_params}) do
+    user = %User{}
+    changeset = User.changeset(user, user_params)
+    case Repo.insert(changeset) do
+      {:ok, user_created} ->
+        conn
+        |> put_flash(:info, "User created successfully.")
+        |> redirect(to: user_path(conn, :show, user_created.id))
+      {:error, changeset} ->
+        conn
+        |> assign(:changeset, changeset)
+        |> render("new.html")
+
     end
 
   end
