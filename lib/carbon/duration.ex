@@ -34,6 +34,7 @@ defmodule Carbon.Duration do
       0
     end
   end
+
   defp in_minutes({value, "m"}), do: value
   defp in_minutes({value, "h"}), do: value * 60
   defp in_minutes({value, "d"}), do: value * @work_hours_per_day * 60
