@@ -7,11 +7,11 @@ defmodule Carbon.Paginator do
 
   defstruct [:page, :length, :total_length, :number_of_pages, :data]
 
+  def create(query, params, length \\ @default_length)
   def create(query, params, length) when is_integer(length) do
     create(query, params, Integer.to_string(length))
   end
-
-  def create(query, params, length \\ @default_length) do
+  def create(query, params, length) do
     page = Map.get(params, "page", @default_page) |> Integer.parse() |> elem(0) |> max(1)
     length = Map.get(params, "length", length) |> Integer.parse() |> elem(0) |> max(1)
 
