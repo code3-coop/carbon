@@ -31,8 +31,13 @@
         <% end %>
       </div>
       <div class="item">
-        <%= link to: instance_path(@conn, :index) do %>
+        <%= link to: workflow_path(@conn, :index) do %>
           Workflows
+        <% end %>
+      </div>
+      <div class="item">
+        <%= link to: instance_path(@conn, :index) do %>
+          Workflows in progress
         <% end %>
       </div>
       <div class="item">
