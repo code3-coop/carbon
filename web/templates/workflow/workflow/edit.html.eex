@@ -71,8 +71,8 @@
         <%= hidden_input f, :states_ids, value: states_ids %>
         <div class="sortable-list">
           <%= for state <- sorted_states do %>
-
-            <div class="ui <%= state.color %> label draggable" data-state="<%= state.id %>">
+            <%# the style attribute allow correct ordering after suppression %>
+            <div class="ui <%= state.color %> label draggable" data-state="<%= state.id %>" style=" <%= unless state.active do 'display: none' end %>">
               <i class="<%= state.icon_name %> icon"></i>
               <%= state.name %>
 
