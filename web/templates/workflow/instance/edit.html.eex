@@ -62,7 +62,7 @@
               <div class="ui selection dropdown">
                 <input type="hidden" name="instance[<%= value.id %>]" value="<%= if value, do: value.integer_value %>" %>
                 <i class="dropdown icon"></i>
-                <div class="default text">Status</div>
+                <div class="default text"><%= humanize field.name %></div>
                 <div class="menu">
                   <div class="ui icon search input" style="width: initial;"">
                     <i class="search icon"></i>
