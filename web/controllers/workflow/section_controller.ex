@@ -100,13 +100,9 @@ defmodule Carbon.Workflow.SectionController do
     tr = Repo.transaction( fn ->
       Repo.update!(changeset)
       Ecto.Adapters.SQL.query! Carbon.Repo, "set constraints workflow_fields_presentation_order_index_section_id_key deferred ;"
-      IO.inspect section_params["fields_ids"]
-      section_params["fields_ids"]
-      |> String.split(",")
-      |> Enum.map(&String.to_integer/1)
-      |> Enum.with_index()
-      |> Enum.map(fn({field_id, index}) -> {index, from(s in Field, where: s.id == ^field_id)} end)
-      |> Enum.each(fn({index, query}) -> Repo.update_all(query, [set: [presentation_order_index: index]]) end)
+
+      update_fields_orders(section_params["fields_ids"])
+
     end)
 
     case tr do
@@ -115,6 +111,16 @@ defmodule Carbon.Workflow.SectionController do
         |> put_flash(:info, "Section successfully updated")
         |> redirect(to: workflow_path(conn, :edit, workflow_id))
     end
+  end
+
+  defp update_fields_orders(""), do: :ok
+  defp update_fields_orders(fields_ids) do
+    fields_ids
+    |> String.split(",")
+    |> Enum.map(&String.to_integer/1)
+    |> Enum.with_index()
+    |> Enum.map(fn({field_id, index}) -> {index, from(s in Field, where: s.id == ^field_id)} end)
+    |> Enum.each(fn({index, query}) -> Repo.update_all(query, [set: [presentation_order_index: index]]) end)
   end
 
 end
