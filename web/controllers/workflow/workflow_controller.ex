@@ -82,19 +82,8 @@ defmodule Carbon.Workflow.WorkflowController do
 
       Repo.update!(changeset)
 
-      workflow_params["states_ids"]
-      |> String.split(",")
-      |> Enum.map(&String.to_integer/1)
-      |> Enum.with_index()
-      |> Enum.map(fn({state_id, index}) -> {index, from(s in State, where: s.id == ^state_id)} end)
-      |> Enum.each(fn({index, query}) -> Repo.update_all(query, [set: [presentation_order_index: index]]) end)
-
-      workflow_params["sections_ids"]
-      |> String.split(",")
-      |> Enum.map(&String.to_integer/1)
-      |> Enum.with_index()
-      |> Enum.map(fn({section_id, index}) -> {index, from(s in Section, where: s.id == ^section_id)} end)
-      |> Enum.each(fn({index, query}) -> Repo.update_all(query, [set: [presentation_order_index: index]]) end)
+      update_state_indexes workflow_params["states_ids"]
+      update_section_indexes workflow_params["sections_ids"]
 
     end)
 
@@ -109,6 +98,27 @@ defmodule Carbon.Workflow.WorkflowController do
         |> render("edit.html")
     end
   end
+
+  defp update_state_indexes(""), do: :ok
+  defp update_state_indexes(state_indexes) do
+    state_indexes
+    |> String.split(",")
+    |> Enum.map(&String.to_integer/1)
+    |> Enum.with_index()
+    |> Enum.map(fn({state_id, index}) -> {index, from(s in State, where: s.id == ^state_id)} end)
+    |> Enum.each(fn({index, query}) -> Repo.update_all(query, [set: [presentation_order_index: index]]) end)
+  end
+
+  defp update_section_indexes(""), do: :ok
+  defp update_section_indexes(section_indexes) do
+    section_indexes
+    |> String.split(",")
+    |> Enum.map(&String.to_integer/1)
+    |> Enum.with_index()
+    |> Enum.map(fn({section_id, index}) -> {index, from(s in Section, where: s.id == ^section_id)} end)
+    |> Enum.each(fn({index, query}) -> Repo.update_all(query, [set: [presentation_order_index: index]]) end)
+  end
+
 
   def delete(_conn, _params) do
 
