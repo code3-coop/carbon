@@ -19,13 +19,13 @@
             <%  sorted_states = Enum.sort_by @instance.workflow.states, &(&1.presentation_order_index) %>
             <%= hidden_input :instance, :state_id, [value: @instance.state_id] %>
             <%= for state <- sorted_states do %>
-              <a class="ui <%= if @instance.state_id == state.id do 'active' else '' end %>  button state-selector" data-state="<%= state.id %>">
+              <a class="ui <%= if @instance.state_id == state.id do 'active' else '' end %>  button state-selector" data-state="<%= state.id %>" data-content="<%=state.name%>">
                 <i class="ui icon  <%= state.color %> <%= state.icon_name %>"></i>
-                <%= state.name %>
               </a>
             <% end %>
           </span>
         </div>
+
         <div class="two wide column">
           <div class="ui right floated icon buttons">
             <%= link to: instance_path(@conn, :edit, to_string(@previous)), class: "ui button #{if !@previous or @previous == @instance.id, do: "disabled"}" do %>
@@ -136,6 +136,7 @@
 <% end %>
 
 <script>
+  $('.state-selector').popup();
   $('.ui.dropdown').dropdown()
   $('.reference').change(function(event){
     var elm = event.target;
