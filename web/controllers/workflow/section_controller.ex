@@ -15,7 +15,8 @@ defmodule Carbon.Workflow.SectionController do
 
   def create(conn, %{"workflow_id" => workflow_id, "section" => section_params}) do
     workflow = Repo.get(Workflow, workflow_id) |> Repo.preload([:sections])
-    max_presentation_order_index = workflow.sections |> Enum.max_by(&get_presentation_order/1) |> get_presentation_order()
+
+    max_presentation_order_index = max_prentation_order(workflow)
     section = %Section{workflow_id: String.to_integer(workflow_id), presentation_order_index: max_presentation_order_index + 1}
     changeset = Section.changeset(section, section_params)
     case Repo.insert(changeset) do
@@ -27,6 +28,13 @@ defmodule Carbon.Workflow.SectionController do
         |> render("new.html")
 
     end
+  end
+
+  defp max_prentation_order(%{sections: []}), do: 0
+  defp max_prentation_order(%{sections: sections}) do
+    sections
+    |> Enum.max_by(&get_presentation_order/1)
+    |> get_presentation_order()
   end
 
   defp get_presentation_order(section), do: section.presentation_order_index
